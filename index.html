@@ -2,7 +2,7 @@
 <html lang="ms" class="h-full bg-[#dce5f2]">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <title>SmartDash FAMA | Penjejakan Arahan Ketua Pengarah (KP)</title>
     <!-- PWA & Windows Desktop Integration -->
     <link rel="manifest" href="/manifest.json">
@@ -23,11 +23,37 @@
     <!-- Google Fonts: Plus Jakarta Sans / Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        img, svg, video, canvas, audio, iframe, embed, object {
+            max-width: 100%;
+            height: auto;
+        }
+        select {
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: #f0f3fa; }
         ::-webkit-scrollbar-thumb { background: #cbd4e6; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #96a2bf; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .safe-area-pb { padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem)); }
+        .safe-area-pt { padding-top: max(0.5rem, env(safe-area-inset-top, 0.5rem)); }
         @media print {
             body * { visibility: hidden; }
             #printableArea, #printableArea *, #fullEmailPrintArea, #fullEmailPrintArea * { visibility: visible; }
@@ -35,13 +61,13 @@
         }
     </style>
 </head>
-<body class="min-h-full bg-[#dce5f2] p-2 sm:p-4 lg:p-6 flex items-center justify-center text-slate-800 antialiased selection:bg-indigo-600 selection:text-white">
+<body class="min-h-screen bg-[#dce5f2] p-0 sm:p-4 lg:p-6 flex flex-col items-center justify-center text-slate-800 antialiased selection:bg-indigo-600 selection:text-white overflow-x-hidden w-full">
 
-    <!-- MAIN APP CONTAINER CARD (EXACT THEME MATCHING UPLOADED IMAGE) -->
-    <div class="w-full max-w-[1620px] bg-white rounded-[38px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.12)] border border-slate-200/70 flex overflow-hidden min-h-[940px]">
+    <!-- MAIN APP CONTAINER CARD (RESPONSIVE NO-OFFSET CONTAINER) -->
+    <div class="w-full max-w-[1620px] bg-white rounded-none sm:rounded-[36px] shadow-none sm:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.12)] border-0 sm:border border-slate-200/70 flex flex-row overflow-x-hidden min-h-screen sm:min-h-[940px] relative">
 
-        <!-- ================= 1. FAR-LEFT MINIMALIST ICON DOCK ================= -->
-        <aside class="w-16 sm:w-20 bg-white border-r border-slate-100 flex flex-col items-center py-6 justify-between flex-shrink-0">
+        <!-- ================= 1. FAR-LEFT MINIMALIST ICON DOCK (DESKTOP/TABLET >= SM) ================= -->
+        <aside class="w-16 sm:w-20 bg-white border-r border-slate-100 flex-col items-center py-6 justify-between flex-shrink-0 hidden sm:flex">
             <!-- Top Purple Brand Icon -->
             <div class="flex flex-col items-center space-y-7">
                 <button onclick="switchMainView('dashboard')" title="SmartDash FAMA — Penjejakan Arahan KP" class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#6366f1] to-[#8b5cf6] text-white flex items-center justify-center shadow-lg shadow-indigo-500/30 hover:scale-105 transition cursor-pointer">
@@ -254,27 +280,42 @@
         </aside>
 
         <!-- ================= 3. RIGHT MAIN CONTENT WORKSPACE ================= -->
-        <main class="flex-1 bg-[#fafbfe] overflow-y-auto flex flex-col justify-between">
+        <main class="flex-1 bg-[#fafbfe] overflow-y-auto flex flex-col justify-between w-full max-w-full pb-20 sm:pb-6">
 
             <!-- MAIN WORKSPACE CONTENT CONTAINER -->
-            <div class="p-4 sm:p-6 lg:p-8 space-y-7 flex-1">
+            <div class="p-3 sm:p-6 lg:p-8 space-y-4 sm:space-y-7 flex-1 w-full max-w-full">
 
                 <!-- TOP HEADER BAR -->
-                <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                     <!-- Left Greeting & Title with Flame Emoji -->
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-[11px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full uppercase tracking-wider">Aplikasi Eksekutif KP</span>
-                            <span class="text-xs font-semibold text-slate-400">Pemantauan Arahan kepada TKP & PK</span>
+                    <div class="flex items-center justify-between sm:block">
+                        <div>
+                            <div class="flex items-center space-x-1.5 sm:space-x-2">
+                                <span class="text-[10px] sm:text-[11px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full uppercase tracking-wider">Aplikasi Eksekutif KP</span>
+                                <span class="text-[11px] sm:text-xs font-semibold text-slate-400 hidden xs:inline">Pemantauan Arahan</span>
+                            </div>
+                            <div class="flex items-center space-x-2 mt-1">
+                                <h1 class="text-xl sm:text-3xl font-black text-slate-900 tracking-tight" id="mainViewHeaderTitle">SmartDash FAMA</h1>
+                                <span class="text-xl sm:text-2xl animate-pulse">🔥</span>
+                            </div>
                         </div>
-                        <div class="flex items-center space-x-2 mt-1">
-                            <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight" id="mainViewHeaderTitle">SmartDash FAMA</h1>
-                            <span class="text-2xl animate-pulse">🔥</span>
+
+                        <!-- Mobile-only quick action buttons -->
+                        <div class="sm:hidden flex items-center space-x-2">
+                            <button onclick="handleDesktopInstallClick()" class="p-2 bg-emerald-50 text-emerald-700 rounded-xl" title="Pasang SmartDash">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="openRegisterLetterModal()" class="p-2 bg-indigo-50 text-indigo-600 rounded-xl" title="Daftar & Salur Arahan KP Baru">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            </button>
+                            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 via-yellow-400 to-indigo-600 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs border border-amber-300" onclick="switchRole('kp')">
+                                KP
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Right Controls: Search, Slider Icon, Profile Avatar & Role Dropdown -->
-                    <div class="flex items-center space-x-3">
+                    <!-- Right Controls (Desktop / Tablet >= SM) -->
+                    <div class="hidden sm:flex items-center space-x-3">
                         <!-- Quick Search Input -->
                         <div class="relative hidden sm:block">
                             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
@@ -321,76 +362,98 @@
                     </div>
                 </header>
 
+                <!-- MOBILE QUICK SEARCH & TIER FILTER TOOLBAR (VISIBLE ONLY ON MOBILE < MD) -->
+                <div class="block md:hidden space-y-2">
+                    <div class="relative w-full">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        <input type="text" onkeyup="filterEmails(this.value)" placeholder="Cari arahan KP, penerima, tajuk..." class="w-full pl-9 pr-4 py-2 bg-slate-100/90 rounded-xl text-xs font-semibold text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                    </div>
+                    <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-0.5">
+                        <button onclick="filterByTier('all', this)" data-tier="all" class="mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-black bg-indigo-600 text-white shadow-xs flex-shrink-0 transition">
+                            Semua
+                        </button>
+                        <button onclick="filterByTier('TKP', this)" data-tier="TKP" class="mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200 flex-shrink-0 transition">
+                            TKP (3 Sektor)
+                        </button>
+                        <button onclick="filterByTier('PK', this)" data-tier="PK" class="mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-extrabold bg-sky-50 text-sky-700 border border-sky-200 flex-shrink-0 transition">
+                            PK (HQ Sahaja)
+                        </button>
+                        <button onclick="filterByTier('NEGERI', this)" data-tier="NEGERI" class="mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200 flex-shrink-0 transition">
+                            14 Pengarah Negeri
+                        </button>
+                    </div>
+                </div>
+
                 <!-- ================= VIEW 1: JOBTRAIN THEME DASHBOARD (DEFAULT) ================= -->
                 <div id="view-dashboard" class="space-y-7">
 
                     <!-- SECTION 1: TOP 5 ENTITY CAROUSEL ("Discover Jobs" -> "5 Sayap Penerima Arahan KP") -->
                     <section class="space-y-3">
-                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
                             
                             <!-- Card 1: TKP (Operasi) -->
-                            <div onclick="filterByTag('TKP (Operasi)')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-purple-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group">
-                                <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
-                                    <i data-lucide="truck" class="w-5 h-5"></i>
+                            <div onclick="filterByTag('TKP (Operasi)')" class="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-purple-300 transition cursor-pointer flex flex-col items-center text-center space-y-1.5 sm:space-y-2 group">
+                                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="truck" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
-                                <div>
-                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">TKP</span>
-                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-purple-700 transition mt-1">TKP (Operasi)</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium">Pasaran Segar & Rantaian</p>
+                                <div class="w-full">
+                                    <span class="text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">TKP</span>
+                                    <h4 class="text-[11px] sm:text-xs font-extrabold text-slate-900 group-hover:text-purple-700 transition mt-1 truncate">TKP (Operasi)</h4>
+                                    <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium truncate">Pasaran & Rantaian</p>
                                 </div>
-                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 4 Hari</span>
+                                <span class="text-[10px] sm:text-xs font-black text-slate-900 mt-0.5">SLA: 4 Hari</span>
                             </div>
 
                             <!-- Card 2: TKP (Pembangunan) -->
-                            <div onclick="filterByTag('TKP (Pembangunan)')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-indigo-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group">
-                                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
-                                    <i data-lucide="trending-up" class="w-5 h-5"></i>
+                            <div onclick="filterByTag('TKP (Pembangunan)')" class="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-indigo-300 transition cursor-pointer flex flex-col items-center text-center space-y-1.5 sm:space-y-2 group">
+                                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="trending-up" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
-                                <div>
-                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">TKP</span>
-                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-indigo-700 transition mt-1">TKP (Pembangunan)</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium">Usahawan, IAT & Eksport</p>
+                                <div class="w-full">
+                                    <span class="text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">TKP</span>
+                                    <h4 class="text-[11px] sm:text-xs font-extrabold text-slate-900 group-hover:text-indigo-700 transition mt-1 truncate">TKP (Pembangunan)</h4>
+                                    <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium truncate">Usahawan & Eksport</p>
                                 </div>
-                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 4 Hari</span>
+                                <span class="text-[10px] sm:text-xs font-black text-slate-900 mt-0.5">SLA: 4 Hari</span>
                             </div>
 
                             <!-- Card 3: TKP (Khidmat Pengurusan) -->
-                            <div onclick="filterByTag('TKP (Khidmat Pengurusan)')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-violet-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group">
-                                <div class="w-10 h-10 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
-                                    <i data-lucide="layers" class="w-5 h-5"></i>
+                            <div onclick="filterByTag('TKP (Khidmat Pengurusan)')" class="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-violet-300 transition cursor-pointer flex flex-col items-center text-center space-y-1.5 sm:space-y-2 group">
+                                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="layers" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
-                                <div>
-                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200">TKP</span>
-                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-violet-700 transition mt-1">TKP (Pengurusan)</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium">Kewangan, HR & Digital</p>
+                                <div class="w-full">
+                                    <span class="text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200">TKP</span>
+                                    <h4 class="text-[11px] sm:text-xs font-extrabold text-slate-900 group-hover:text-violet-700 transition mt-1 truncate">TKP (Pengurusan)</h4>
+                                    <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium truncate">Kewangan & Digital</p>
                                 </div>
-                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 2 Hari</span>
+                                <span class="text-[10px] sm:text-xs font-black text-slate-900 mt-0.5">SLA: 2 Hari</span>
                             </div>
 
                             <!-- Card 4: PK Bahagian Ibu Pejabat HQ Sahaja -->
-                            <div onclick="filterByTier('PK')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-sky-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group">
-                                <div class="w-10 h-10 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
-                                    <i data-lucide="building-2" class="w-5 h-5"></i>
+                            <div onclick="filterByTier('PK')" class="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-sky-300 transition cursor-pointer flex flex-col items-center text-center space-y-1.5 sm:space-y-2 group">
+                                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="building-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
-                                <div>
-                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">PK (HQ)</span>
-                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-sky-700 transition mt-1">Pengarah Kanan HQ</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium">Pasaran & Modal Insan</p>
+                                <div class="w-full">
+                                    <span class="text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">PK (HQ)</span>
+                                    <h4 class="text-[11px] sm:text-xs font-extrabold text-slate-900 group-hover:text-sky-700 transition mt-1 truncate">Pengarah Kanan HQ</h4>
+                                    <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium truncate">Pasaran & Modal Insan</p>
                                 </div>
-                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 5 Hari</span>
+                                <span class="text-[10px] sm:text-xs font-black text-slate-900 mt-0.5">SLA: 5 Hari</span>
                             </div>
 
                             <!-- Card 5: 14 Pengarah FAMA Negeri (Melaka/dll) -->
-                            <div onclick="filterByTier('NEGERI')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-emerald-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group col-span-2 sm:col-span-1">
-                                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
-                                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                            <div onclick="filterByTier('NEGERI')" class="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-emerald-300 transition cursor-pointer flex flex-col items-center text-center space-y-1.5 sm:space-y-2 group col-span-2 sm:col-span-1">
+                                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="map-pin" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
-                                <div>
-                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">14 NEGERI</span>
-                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-emerald-700 transition mt-1">Pengarah FAMA Negeri</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium">Melaka, Johor, Selangor, dll</p>
+                                <div class="w-full">
+                                    <span class="text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">14 NEGERI</span>
+                                    <h4 class="text-[11px] sm:text-xs font-extrabold text-slate-900 group-hover:text-emerald-700 transition mt-1 truncate">Pengarah FAMA Negeri</h4>
+                                    <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium truncate">Melaka, Johor, Selangor dll</p>
                                 </div>
-                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 5 Hari</span>
+                                <span class="text-[10px] sm:text-xs font-black text-slate-900 mt-0.5">SLA: 5 Hari</span>
                             </div>
 
                         </div>
@@ -398,37 +461,37 @@
 
                     <!-- SECTION 2: 3 VIBRANT GRADIENT FEATURED CARDS ("Arahan Berimpak Tinggi KP") -->
                     <section class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-black text-slate-900 uppercase tracking-wider">Arahan Keutamaan Tinggi Ketua Pengarah (Kepada TKP, PK HQ & 14 Pengarah Negeri)</h3>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                            <h3 class="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wider">Arahan Keutamaan Tinggi Ketua Pengarah</h3>
                             <button onclick="switchMainView('tasks')" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition flex items-center space-x-1">
-                                <span>Lihat Papan Pemantauan Kanban</span>
+                                <span>Lihat Papan Kanban</span>
                                 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
                             
                             <!-- GRADIENT CARD 1: Electric Blue Gradient -->
-                            <div onclick="openUpdateModalByKeyword('SEMARAK TANI')" class="bg-gradient-to-br from-[#0284c7] via-[#0ea5e9] to-[#2563eb] rounded-[32px] p-6 text-white shadow-lg shadow-sky-500/20 relative overflow-hidden flex flex-col justify-between h-52 cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition group">
+                            <div onclick="openUpdateModalByKeyword('SEMARAK TANI')" class="bg-gradient-to-br from-[#0284c7] via-[#0ea5e9] to-[#2563eb] rounded-2xl sm:rounded-[32px] p-4 sm:p-6 text-white shadow-lg shadow-sky-500/20 relative overflow-hidden flex flex-col justify-between min-h-[190px] cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition group">
                                 <div>
                                     <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 rounded-2xl bg-white text-sky-600 flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition">
-                                            <i data-lucide="store" class="w-5 h-5"></i>
+                                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-white text-sky-600 flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition flex-shrink-0">
+                                            <i data-lucide="store" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                         </div>
                                         <div class="overflow-hidden">
-                                            <h4 class="text-sm font-extrabold leading-snug line-clamp-1">Karnival Semarak Tani @ Agro MADANI</h4>
-                                            <p class="text-xs text-sky-100 font-medium truncate">Penerima: TKP Operasi & Pengarah FAMA Melaka (Ts. Hj Nor Azhar)</p>
+                                            <h4 class="text-xs sm:text-sm font-extrabold leading-snug line-clamp-1">Karnival Semarak Tani @ Agro MADANI</h4>
+                                            <p class="text-[11px] sm:text-xs text-sky-100 font-medium truncate">Penerima: TKP Operasi & Pengarah FAMA Melaka</p>
                                         </div>
                                     </div>
                                     <!-- Translucent Pill Tags -->
-                                    <div class="flex flex-wrap gap-1.5 mt-4">
-                                        <span class="bg-white/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-black text-amber-200">TKP & PENGARAH NEGERI</span>
-                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Pasaran Segar</span>
-                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Segera</span>
+                                    <div class="flex flex-wrap gap-1.5 mt-3 sm:mt-4">
+                                        <span class="bg-white/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-black text-amber-200">TKP & PENGARAH NEGERI</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold">Pasaran Segar</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold">Segera</span>
                                     </div>
                                 </div>
-                                <div class="flex items-center justify-between pt-3 border-t border-white/20 text-xs">
-                                    <span class="font-extrabold tracking-wide">SLA: 5 Hari Lagi</span>
+                                <div class="flex items-center justify-between pt-3 border-t border-white/20 text-xs mt-2">
+                                    <span class="font-extrabold tracking-wide text-[11px] sm:text-xs">SLA: 5 Hari Lagi</span>
                                     <button onclick="event.stopPropagation(); openFullEmailModalByKeyword('SEMARAK TANI')" class="bg-white/20 hover:bg-white/35 backdrop-blur-xs px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center space-x-1 transition cursor-pointer" title="Lihat Keseluruhan Kandungan E-mel">
                                         <i data-lucide="mail-open" class="w-3 h-3"></i>
                                         <span>E-mel Penuh</span>
@@ -437,26 +500,26 @@
                             </div>
 
                             <!-- GRADIENT CARD 2: Purple-to-Indigo Vibrant Gradient -->
-                            <div onclick="openUpdateModalByKeyword('EPSA')" class="bg-gradient-to-br from-[#9333ea] via-[#7c3aed] to-[#4f46e5] rounded-[32px] p-6 text-white shadow-lg shadow-purple-500/20 relative overflow-hidden flex flex-col justify-between h-52 cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition group">
+                            <div onclick="openUpdateModalByKeyword('EPSA')" class="bg-gradient-to-br from-[#9333ea] via-[#7c3aed] to-[#4f46e5] rounded-2xl sm:rounded-[32px] p-4 sm:p-6 text-white shadow-lg shadow-purple-500/20 relative overflow-hidden flex flex-col justify-between min-h-[190px] cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition group">
                                 <div>
                                     <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 rounded-2xl bg-white text-purple-600 flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition">
-                                            <i data-lucide="book-open" class="w-5 h-5"></i>
+                                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-white text-purple-600 flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition flex-shrink-0">
+                                            <i data-lucide="book-open" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                         </div>
                                         <div class="overflow-hidden">
-                                            <h4 class="text-sm font-extrabold leading-snug line-clamp-1">Pelaksanaan EPSA® ARPA (Latihan Mandatori)</h4>
-                                            <p class="text-xs text-purple-100 font-medium truncate">Penerima: TKP Pengurusan & PK Modal Insan (HQ)</p>
+                                            <h4 class="text-xs sm:text-sm font-extrabold leading-snug line-clamp-1">Pelaksanaan EPSA® ARPA (Mandatori)</h4>
+                                            <p class="text-[11px] sm:text-xs text-purple-100 font-medium truncate">Penerima: TKP Pengurusan & PK Modal Insan</p>
                                         </div>
                                     </div>
                                     <!-- Translucent Pill Tags -->
-                                    <div class="flex flex-wrap gap-1.5 mt-4">
-                                        <span class="bg-white/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-black text-rose-200">TKP & PK (HQ)</span>
-                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Modal Insan</span>
-                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Wajib</span>
+                                    <div class="flex flex-wrap gap-1.5 mt-3 sm:mt-4">
+                                        <span class="bg-white/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-black text-rose-200">TKP & PK (HQ)</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold">Modal Insan</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold">Wajib</span>
                                     </div>
                                 </div>
-                                <div class="flex items-center justify-between pt-3 border-t border-white/20 text-xs">
-                                    <span class="font-extrabold tracking-wide">SLA: 2 Hari Lagi</span>
+                                <div class="flex items-center justify-between pt-3 border-t border-white/20 text-xs mt-2">
+                                    <span class="font-extrabold tracking-wide text-[11px] sm:text-xs">SLA: 2 Hari Lagi</span>
                                     <button onclick="event.stopPropagation(); openFullEmailModalByKeyword('EPSA')" class="bg-white/20 hover:bg-white/35 backdrop-blur-xs px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center space-x-1 transition cursor-pointer" title="Lihat Keseluruhan Kandungan E-mel">
                                         <i data-lucide="mail-open" class="w-3 h-3"></i>
                                         <span>E-mel Penuh</span>
@@ -465,26 +528,26 @@
                             </div>
 
                             <!-- GRADIENT CARD 3: Sunset Coral-to-Amber Gradient -->
-                            <div onclick="openUpdateModalByKeyword('INSENTIF')" class="bg-gradient-to-br from-[#f43f5e] via-[#fb7185] to-[#f59e0b] rounded-[32px] p-6 text-white shadow-lg shadow-rose-500/20 relative overflow-hidden flex flex-col justify-between h-52 cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition group">
+                            <div onclick="openUpdateModalByKeyword('INSENTIF')" class="bg-gradient-to-br from-[#f43f5e] via-[#fb7185] to-[#f59e0b] rounded-2xl sm:rounded-[32px] p-4 sm:p-6 text-white shadow-lg shadow-rose-500/20 relative overflow-hidden flex flex-col justify-between min-h-[190px] cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition group">
                                 <div>
                                     <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 rounded-2xl bg-white text-rose-600 flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition">
-                                            <i data-lucide="package" class="w-5 h-5"></i>
+                                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-white text-rose-600 flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition flex-shrink-0">
+                                            <i data-lucide="package" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                         </div>
                                         <div class="overflow-hidden">
-                                            <h4 class="text-sm font-extrabold leading-snug line-clamp-1">Insentif Pembungkusan Eksport 2027</h4>
-                                            <p class="text-xs text-rose-100 font-medium truncate">Penerima: TKP Pembangunan & PK Pasaran (HQ)</p>
+                                            <h4 class="text-xs sm:text-sm font-extrabold leading-snug line-clamp-1">Insentif Pembungkusan Eksport 2027</h4>
+                                            <p class="text-[11px] sm:text-xs text-rose-100 font-medium truncate">Penerima: TKP Pembangunan & PK Pasaran</p>
                                         </div>
                                     </div>
                                     <!-- Translucent Pill Tags -->
-                                    <div class="flex flex-wrap gap-1.5 mt-4">
-                                        <span class="bg-white/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-black text-amber-200">TKP & PK (HQ)</span>
-                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Pasaran Global</span>
-                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Saringan</span>
+                                    <div class="flex flex-wrap gap-1.5 mt-3 sm:mt-4">
+                                        <span class="bg-white/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-black text-amber-200">TKP & PK (HQ)</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold">Pasaran Global</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold">Saringan</span>
                                     </div>
                                 </div>
-                                <div class="flex items-center justify-between pt-3 border-t border-white/20 text-xs">
-                                    <span class="font-extrabold tracking-wide">SLA: 4 Hari Lagi</span>
+                                <div class="flex items-center justify-between pt-3 border-t border-white/20 text-xs mt-2">
+                                    <span class="font-extrabold tracking-wide text-[11px] sm:text-xs">SLA: 4 Hari Lagi</span>
                                     <button onclick="event.stopPropagation(); openFullEmailModalByKeyword('INSENTIF')" class="bg-white/20 hover:bg-white/35 backdrop-blur-xs px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center space-x-1 transition cursor-pointer" title="Lihat Keseluruhan Kandungan E-mel">
                                         <i data-lucide="mail-open" class="w-3 h-3"></i>
                                         <span>E-mel Penuh</span>
@@ -496,20 +559,20 @@
                     </section>
 
                     <!-- SECTION 3: LOWER DUAL GRID ("Hot Jobs 🔥" & "Salary Trend") -->
-                    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <section class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
                         
-                        <!-- LEFT COLUMN (5 COLS): "Hot Jobs 🔥" -> "Status Arahan KP Terkini (Kepada TKP & PK) 🔥" -->
+                        <!-- LEFT COLUMN (5 COLS): "Hot Jobs 🔥" -> "Status Arahan KP Terkini" -->
                         <div class="lg:col-span-5 space-y-3">
                             <div class="flex items-center justify-between">
-                                <h3 class="text-sm font-black text-slate-900 flex items-center space-x-1">
+                                <h3 class="text-xs sm:text-sm font-black text-slate-900 flex items-center space-x-1">
                                     <span>Status Arahan KP Terkini</span>
                                     <span class="text-base">🔥</span>
                                 </h3>
-                                <div class="flex items-center space-x-1 text-[10px] font-bold">
-                                    <button onclick="filterByTier('all')" class="px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition">Semua</button>
-                                    <button onclick="filterByTier('TKP')" class="px-2 py-0.5 rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 transition">TKP</button>
-                                    <button onclick="filterByTier('PK')" class="px-2 py-0.5 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 transition">PK (HQ)</button>
-                                    <button onclick="filterByTier('NEGERI')" class="px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition">14 Negeri</button>
+                                <div class="flex items-center space-x-1 text-[10px] font-bold overflow-x-auto no-scrollbar py-0.5">
+                                    <button onclick="filterByTier('all')" class="px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition whitespace-nowrap">Semua</button>
+                                    <button onclick="filterByTier('TKP')" class="px-2 py-0.5 rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 transition whitespace-nowrap">TKP</button>
+                                    <button onclick="filterByTier('PK')" class="px-2 py-0.5 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 transition whitespace-nowrap">PK (HQ)</button>
+                                    <button onclick="filterByTier('NEGERI')" class="px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition whitespace-nowrap">14 Negeri</button>
                                 </div>
                             </div>
 
@@ -518,17 +581,17 @@
                             </div>
                         </div>
 
-                        <!-- RIGHT COLUMN (7 COLS): "Salary Trend" -> "Trend & Prestasi SLA Tindakan Arahan KP" -->
-                        <div class="lg:col-span-7 bg-white rounded-3xl p-6 border border-slate-100 shadow-xs flex flex-col justify-between space-y-4">
+                        <!-- RIGHT COLUMN (7 COLS): "Trend & Prestasi SLA Tindakan Arahan KP" -->
+                        <div class="lg:col-span-7 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-100 shadow-xs flex flex-col justify-between space-y-3 sm:space-y-4">
                             <!-- Trend Header -->
-                            <div class="flex items-center justify-between">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <div>
-                                    <h3 class="text-sm font-black text-slate-900">Prestasi & SLA Tindakan Arahan Ketua Pengarah</h3>
-                                    <p class="text-[10px] text-slate-400 font-medium">Pemantauan kadar penyelesaian tugas oleh Timbalan KP, Pengarah Kanan HQ & 14 Pengarah FAMA Negeri</p>
+                                    <h3 class="text-xs sm:text-sm font-black text-slate-900">Prestasi & SLA Tindakan Arahan Ketua Pengarah</h3>
+                                    <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium">Pemantauan kadar penyelesaian tugas oleh Timbalan KP, Pengarah Kanan HQ & 14 Pengarah FAMA Negeri</p>
                                 </div>
-                                <div class="flex items-center space-x-2 text-xs">
-                                    <span class="text-slate-400 font-semibold">Tahun:</span>
-                                    <select class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1 text-xs font-bold text-slate-800 outline-none">
+                                <div class="flex items-center space-x-2 text-xs self-end sm:self-auto">
+                                    <span class="text-slate-400 font-semibold text-[11px]">Tahun:</span>
+                                    <select class="bg-slate-50 border border-slate-200 rounded-xl px-2 py-1 text-xs font-bold text-slate-800 outline-none">
                                         <option value="2026" selected>2026</option>
                                         <option value="2025">2025</option>
                                     </select>
@@ -539,14 +602,14 @@
                             </div>
 
                             <!-- Dual Curve SVG Line Chart Matching Image -->
-                            <div class="relative w-full h-44 pt-2">
-                                <!-- Highlight Peak Tooltip Card (Matching Image) -->
-                                <div class="absolute top-1 left-[68%] -translate-x-1/2 bg-white/95 backdrop-blur-xs px-3 py-1.5 rounded-2xl shadow-lg border border-slate-100 text-center z-10">
-                                    <span class="text-[9px] text-slate-400 font-semibold block">Sasaran: 88%</span>
-                                    <span class="text-xs font-black text-slate-900">Kini: 96% Patuh SLA</span>
+                            <div class="relative w-full h-36 sm:h-44 pt-2 overflow-hidden">
+                                <!-- Highlight Peak Tooltip Card -->
+                                <div class="absolute top-1 left-[65%] -translate-x-1/2 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-xl shadow-md border border-slate-100 text-center z-10 pointer-events-none max-w-[130px]">
+                                    <span class="text-[8px] sm:text-[9px] text-slate-400 font-semibold block">Sasaran: 88%</span>
+                                    <span class="text-[10px] sm:text-xs font-black text-slate-900">Kini: 96% Patuh SLA</span>
                                 </div>
 
-                                <svg class="w-full h-full overflow-visible" viewBox="0 0 600 160" preserveAspectRatio="none">
+                                <svg class="w-full h-full overflow-hidden" viewBox="0 0 600 160" preserveAspectRatio="none">
                                     <defs>
                                         <!-- Red Line Gradient -->
                                         <linearGradient id="gradRed" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -583,7 +646,7 @@
                                 </svg>
 
                                 <!-- Month Labels -->
-                                <div class="grid grid-cols-10 text-[10px] font-bold text-slate-400 text-center mt-2">
+                                <div class="grid grid-cols-10 text-[8px] sm:text-[10px] font-bold text-slate-400 text-center mt-2">
                                     <span>Mac</span>
                                     <span>Apr</span>
                                     <span>Mei</span>
@@ -597,10 +660,10 @@
                                 </div>
                             </div>
 
-                            <!-- Bottom Period Filter Pills (Matching Image) -->
-                            <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[10px] font-bold text-slate-500">
+                            <!-- Bottom Period Filter Pills -->
+                            <div class="flex flex-wrap items-center justify-between pt-2 border-t border-slate-100 text-[9px] sm:text-[10px] font-bold text-slate-500 gap-1">
                                 <span class="hover:text-slate-800 cursor-pointer">Mingguan</span>
-                                <span class="bg-[#ef4444] text-white px-3 py-1 rounded-full shadow-xs cursor-pointer">Bulanan</span>
+                                <span class="bg-[#ef4444] text-white px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-xs cursor-pointer">Bulanan</span>
                                 <span class="hover:text-slate-800 cursor-pointer">Suku Tahun</span>
                                 <span class="hover:text-slate-800 cursor-pointer hidden sm:inline">Dwi-Tahunan</span>
                                 <span class="hover:text-slate-800 cursor-pointer hidden sm:inline">Tahunan</span>
@@ -614,38 +677,38 @@
 
                 <!-- ================= VIEW 2: TRIAGE INBOX (FULL ORIGINAL VIEW) ================= -->
                 <div id="view-triage" class="hidden space-y-4">
-                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-100 gap-2">
                         <div>
-                            <h2 class="text-xl font-black text-slate-900">Urus Setia Khas Ketua Pengarah — Penapisan Surat & Agihan Arahan KP</h2>
-                            <p class="text-xs text-slate-400">Pemantauan surat masuk kementerian dan penugasan arahan Ketua Pengarah terus kepada TKP, Pengarah Kanan HQ, dan 14 Pengarah FAMA Negeri.</p>
+                            <h2 class="text-lg sm:text-xl font-black text-slate-900">Urus Setia Khas KP — Penapisan Surat</h2>
+                            <p class="text-[11px] sm:text-xs text-slate-400">Pemantauan surat masuk kementerian dan penugasan arahan Ketua Pengarah terus kepada penerima.</p>
                         </div>
-                        <button onclick="switchMainView('dashboard')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+                        <button onclick="switchMainView('dashboard')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition self-start sm:self-auto">
                             ← Kembali ke Dashboard
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden min-h-[580px]">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 bg-white rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xs overflow-hidden min-h-0 lg:min-h-[580px]">
                         <!-- Left: Email List (5 cols) -->
-                        <div class="lg:col-span-5 border-r border-slate-100 flex flex-col bg-slate-50/50">
-                            <div class="p-4 border-b border-slate-100 bg-white flex items-center justify-between">
+                        <div class="lg:col-span-5 border-b lg:border-b-0 lg:border-r border-slate-100 flex flex-col bg-slate-50/50">
+                            <div class="p-3.5 sm:p-4 border-b border-slate-100 bg-white flex items-center justify-between">
                                 <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Senarai Surat Masuk Rasmi</span>
                                 <span id="unreadCountPill" class="text-[10px] bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded-full font-bold">15 Surat Sebenar</span>
                             </div>
-                            <div id="emailListContainer" class="overflow-y-auto flex-1 divide-y divide-slate-100 max-h-[540px]">
+                            <div id="emailListContainer" class="overflow-y-auto flex-1 divide-y divide-slate-100 max-h-[320px] sm:max-h-[420px] lg:max-h-[540px]">
                                 <!-- Populated Dynamically from IMAP -->
                             </div>
                         </div>
 
                         <!-- Right: Email Detail & KP Minit Routing (7 cols) -->
-                        <div class="lg:col-span-7 flex flex-col bg-white p-6 space-y-5">
-                            <div class="border-b border-slate-100 pb-4">
+                        <div class="lg:col-span-7 flex flex-col bg-white p-4 sm:p-6 space-y-4 sm:space-y-5">
+                            <div class="border-b border-slate-100 pb-3 sm:pb-4">
                                 <span class="text-[11px] font-mono font-bold text-indigo-600 block mb-1" id="currentRefId">ID: FAMA-MLK-2026-12189</span>
-                                <h3 id="emailDetailSubject" class="text-base font-extrabold text-slate-900">Surat Rasmi FAMA</h3>
-                                <p class="text-xs text-slate-500 mt-1">Daripada: <span id="emailDetailSender" class="font-semibold text-slate-700">info@fama.gov.my</span></p>
+                                <h3 id="emailDetailSubject" class="text-sm sm:text-base font-extrabold text-slate-900">Surat Rasmi FAMA</h3>
+                                <p class="text-xs text-slate-500 mt-1 truncate">Daripada: <span id="emailDetailSender" class="font-semibold text-slate-700">info@fama.gov.my</span></p>
                             </div>
 
                             <!-- AI Assistant Summary -->
-                            <div class="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-4 text-xs">
+                            <div class="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-3 sm:p-4 text-xs">
                                 <div class="flex items-center text-indigo-900 font-bold mb-1">
                                     <i data-lucide="sparkles" class="w-4 h-4 mr-1.5 text-indigo-600"></i>
                                     <span>Rumusan Pintar AI (FAMA AI Assistant)</span>
@@ -657,14 +720,14 @@
 
                             <!-- Email Body with Full Email Viewer Trigger -->
                             <div class="space-y-2">
-                                <div class="flex items-center justify-between">
+                                <div class="flex flex-col xs:flex-row xs:items-center justify-between gap-1.5">
                                     <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Kandungan E-mel Rasmi:</span>
-                                    <button onclick="openFullEmailModal(selectedEmailId)" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl text-xs font-bold shadow-xs hover:shadow transition group">
+                                    <button onclick="openFullEmailModal(selectedEmailId)" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl text-xs font-bold shadow-xs hover:shadow transition group self-start xs:self-auto">
                                         <i data-lucide="maximize-2" class="w-3.5 h-3.5 group-hover:scale-110 transition"></i>
-                                        <span>Lihat Keseluruhan E-mel (Penuh)</span>
+                                        <span>Lihat Keseluruhan (Penuh)</span>
                                     </button>
                                 </div>
-                                <div id="emailDetailBody" class="text-xs text-slate-700 space-y-2 bg-slate-50 p-4 rounded-2xl border border-slate-100 max-h-48 overflow-y-auto">
+                                <div id="emailDetailBody" class="text-xs text-slate-700 space-y-2 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-100 max-h-44 sm:max-h-48 overflow-y-auto">
                                     <p>Kandungan surat sedang dimuatkan...</p>
                                 </div>
                             </div>
@@ -672,17 +735,17 @@
                             <!-- Attachments -->
                             <div class="space-y-2">
                                 <p class="text-xs font-bold text-slate-700">Lampiran Rasmi:</p>
-                                <div id="attachmentContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div id="attachmentContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                                     <!-- Dynamic Attachments -->
                                 </div>
                             </div>
 
                             <!-- KP Minit Form -->
-                            <div class="border-t border-slate-100 pt-4 space-y-3">
+                            <div class="border-t border-slate-100 pt-3 sm:pt-4 space-y-3">
                                 <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">Minit Arahan Ketua Pengarah (KP)</label>
-                                <textarea id="routingMinitText" rows="2" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Tulis arahan minit tindakan Ketua Pengarah di sini..."></textarea>
-                                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                                    <select id="routingAssigneeSelect" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 flex-1">
+                                <textarea id="routingMinitText" rows="2" class="w-full p-2.5 sm:p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Tulis arahan minit tindakan Ketua Pengarah di sini..."></textarea>
+                                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                                    <select id="routingAssigneeSelect" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 flex-1 truncate w-full min-w-0 max-w-full">
                                         <optgroup label="1. Timbalan Ketua Pengarah (TKP)">
                                             <option value="[TKP] Timbalan Ketua Pengarah (Operasi)">[TKP] Timbalan Ketua Pengarah (Operasi) — Pasaran Segar & Rantaian</option>
                                             <option value="[TKP] Timbalan Ketua Pengarah (Pembangunan)">[TKP] Timbalan Ketua Pengarah (Pembangunan) — Usahawan, IAT & Eksport</option>
@@ -712,7 +775,7 @@
                                             <option value="[NEGERI] Pengarah FAMA W.P. Kuala Lumpur / Labuan">[NEGERI] Pengarah FAMA W.P. Kuala Lumpur / Labuan</option>
                                         </optgroup>
                                     </select>
-                                    <button onclick="dispatchDirective()" id="btnDispatch" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 shadow-sm flex-shrink-0">
+                                    <button onclick="dispatchDirective()" id="btnDispatch" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 shadow-sm flex-shrink-0 w-full sm:w-auto">
                                         <i data-lucide="send" class="w-3.5 h-3.5"></i>
                                         <span>Lepaskan Arahan KP</span>
                                     </button>
@@ -724,34 +787,34 @@
 
                 <!-- ================= VIEW 3: TASKS (4-COLUMN KANBAN) ================= -->
                 <div id="view-tasks" class="hidden space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-100 gap-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-100 gap-2.5">
                         <div>
-                            <h2 class="text-xl font-black text-slate-900">Papan Pemantauan Arahan Ketua Pengarah (Kanban)</h2>
-                            <p class="text-xs text-slate-400">Penjejakan pelaksanaan arahan terus KP oleh Timbalan KP (TKP), Pengarah Kanan HQ (PK) dan 14 Pengarah FAMA Negeri.</p>
+                            <h2 class="text-lg sm:text-xl font-black text-slate-900">Papan Pemantauan Arahan KP (Kanban)</h2>
+                            <p class="text-[11px] sm:text-xs text-slate-400">Penjejakan pelaksanaan arahan terus KP oleh Timbalan KP (TKP), Pengarah Kanan HQ (PK) dan 14 Pengarah FAMA Negeri.</p>
                         </div>
-                        <div class="flex items-center space-x-2">
+                        <div class="flex flex-wrap items-center gap-2">
                             <!-- Tier Tabs in Kanban -->
-                            <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold">
-                                <button onclick="filterByTier('all')" class="px-3 py-1 rounded-xl bg-white text-indigo-700 shadow-xs">Semua</button>
-                                <button onclick="filterByTier('TKP')" class="px-3 py-1 rounded-xl text-purple-700 hover:bg-purple-100">Hanya TKP</button>
-                                <button onclick="filterByTier('PK')" class="px-3 py-1 rounded-xl text-sky-700 hover:bg-sky-100">Hanya PK (HQ)</button>
-                                <button onclick="filterByTier('NEGERI')" class="px-3 py-1 rounded-xl text-emerald-700 hover:bg-emerald-100">14 Pengarah Negeri</button>
+                            <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold overflow-x-auto max-w-full no-scrollbar">
+                                <button onclick="filterByTier('all')" class="px-2.5 sm:px-3 py-1 rounded-xl bg-white text-indigo-700 shadow-xs whitespace-nowrap">Semua</button>
+                                <button onclick="filterByTier('TKP')" class="px-2.5 sm:px-3 py-1 rounded-xl text-purple-700 hover:bg-purple-100 whitespace-nowrap">Hanya TKP</button>
+                                <button onclick="filterByTier('PK')" class="px-2.5 sm:px-3 py-1 rounded-xl text-sky-700 hover:bg-sky-100 whitespace-nowrap">Hanya PK (HQ)</button>
+                                <button onclick="filterByTier('NEGERI')" class="px-2.5 sm:px-3 py-1 rounded-xl text-emerald-700 hover:bg-emerald-100 whitespace-nowrap">14 Pengarah Negeri</button>
                             </div>
-                            <button onclick="openRegisterLetterModal()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center space-x-1">
+                            <button onclick="openRegisterLetterModal()" class="px-3 sm:px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center space-x-1 whitespace-nowrap flex-shrink-0">
                                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
                                 <span>Daftar Arahan</span>
                             </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                         <!-- COL 1: DRAFT -->
                         <div class="space-y-3">
                             <div class="flex items-center justify-between px-1">
                                 <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-700">DRAFT / BELUM TERIMA</h3>
                                 <span id="badgeColDraft" class="text-xs font-bold text-slate-400">0</span>
                             </div>
-                            <div id="kanbanColDraft" class="space-y-3 min-h-[160px]"></div>
+                            <div id="kanbanColDraft" class="space-y-3 min-h-[120px] sm:min-h-[160px]"></div>
                         </div>
 
                         <!-- COL 2: IN PROGRESS -->
@@ -760,7 +823,7 @@
                                 <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-700">DALAM TINDAKAN</h3>
                                 <span id="badgeColProgress" class="text-xs font-bold text-slate-400">0</span>
                             </div>
-                            <div id="kanbanColProgress" class="space-y-3 min-h-[160px]"></div>
+                            <div id="kanbanColProgress" class="space-y-3 min-h-[120px] sm:min-h-[160px]"></div>
                         </div>
 
                         <!-- COL 3: EDITING -->
@@ -769,7 +832,7 @@
                                 <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-700">SEMAKAN LAPORAN</h3>
                                 <span id="badgeColEditing" class="text-xs font-bold text-slate-400">0</span>
                             </div>
-                            <div id="kanbanColEditing" class="space-y-3 min-h-[160px]"></div>
+                            <div id="kanbanColEditing" class="space-y-3 min-h-[120px] sm:min-h-[160px]"></div>
                         </div>
 
                         <!-- COL 4: DONE -->
@@ -778,73 +841,78 @@
                                 <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-700">SELESAI & DIPATUHI</h3>
                                 <span id="badgeColDone" class="text-xs font-bold text-slate-400">0</span>
                             </div>
-                            <div id="kanbanColDone" class="space-y-3 min-h-[160px]"></div>
+                            <div id="kanbanColDone" class="space-y-3 min-h-[120px] sm:min-h-[160px]"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= VIEW 4: PLANNING (GANTT TIMELINE) ================= -->
                 <div id="view-planning" class="hidden space-y-4">
-                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-100 gap-2">
                         <div>
-                            <h2 class="text-xl font-black text-slate-900">Carta Garis Masa Perancangan SLA Arahan Ketua Pengarah</h2>
-                            <p class="text-xs text-slate-400">Jadual pelaksanaan arahan terus KP oleh Timbalan KP (TKP), Pengarah Kanan HQ (PK) & 14 Pengarah FAMA Negeri.</p>
+                            <h2 class="text-lg sm:text-xl font-black text-slate-900">Carta Garis Masa SLA Arahan KP</h2>
+                            <p class="text-[11px] sm:text-xs text-slate-400">Jadual pelaksanaan arahan terus KP oleh Timbalan KP, Pengarah Kanan HQ & 14 Pengarah Negeri.</p>
                         </div>
-                        <button onclick="switchMainView('dashboard')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+                        <button onclick="switchMainView('dashboard')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition self-start sm:self-auto">
                             ← Kembali ke Dashboard
                         </button>
                     </div>
 
-                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-xs space-y-4">
-                        <!-- Date Header Row -->
-                        <div class="grid grid-cols-12 gap-2 text-center text-xs font-bold text-slate-400 pb-2 border-b border-slate-100">
-                            <div class="col-span-4 text-left pl-3 text-slate-800 font-extrabold uppercase text-[11px] tracking-wider">
-                                Penerima Arahan KP (TKP / PK)
-                            </div>
-                            <div class="col-span-8 grid grid-cols-10 text-[11px] font-mono">
-                                <span>28</span>
-                                <span>29</span>
-                                <span>30</span>
-                                <span>31</span>
-                                <span class="text-indigo-600 font-black">01</span>
-                                <span>02</span>
-                                <span>03</span>
-                                <span>04</span>
-                                <span>05</span>
-                                <span>06</span>
-                            </div>
-                        </div>
+                    <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-100 shadow-xs space-y-4">
+                        <div class="overflow-x-auto w-full pb-2">
+                            <div class="min-w-[620px] space-y-3.5">
+                                <!-- Date Header Row -->
+                                <div class="grid grid-cols-12 gap-2 text-center text-xs font-bold text-slate-400 pb-2 border-b border-slate-100">
+                                    <div class="col-span-4 text-left pl-3 text-slate-800 font-extrabold uppercase text-[11px] tracking-wider">
+                                        Penerima Arahan KP (TKP / PK)
+                                    </div>
+                                    <div class="col-span-8 grid grid-cols-10 text-[11px] font-mono">
+                                        <span>28</span>
+                                        <span>29</span>
+                                        <span>30</span>
+                                        <span>31</span>
+                                        <span class="text-indigo-600 font-black">01</span>
+                                        <span>02</span>
+                                        <span>03</span>
+                                        <span>04</span>
+                                        <span>05</span>
+                                        <span>06</span>
+                                    </div>
+                                </div>
 
-                        <!-- 4 Gantt Rows: Dynamically Populated from Real Tasks -->
-                        <div id="ganttRowsContainer" class="space-y-3.5">
-                            <!-- Populated dynamically by renderGantt() -->
+                                <!-- Gantt Rows: Dynamically Populated from Real Tasks -->
+                                <div id="ganttRowsContainer" class="space-y-3.5">
+                                    <!-- Populated dynamically by renderGantt() -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= VIEW 5: GOOGLE SHEETS & IMAP ================= -->
                 <div id="view-sheets" class="hidden space-y-4">
-                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-100 gap-2.5">
                         <div>
-                            <h2 class="text-xl font-black text-slate-900">Pangkalan Data & Rekod Jejak Arahan KP (Google Sheets)</h2>
-                            <p class="text-xs text-slate-400">Penyegerakan langsung rekod arahan KP kepada TKP dan PK ke helaian Google Sheets awan.</p>
+                            <h2 class="text-lg sm:text-xl font-black text-slate-900">Pangkalan Data & Rekod Jejak Arahan KP</h2>
+                            <p class="text-[11px] sm:text-xs text-slate-400">Penyegerakan langsung rekod arahan KP ke helaian lejar bersepadu.</p>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold">
-                                <button onclick="filterByTier('all')" class="px-2.5 py-1 rounded-xl bg-white text-indigo-700 shadow-xs">Semua</button>
-                                <button onclick="filterByTier('TKP')" class="px-2.5 py-1 rounded-xl text-purple-700 hover:bg-purple-100">TKP</button>
-                                <button onclick="filterByTier('PK')" class="px-2.5 py-1 rounded-xl text-sky-700 hover:bg-sky-100">PK</button>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold overflow-x-auto max-w-full no-scrollbar">
+                                <button onclick="filterByTier('all')" class="px-2.5 py-1 rounded-xl bg-white text-indigo-700 shadow-xs whitespace-nowrap">Semua</button>
+                                <button onclick="filterByTier('TKP')" class="px-2.5 py-1 rounded-xl text-purple-700 hover:bg-purple-100 whitespace-nowrap">TKP</button>
+                                <button onclick="filterByTier('PK')" class="px-2.5 py-1 rounded-xl text-sky-700 hover:bg-sky-100 whitespace-nowrap">PK</button>
+                                <button onclick="filterByTier('NEGERI')" class="px-2.5 py-1 rounded-xl text-emerald-700 hover:bg-emerald-100 whitespace-nowrap">14 Negeri</button>
                             </div>
-                            <button onclick="exportGoogleSheetsCsv()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-xs transition flex items-center space-x-1.5">
+                            <button onclick="exportGoogleSheetsCsv()" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-xs transition flex items-center space-x-1.5 whitespace-nowrap flex-shrink-0">
                                 <i data-lucide="download" class="w-4 h-4"></i>
                                 <span>Muat Turun Fail CSV</span>
                             </button>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden p-6">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
+                    <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xs overflow-hidden p-3 sm:p-6">
+                        <div class="overflow-x-auto w-full">
+                            <table class="w-full min-w-[760px] text-left text-xs">
                                 <thead class="bg-slate-50 border-b border-slate-100 text-slate-600 font-bold uppercase text-[10px]">
                                     <tr>
                                         <th class="p-3">Masa</th>
@@ -868,49 +936,49 @@
                 </div>
 
                 <!-- ================= VIEW 6: PORT 993 SSL VERIFICATION ================= -->
-                <div id="view-port-verify" class="hidden space-y-6">
-                    <div class="bg-emerald-50 border-2 border-emerald-300 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div id="view-port-verify" class="hidden space-y-4 sm:space-y-6">
+                    <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
                         <div class="space-y-2">
-                            <span class="bg-emerald-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                            <span class="bg-emerald-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider inline-block">
                                 Status: DISAHKAN BETUL 100%
                             </span>
-                            <h3 class="text-lg font-black text-emerald-950">Port 993 Adalah Port Tepat Untuk IMAP over SSL/TLS</h3>
+                            <h3 class="text-base sm:text-lg font-black text-emerald-950">Port 993 Adalah Port Tepat Untuk IMAP over SSL/TLS</h3>
                             <p class="text-xs text-emerald-800 leading-relaxed max-w-2xl font-medium">
                                 Mengikut piawaian global IANA & RFC 8314, pelayan <strong>mail.fama.gov.my</strong> pada <strong>Port 993</strong> menggunakan enkripsi selamat (Implicit SSL/TLS) bagi muat turun mel akaun <strong>azharhamid@fama.gov.my</strong> (ID: 750501086723 - Ts. Hj Nor Azhar Bin Abdul Hamid).
                             </p>
                         </div>
-                        <button onclick="testEmailPortLive(this)" id="btnTestPortLive" class="px-5 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center space-x-2 flex-shrink-0">
+                        <button onclick="testEmailPortLive(this)" id="btnTestPortLive" class="px-5 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center space-x-2 flex-shrink-0 w-full sm:w-auto justify-center">
                             <i data-lucide="zap" class="w-4 h-4"></i>
                             <span>Uji Latensi Port 993 Langsung</span>
                         </button>
                     </div>
 
                     <!-- Live Diagnostic Result Box -->
-                    <div id="portLiveResultCard" class="bg-white rounded-3xl p-6 border border-slate-100 shadow-xs space-y-4">
+                    <div id="portLiveResultCard" class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-100 shadow-xs space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                 <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Keputusan Diagnostik Pelayan Mel Sebenar</h4>
                             </div>
-                            <span id="portLiveTimestamp" class="text-[11px] font-mono text-slate-400">Status: Sedia Diuji</span>
+                            <span id="portLiveTimestamp" class="text-[10px] sm:text-[11px] font-mono text-slate-400">Status: Sedia Diuji</span>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                            <div class="bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-100">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pelayan & IP</span>
                                 <p class="text-xs font-black text-slate-900 mt-1">mail.fama.gov.my</p>
                                 <p class="text-[10px] font-mono text-indigo-600 mt-0.5">110.159.248.96</p>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <div class="bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-100">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Port & Protokol</span>
                                 <p class="text-xs font-black text-emerald-700 mt-1">Port 993 (IMAPS)</p>
                                 <p class="text-[10px] text-emerald-600 mt-0.5 font-bold">Implicit SSL / TLSv1.3</p>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <div class="bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-100">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Akaun Pegawai Sah</span>
                                 <p class="text-xs font-black text-slate-900 mt-1">azharhamid@fama.gov.my</p>
                                 <p class="text-[10px] text-slate-500 mt-0.5">MyKad: 750501086723</p>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <div class="bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-100">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Latensi / Status Sambungan</span>
                                 <p id="portLiveLatencyVal" class="text-xs font-black text-emerald-600 mt-1">360 ms (Aktif)</p>
                                 <p class="text-[10px] text-slate-400 mt-0.5">Peti Mel: 12,189 Surat Sebenar</p>
@@ -919,10 +987,10 @@
                     </div>
 
                     <!-- Port Matrix Table -->
-                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-xs space-y-4">
+                    <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-100 shadow-xs space-y-4">
                         <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Jadual Perbandingan Piawaian Port E-Mel Rasmi Kerajaan (RFC 8314)</h4>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
+                        <div class="overflow-x-auto w-full">
+                            <table class="w-full min-w-[580px] text-left text-xs">
                                 <thead class="bg-slate-50 border-b border-slate-100 text-slate-500 font-bold uppercase text-[10px]">
                                     <tr>
                                         <th class="p-3">Port</th>
@@ -976,13 +1044,13 @@
 
             </div>
 
-            <!-- FOOTER BAR (MINIMALIST) -->
-            <footer class="h-12 px-8 border-t border-slate-100/80 bg-white flex items-center justify-between text-[11px] text-slate-400 flex-shrink-0">
-                <div class="flex items-center space-x-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Pelayan IMAP: <strong>mail.fama.gov.my:993 (SSL)</strong> • Pegawai: <strong>Ts. Hj Nor Azhar (750501086723)</strong></span>
+            <!-- FOOTER BAR (MINIMALIST & RESPONSIVE) -->
+            <footer class="py-2.5 px-3 sm:px-8 border-t border-slate-100/80 bg-white flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-[11px] text-slate-400 flex-shrink-0 gap-1.5 text-center sm:text-left">
+                <div class="flex items-center space-x-2 truncate max-w-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0"></span>
+                    <span class="truncate">Pelayan IMAP: <strong>mail.fama.gov.my:993 (SSL)</strong> • Pegawai: <strong>Ts. Hj Nor Azhar (750501086723)</strong></span>
                 </div>
-                <span>FAMA e-Surat & Penjejakan Arahan DG • JobTrain Theme</span>
+                <span class="text-[9px] sm:text-[11px]">FAMA e-Surat & Penjejakan Arahan DG • JobTrain Theme</span>
             </footer>
 
         </main>
@@ -991,13 +1059,13 @@
     <!-- ================= MODALS ================= -->
 
     <!-- REGISTER LETTER MODAL -->
-    <div id="registerLetterModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+    <div id="registerLetterModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[92vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h3 class="text-sm font-bold text-slate-900 flex items-center">
-                    <i data-lucide="plus-circle" class="w-4 h-4 mr-2 text-indigo-600"></i> Daftar & Salur Arahan Ketua Pengarah (KP)
+                <h3 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center">
+                    <i data-lucide="plus-circle" class="w-4 h-4 mr-2 text-indigo-600 flex-shrink-0"></i> Daftar & Salur Arahan Ketua Pengarah (KP)
                 </h3>
-                <button onclick="closeRegisterLetterModal()" class="text-slate-400 hover:text-slate-600">
+                <button onclick="closeRegisterLetterModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -1006,7 +1074,7 @@
                     <label class="block font-semibold text-slate-700 mb-1">Perkara / Tajuk Arahan KP</label>
                     <input type="text" id="regLetterSubject" placeholder="cth: Arahan Pelaksanaan Jualan Agro MADANI..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Kategori Penerima</label>
                         <select id="regLetterCategory" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold">
@@ -1049,7 +1117,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Pengirim / Agensi Rujukan</label>
                         <input type="text" id="regLetterSender" placeholder="cth: KPKM / Pejabat KP FAMA" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium">
@@ -1076,13 +1144,13 @@
     </div>
 
     <!-- UPDATE TASK MODAL -->
-    <div id="updateModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100">
+    <div id="updateModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
-                <h3 class="text-sm font-bold text-slate-900 flex items-center">
-                    <i data-lucide="edit-3" class="w-4 h-4 mr-2 text-indigo-600"></i> Kemaskini Status Tindakan Arahan KP
+                <h3 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center">
+                    <i data-lucide="edit-3" class="w-4 h-4 mr-2 text-indigo-600 flex-shrink-0"></i> Kemaskini Status Tindakan Arahan KP
                 </h3>
-                <button onclick="closeUpdateModal()" class="text-slate-400 hover:text-slate-600">
+                <button onclick="closeUpdateModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -1121,30 +1189,30 @@
     </div>
 
     <!-- PDF VIEWER MODAL -->
-    <div id="pdfModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[60] hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-4xl h-[88vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100">
-            <div class="bg-slate-50 p-4 border-b border-slate-100 flex items-center justify-between">
+    <div id="pdfModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[60] hidden flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white rounded-2xl sm:rounded-3xl w-full max-w-4xl h-[92vh] max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100">
+            <div class="bg-slate-50 p-3 sm:p-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0">
                 <div class="flex items-center space-x-3">
-                    <div class="p-2 bg-indigo-100 text-indigo-600 rounded-xl">
+                    <div class="p-2 bg-indigo-100 text-indigo-600 rounded-xl flex-shrink-0">
                         <i data-lucide="file-text" class="w-5 h-5"></i>
                     </div>
-                    <div>
-                        <h3 id="pdfModalTitle" class="text-sm font-bold text-slate-900">Dokumen Rasmi Jabatan</h3>
-                        <p class="text-[10px] text-slate-400">Prapapar Dokumen Sulit FAMA</p>
+                    <div class="overflow-hidden">
+                        <h3 id="pdfModalTitle" class="text-xs sm:text-sm font-bold text-slate-900 truncate">Dokumen Rasmi Jabatan</h3>
+                        <p class="text-[10px] text-slate-400 truncate">Prapapar Dokumen Sulit FAMA</p>
                     </div>
                 </div>
-                <button onclick="closePdfModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-full">
+                <button onclick="closePdfModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-full flex-shrink-0">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-            <div class="flex-1 bg-slate-200/70 p-6 overflow-y-auto flex justify-center">
-                <div id="printableArea" class="bg-white w-full max-w-2xl h-max shadow-lg p-10 space-y-6 border border-slate-200 text-slate-800 font-serif rounded-xl">
+            <div class="flex-1 bg-slate-200/70 p-3 sm:p-6 overflow-y-auto flex justify-center">
+                <div id="printableArea" class="bg-white w-full max-w-2xl h-max shadow-lg p-5 sm:p-10 space-y-6 border border-slate-200 text-slate-800 font-serif rounded-xl">
                     <div class="border-b-2 border-slate-900 pb-4 flex justify-between font-sans">
                         <div>
-                            <p class="text-[11px] font-bold text-indigo-900 uppercase">LEMBAGA PEMASARAN PERTANIAN PERSEKUTUAN (FAMA)</p>
-                            <h2 class="text-lg font-black text-slate-900 uppercase mt-1" id="pdfDocTitle">DOKUMEN RASMI</h2>
+                            <p class="text-[9px] sm:text-[11px] font-bold text-indigo-900 uppercase">LEMBAGA PEMASARAN PERTANIAN PERSEKUTUAN (FAMA)</p>
+                            <h2 class="text-base sm:text-lg font-black text-slate-900 uppercase mt-1" id="pdfDocTitle">DOKUMEN RASMI</h2>
                         </div>
-                        <div class="text-right text-[11px]">
+                        <div class="text-right text-[10px] sm:text-[11px]">
                             <p class="font-bold text-rose-700">SULIT</p>
                             <p>Ruj: <span id="pdfRefNumber" class="font-bold">FAMA/100-2/4/1</span></p>
                         </div>
@@ -1154,7 +1222,7 @@
                     </div>
                 </div>
             </div>
-            <div class="p-4 border-t border-slate-100 bg-white flex justify-end space-x-3">
+            <div class="p-3 sm:p-4 border-t border-slate-100 bg-white flex justify-end space-x-3 flex-shrink-0">
                 <button onclick="closePdfModal()" class="px-4 py-2 border border-slate-200 text-slate-700 font-bold text-xs rounded-xl">Tutup</button>
                 <button onclick="window.print()" class="px-4 py-2 bg-slate-900 text-white font-bold text-xs rounded-xl shadow flex items-center">
                     <i data-lucide="printer" class="w-4 h-4 mr-1.5"></i> Cetak
@@ -1165,26 +1233,26 @@
 
     <!-- FULL EMAIL VIEWER MODAL (LIHAT KESELURUHAN E-MEL CONTENT) -->
     <div id="fullEmailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[70] hidden flex items-center justify-center p-2 sm:p-4 lg:p-6">
-        <div class="bg-white rounded-[32px] w-full max-w-5xl h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200">
+        <div class="bg-white rounded-2xl sm:rounded-[32px] w-full max-w-5xl h-[92vh] max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200">
             <!-- Modal Header -->
-            <div class="bg-slate-50 px-6 py-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0">
-                <div class="flex items-center space-x-3.5 overflow-hidden">
-                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-indigo-500/20">
-                        <i data-lucide="mail-open" class="w-5 h-5"></i>
+            <div class="bg-slate-50 px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center space-x-2.5 sm:space-x-3.5 overflow-hidden">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-indigo-500/20">
+                        <i data-lucide="mail-open" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                     </div>
                     <div class="overflow-hidden">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>
-                                mail.fama.gov.my:993 (IMAP SSL)
+                        <div class="flex items-center space-x-1.5 sm:space-x-2">
+                            <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center truncate">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse flex-shrink-0"></span>
+                                mail.fama.gov.my:993
                             </span>
-                            <span id="fullEmailRefBadge" class="text-[10px] font-mono font-bold text-slate-500">FAMA-MLK-2026-12187</span>
+                            <span id="fullEmailRefBadge" class="text-[9px] sm:text-[10px] font-mono font-bold text-slate-500 truncate">FAMA-MLK-2026-12187</span>
                         </div>
-                        <h3 id="fullEmailSubject" class="text-sm sm:text-base font-black text-slate-900 truncate mt-0.5">Tajuk E-mel Sebenar</h3>
+                        <h3 id="fullEmailSubject" class="text-xs sm:text-base font-black text-slate-900 truncate mt-0.5">Tajuk E-mel Sebenar</h3>
                     </div>
                 </div>
                 
-                <div class="flex items-center space-x-2 flex-shrink-0">
+                <div class="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
                     <button onclick="copyFullEmailContent()" class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-200/80 rounded-xl transition" title="Salin Teks E-mel">
                         <i data-lucide="copy" class="w-4 h-4"></i>
                     </button>
@@ -1198,43 +1266,45 @@
             </div>
 
             <!-- Email Meta Bar -->
-            <div class="px-6 py-2.5 bg-white border-b border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2 flex-shrink-0">
+            <div class="px-3 sm:px-6 py-2 bg-white border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-600 gap-1 sm:gap-2 flex-shrink-0">
                 <div class="flex items-center space-x-1.5 truncate max-w-md">
-                    <span class="text-slate-400 font-semibold">Daripada:</span>
-                    <span id="fullEmailSender" class="font-bold text-slate-800 truncate">UNIT INTEGRITI (KPKM)</span>
+                    <span class="text-slate-400 font-semibold text-[11px]">Daripada:</span>
+                    <span id="fullEmailSender" class="font-bold text-slate-800 truncate text-[11px] sm:text-xs">UNIT INTEGRITI (KPKM)</span>
                 </div>
-                <div class="flex items-center space-x-1.5">
-                    <span class="text-slate-400 font-semibold">Tarikh Pelayan:</span>
-                    <span id="fullEmailDate" class="font-mono font-bold text-slate-700">Thu, 22 Oct 2026</span>
-                </div>
-                <div class="flex items-center space-x-1.5">
-                    <span class="text-slate-400 font-semibold">Penerima Rasmi:</span>
-                    <span class="font-bold text-indigo-700">Ts. Hj Nor Azhar (750501086723)</span>
+                <div class="flex items-center justify-between sm:justify-end space-x-3 text-[10px] sm:text-xs">
+                    <div class="flex items-center space-x-1">
+                        <span class="text-slate-400 font-semibold">Tarikh:</span>
+                        <span id="fullEmailDate" class="font-mono font-bold text-slate-700">Thu, 22 Oct 2026</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <span class="text-slate-400 font-semibold">Penerima:</span>
+                        <span class="font-bold text-indigo-700">Ts. Hj Nor Azhar</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Tabs Navigation -->
-            <div class="px-6 pt-2.5 bg-slate-50/70 border-b border-slate-200/80 flex items-center space-x-4 text-xs font-bold flex-shrink-0 overflow-x-auto">
+            <div class="px-3 sm:px-6 pt-2 bg-slate-50/70 border-b border-slate-200/80 flex items-center space-x-3 sm:space-x-4 text-xs font-bold flex-shrink-0 overflow-x-auto no-scrollbar whitespace-nowrap">
                 <button id="fullTabBtnBody" onclick="switchFullEmailTab('body')" class="pb-2.5 border-b-2 border-indigo-600 text-indigo-600 flex items-center space-x-1.5 transition flex-shrink-0">
                     <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-                    <span>1. Kandungan Penuh E-mel (RFC822 Body)</span>
+                    <span>1. Kandungan Penuh E-mel</span>
                 </button>
                 <button id="fullTabBtnAi" onclick="switchFullEmailTab('ai')" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition flex-shrink-0">
                     <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                    <span>2. Ringkasan Pintar AI & Minit DG</span>
+                    <span>2. Ringkasan AI & DG</span>
                 </button>
                 <button id="fullTabBtnHeaders" onclick="switchFullEmailTab('headers')" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition flex-shrink-0">
                     <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
-                    <span>3. Pengepala Pelayan Asal (RFC822 Headers)</span>
+                    <span>3. Pengepala RFC822</span>
                 </button>
                 <button id="fullTabBtnAttachments" onclick="switchFullEmailTab('attachments')" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition flex-shrink-0">
                     <i data-lucide="paperclip" class="w-3.5 h-3.5"></i>
-                    <span>4. Lampiran Rasmi (<span id="fullEmailAttCount">1</span>)</span>
+                    <span>4. Lampiran (<span id="fullEmailAttCount">1</span>)</span>
                 </button>
             </div>
 
             <!-- Tab Content Area -->
-            <div class="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-100/60">
+            <div class="flex-1 overflow-y-auto p-3 sm:p-6 bg-slate-100/60">
                 <!-- Loading Spinner -->
                 <div id="fullEmailLoading" class="hidden flex flex-col items-center justify-center py-20 space-y-3">
                     <div class="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
@@ -1243,17 +1313,17 @@
 
                 <!-- Tab 1: Full Email Body Text -->
                 <div id="fullTabContentBody" class="space-y-4">
-                    <div id="fullEmailPrintArea" class="bg-white rounded-2xl p-6 sm:p-8 shadow-xs border border-slate-200">
+                    <div id="fullEmailPrintArea" class="bg-white rounded-2xl p-4 sm:p-8 shadow-xs border border-slate-200">
                         <!-- Official Letter Header -->
-                        <div class="border-b-2 border-slate-900 pb-4 mb-6 flex justify-between items-start">
+                        <div class="border-b-2 border-slate-900 pb-3 sm:pb-4 mb-4 sm:mb-6 flex justify-between items-start">
                             <div>
-                                <p class="text-[10px] font-extrabold tracking-wider uppercase text-indigo-900">LEMBAGA PEMASARAN PERTANIAN PERSEKUTUAN (FAMA) / KPKM</p>
-                                <h4 id="fullDocLetterSubject" class="text-base sm:text-lg font-black text-slate-900 mt-1 uppercase">DOKUMEN E-MEL RASMI</h4>
-                                <p class="text-xs text-slate-500 mt-0.5" id="fullDocLetterSender">Daripada: pengirim</p>
+                                <p class="text-[9px] sm:text-[10px] font-extrabold tracking-wider uppercase text-indigo-900">LEMBAGA PEMASARAN PERTANIAN PERSEKUTUAN (FAMA) / KPKM</p>
+                                <h4 id="fullDocLetterSubject" class="text-sm sm:text-lg font-black text-slate-900 mt-1 uppercase">DOKUMEN E-MEL RASMI</h4>
+                                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5" id="fullDocLetterSender">Daripada: pengirim</p>
                             </div>
                             <div class="text-right">
-                                <span class="text-[10px] font-bold px-2.5 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg">KANDUNGAN SEBENAR</span>
-                                <p class="text-[11px] font-mono text-slate-400 mt-1" id="fullDocLetterDate">22 Okt 2026</p>
+                                <span class="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg">KANDUNGAN SEBENAR</span>
+                                <p class="text-[10px] sm:text-[11px] font-mono text-slate-400 mt-1" id="fullDocLetterDate">22 Okt 2026</p>
                             </div>
                         </div>
 
@@ -1266,8 +1336,8 @@
 
                 <!-- Tab 2: AI & DG Directive -->
                 <div id="fullTabContentAi" class="hidden space-y-4">
-                    <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200 space-y-5">
-                        <div class="p-5 bg-indigo-50/80 border border-indigo-200 rounded-2xl">
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-xs border border-slate-200 space-y-4 sm:space-y-5">
+                        <div class="p-4 sm:p-5 bg-indigo-50/80 border border-indigo-200 rounded-2xl">
                             <div class="flex items-center text-indigo-900 font-bold mb-2">
                                 <i data-lucide="sparkles" class="w-4 h-4 mr-1.5 text-indigo-600"></i>
                                 <span class="text-xs uppercase tracking-wider font-extrabold">Rumusan Pintar Eksekutif (FAMA AI Assistant)</span>
@@ -1275,12 +1345,12 @@
                             <p id="fullEmailAiSummary" class="text-xs sm:text-sm text-indigo-950 font-medium leading-relaxed"></p>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs">
+                            <div class="p-3.5 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Minit Arahan Ketua Pengarah (DG)</span>
                                 <p id="fullEmailDgMinit" class="font-bold text-slate-800 leading-snug">Menunggu arahan urus setia.</p>
                             </div>
-                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                            <div class="p-3.5 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200">
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Pegawai Bertanggungjawab</span>
                                 <p id="fullEmailAssigned" class="font-bold text-indigo-700 leading-snug">Ts. Hj Nor Azhar (FAMA Melaka - 750501086723)</p>
                             </div>
@@ -1290,7 +1360,7 @@
 
                 <!-- Tab 3: Raw RFC822 Headers -->
                 <div id="fullTabContentHeaders" class="hidden space-y-4">
-                    <div class="bg-slate-950 rounded-2xl p-5 shadow-xs border border-slate-800 text-slate-200">
+                    <div class="bg-slate-950 rounded-2xl p-4 sm:p-5 shadow-xs border border-slate-800 text-slate-200">
                         <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3 text-xs">
                             <span class="font-mono text-emerald-400 flex items-center space-x-1.5">
                                 <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
@@ -1298,16 +1368,16 @@
                             </span>
                             <span class="text-[10px] font-mono text-slate-400">mail.fama.gov.my:993</span>
                         </div>
-                        <pre id="fullEmailRawHeaders" class="font-mono text-[11px] leading-relaxed text-slate-300 overflow-x-auto whitespace-pre-wrap select-all max-h-[500px]">
+                        <pre id="fullEmailRawHeaders" class="font-mono text-[10px] sm:text-[11px] leading-relaxed text-slate-300 overflow-x-auto whitespace-pre-wrap select-all max-h-[500px]">
                         </pre>
                     </div>
                 </div>
 
                 <!-- Tab 4: Attachments -->
                 <div id="fullTabContentAttachments" class="hidden space-y-4">
-                    <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200">
-                        <h4 class="text-xs font-bold text-slate-800 mb-4 uppercase tracking-wider">Senarai Lampiran Rasmi E-mel:</h4>
-                        <div id="fullEmailAttachmentsList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-xs border border-slate-200">
+                        <h4 class="text-xs font-bold text-slate-800 mb-3 sm:mb-4 uppercase tracking-wider">Senarai Lampiran Rasmi E-mel:</h4>
+                        <div id="fullEmailAttachmentsList" class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                             <!-- Populated dynamically -->
                         </div>
                     </div>
@@ -1315,13 +1385,13 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="px-6 py-3.5 bg-white border-t border-slate-100 flex items-center justify-between flex-shrink-0">
-                <div class="flex items-center space-x-2 text-[11px] text-slate-500">
-                    <i data-lucide="server" class="w-3.5 h-3.5 text-emerald-600"></i>
-                    <span>Disegerak langsung dari peti mel: <strong class="text-slate-800">azharhamid@fama.gov.my</strong></span>
+            <div class="px-4 sm:px-6 py-3 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 flex-shrink-0 text-center sm:text-left">
+                <div class="flex items-center space-x-2 text-[10px] sm:text-[11px] text-slate-500">
+                    <i data-lucide="server" class="w-3.5 h-3.5 text-emerald-600 flex-shrink-0"></i>
+                    <span class="truncate">Disegerak: <strong class="text-slate-800">azharhamid@fama.gov.my</strong></span>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <button onclick="closeFullEmailModal()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs transition">
+                    <button onclick="closeFullEmailModal()" class="w-full sm:w-auto px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs transition">
                         Tutup
                     </button>
                 </div>
@@ -1330,53 +1400,53 @@
     </div>
 
     <!-- ================= WINDOWS DESKTOP INSTALLATION MODAL ================= -->
-    <div id="modalDesktopInstall" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-[32px] max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div id="modalDesktopInstall" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4">
+        <div class="bg-white rounded-2xl sm:rounded-[32px] max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200">
             <!-- Modal Header -->
-            <div class="p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white relative">
+            <div class="p-4 sm:p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white relative flex-shrink-0">
                 <div class="flex items-center space-x-3.5">
-                    <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center p-2 flex-shrink-0">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center p-2 flex-shrink-0">
                         <img src="/icons/icon-192.png" alt="FAMA Icon" class="w-full h-full object-contain rounded-lg">
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
-                            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Windows Desktop App</span>
-                            <span class="text-[10px] font-semibold text-slate-300">Windows 10 / 11</span>
+                            <span class="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Windows Desktop App</span>
+                            <span class="text-[10px] font-semibold text-slate-300 hidden sm:inline">Windows 10 / 11</span>
                         </div>
-                        <h3 class="text-lg font-black tracking-tight mt-0.5">Pasang SmartDash FAMA ke Desktop / Laptop</h3>
+                        <h3 class="text-sm sm:text-lg font-black tracking-tight mt-0.5">Pasang SmartDash FAMA ke Desktop</h3>
                     </div>
                 </div>
-                <button onclick="closeDesktopInstallModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center absolute top-6 right-6 transition cursor-pointer">
+                <button onclick="closeDesktopInstallModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center absolute top-4 sm:top-6 right-4 sm:right-6 transition cursor-pointer">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
 
             <!-- Modal Body -->
-            <div class="p-6 space-y-5 text-slate-700 max-h-[75vh] overflow-y-auto">
+            <div class="p-4 sm:p-6 space-y-4 text-slate-700 overflow-y-auto flex-1">
                 <!-- Status Banner -->
-                <div id="installModalStatusBanner" class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 flex items-start space-x-3">
+                <div id="installModalStatusBanner" class="p-3.5 sm:p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 flex items-start space-x-3">
                     <i data-lucide="monitor" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
                     <div class="text-xs">
                         <strong class="font-bold block text-emerald-800">Sedia Dipasang sebagai Aplikasi Desktop Windows</strong>
-                        Aplikasi ini direka khas untuk Ketua Pengarah FAMA melayari arahan dalam mod tingkap bebas (standalone native window) dengan ikon taskbar sendiri tanpa gangguan bar alamat web pelayar.
+                        Aplikasi ini direka khas untuk Ketua Pengarah FAMA melayari arahan dalam mod tingkap bebas tanpa gangguan bar pelayar.
                     </div>
                 </div>
 
                 <!-- Method 1: PWA Native Windows Browser Install -->
-                <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
+                <div class="p-3.5 sm:p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-2.5">
                             <span class="w-6 h-6 rounded-lg bg-indigo-600 text-white text-xs font-black flex items-center justify-center">1</span>
                             <div>
                                 <h4 class="text-xs font-black text-slate-900 uppercase tracking-wide">Pemasangan 1-Klik Pelayar (Edge & Chrome)</h4>
-                                <p class="text-[11px] text-slate-500">Mencipta aplikasi tingkap berasingan dalam Windows Programs</p>
+                                <p class="text-[10px] sm:text-[11px] text-slate-500">Mencipta aplikasi tingkap berasingan dalam Windows</p>
                             </div>
                         </div>
-                        <span class="text-[10px] font-extrabold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-full">Paling Disyorkan</span>
+                        <span class="text-[9px] sm:text-[10px] font-extrabold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-full">Disyorkan</span>
                     </div>
 
                     <p class="text-xs text-slate-600 leading-relaxed">
-                        Klik butang di bawah untuk membuka dialog pemasangan rasmi Windows Edge / Chrome. Selepas dipasang, SmartDash FAMA akan muncul dalam <strong>Menu Start</strong> dan boleh dipinkan terus ke <strong>Taskbar Windows</strong>.
+                        Klik butang di bawah untuk memasang SmartDash FAMA ke Menu Start dan taskbar Windows anda.
                     </p>
 
                     <button onclick="triggerPwaPrompt()" id="btnModalPwaTrigger" class="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-black text-xs rounded-xl shadow-md shadow-indigo-500/20 transition flex items-center justify-center space-x-2 cursor-pointer">
@@ -1386,63 +1456,87 @@
                 </div>
 
                 <!-- Method 2: Native Windows Installer Executable (.EXE) -->
-                <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
+                <div class="p-3.5 sm:p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-2.5">
                             <span class="w-6 h-6 rounded-lg bg-emerald-600 text-white text-xs font-black flex items-center justify-center">2</span>
                             <div>
                                 <h4 class="text-xs font-black text-slate-900 uppercase tracking-wide">Pemasang Asli Windows (.EXE Setup Wizard)</h4>
-                                <p class="text-[11px] text-slate-500">Program pemasang rasmi Windows dengan pendaftaran sistem</p>
+                                <p class="text-[10px] sm:text-[11px] text-slate-500">Program pemasang rasmi Windows</p>
                             </div>
                         </div>
-                        <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Setup.exe Rasmi</span>
+                        <span class="text-[9px] sm:text-[10px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Setup.exe</span>
                     </div>
 
                     <p class="text-xs text-slate-600 leading-relaxed">
-                        Fail pemasang boleh laksana (<strong class="text-slate-800">Setup-SmartDash-FAMA.exe</strong>) telah sedia dibina. Program ini menyediakan wizard pemasangan lengkap, pintasan Desktop, dan pendaftaran dalam <strong class="text-slate-800">Windows Apps & Features</strong>.
+                        Fail pemasang boleh laksana (<strong class="text-slate-800">Setup-SmartDash-FAMA.exe</strong>) telah sedia dibina.
                     </p>
 
-                    <div class="p-3 bg-slate-900 rounded-xl font-mono text-[11px] text-emerald-400 space-y-1.5">
+                    <div class="p-3 bg-slate-900 rounded-xl font-mono text-[10px] sm:text-[11px] text-emerald-400 space-y-1">
                         <div class="flex items-center space-x-2">
                             <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
                             <span class="font-bold text-white">Setup-SmartDash-FAMA.exe</span>
                         </div>
-                        <p class="text-[10px] text-slate-400 pl-6">Klik dua kali fail ini pada folder projek untuk memulakan Wizard Pemasangan Windows.</p>
-                        <div class="pt-1 pl-6 flex items-center space-x-3 text-[10px] text-slate-300">
-                            <span>Pelancar: <strong class="text-white">SmartDash-FAMA.exe</strong></span>
-                            <span>•</span>
-                            <span>Penyahpasang: <strong class="text-white">Uninstall.exe</strong></span>
-                        </div>
+                        <p class="text-[10px] text-slate-400 pl-6">Klik dua kali fail ini pada folder projek untuk memulakan Wizard.</p>
                     </div>
                 </div>
 
                 <!-- Technical Features -->
-                <div class="grid grid-cols-2 gap-2 text-[11px]">
-                    <div class="p-2.5 bg-slate-100 rounded-xl flex items-center space-x-2">
-                        <i data-lucide="wifi-off" class="w-4 h-4 text-slate-600"></i>
-                        <span class="font-medium text-slate-700">Sokongan Luar Talian (PWA)</span>
+                <div class="grid grid-cols-2 gap-2 text-[10px] sm:text-[11px]">
+                    <div class="p-2 sm:p-2.5 bg-slate-100 rounded-xl flex items-center space-x-2">
+                        <i data-lucide="wifi-off" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-600"></i>
+                        <span class="font-medium text-slate-700 truncate">Sokongan Luar Talian</span>
                     </div>
-                    <div class="p-2.5 bg-slate-100 rounded-xl flex items-center space-x-2">
-                        <i data-lucide="shield" class="w-4 h-4 text-emerald-600"></i>
-                        <span class="font-medium text-slate-700">IMAP 993 TLS Terlindung</span>
+                    <div class="p-2 sm:p-2.5 bg-slate-100 rounded-xl flex items-center space-x-2">
+                        <i data-lucide="shield" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600"></i>
+                        <span class="font-medium text-slate-700 truncate">IMAP 993 TLS</span>
                     </div>
                 </div>
             </div>
 
             <!-- Modal Footer -->
-            <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                <span class="text-[11px] text-slate-500">Versi Desktop: 1.0 (Bina Windows)</span>
+            <div class="p-3.5 sm:p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between flex-shrink-0">
+                <span class="text-[10px] sm:text-[11px] text-slate-500">Versi 1.0 (Bina Windows)</span>
                 <button onclick="closeDesktopInstallModal()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer">
-                    Selesai / Tutup
+                    Tutup
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- ================= MOBILE FIXED BOTTOM NAVIGATION DOCK (< sm) ================= -->
+    <nav id="mobileBottomNav" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 py-1.5 px-2 flex sm:hidden justify-around items-center shadow-[0_-4px_25px_rgba(0,0,0,0.06)] safe-area-pb">
+        <button id="mobileNav-dashboard" onclick="switchMainView('dashboard')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-indigo-600 transition">
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+            <span class="text-[9px] font-black tracking-tight mt-0.5">Utama</span>
+        </button>
+        <button id="mobileNav-triage" onclick="switchMainView('triage')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 hover:text-slate-700 transition relative">
+            <i data-lucide="inbox" class="w-5 h-5"></i>
+            <span class="text-[9px] font-bold tracking-tight mt-0.5">e-Surat</span>
+            <span id="mobileDockMailBadge" class="absolute top-0.5 right-2 w-2 h-2 rounded-full bg-rose-500 hidden animate-pulse"></span>
+        </button>
+        <button id="mobileNav-tasks" onclick="switchMainView('tasks')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 hover:text-slate-700 transition">
+            <i data-lucide="check-square" class="w-5 h-5"></i>
+            <span class="text-[9px] font-bold tracking-tight mt-0.5">Arahan</span>
+        </button>
+        <button id="mobileNav-planning" onclick="switchMainView('planning')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 hover:text-slate-700 transition">
+            <i data-lucide="calendar" class="w-5 h-5"></i>
+            <span class="text-[9px] font-bold tracking-tight mt-0.5">SLA</span>
+        </button>
+        <button id="mobileNav-sheets" onclick="switchMainView('sheets')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 hover:text-slate-700 transition">
+            <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+            <span class="text-[9px] font-bold tracking-tight mt-0.5">Rekod</span>
+        </button>
+        <button id="mobileNav-port-verify" onclick="switchMainView('port-verify')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 hover:text-slate-700 transition">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+            <span class="text-[9px] font-bold tracking-tight mt-0.5">SSL 993</span>
+        </button>
+    </nav>
+
     <!-- TOAST NOTIFICATION -->
-    <div id="toastNotification" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl z-50 hidden flex items-center space-x-3 text-xs border border-slate-700">
-        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0"></i>
-        <span id="toastMessage" class="font-medium">Operasi berjaya dilaksanakan.</span>
+    <div id="toastNotification" class="fixed bottom-16 sm:bottom-6 right-3 sm:right-6 bg-slate-900 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl shadow-2xl z-50 hidden flex items-center space-x-3 text-xs border border-slate-700 max-w-[90vw]">
+        <i data-lucide="check-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 flex-shrink-0"></i>
+        <span id="toastMessage" class="font-medium truncate">Operasi berjaya dilaksanakan.</span>
     </div>
 
     <!-- ================= SCRIPT LOGIC ================= -->
@@ -1513,6 +1607,22 @@
             if (btnPK) btnPK.className = tier === 'PK' ? "py-1.5 rounded-xl bg-sky-600 text-white shadow-xs transition" : "py-1.5 rounded-xl text-slate-600 hover:text-sky-700 transition";
             if (btnNegeri) btnNegeri.className = tier === 'NEGERI' ? "py-1.5 rounded-xl bg-emerald-600 text-white shadow-xs transition" : "py-1.5 rounded-xl text-slate-600 hover:text-emerald-700 transition";
 
+            // Update mobile tier buttons
+            document.querySelectorAll('.mobile-tier-btn').forEach(b => {
+                const bTier = b.getAttribute('data-tier');
+                if (bTier === tier) {
+                    if (tier === 'all') b.className = "mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-black bg-indigo-600 text-white shadow-xs flex-shrink-0 transition";
+                    else if (tier === 'TKP') b.className = "mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-black bg-purple-600 text-white shadow-xs flex-shrink-0 transition";
+                    else if (tier === 'PK') b.className = "mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-black bg-sky-600 text-white shadow-xs flex-shrink-0 transition";
+                    else b.className = "mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-black bg-emerald-600 text-white shadow-xs flex-shrink-0 transition";
+                } else {
+                    if (bTier === 'all') b.className = "mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-slate-100 text-slate-600 flex-shrink-0 transition";
+                    else if (bTier === 'TKP') b.className = "mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 flex-shrink-0 transition";
+                    else if (bTier === 'PK') b.className = "mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-sky-50 text-sky-700 border border-sky-200 flex-shrink-0 transition";
+                    else b.className = "mobile-tier-btn whitespace-nowrap px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 flex-shrink-0 transition";
+                }
+            });
+
             const badge = document.getElementById('tierBadgeIndicator');
             if (badge) {
                 if (tier === 'all') {
@@ -1552,6 +1662,10 @@
             const dockBadge = document.getElementById('dockMailBadge');
             if (dockBadge) {
                 dockBadge.style.display = unreadCount > 0 ? 'block' : 'none';
+            }
+            const mobBadge = document.getElementById('mobileDockMailBadge');
+            if (mobBadge) {
+                mobBadge.style.display = unreadCount > 0 ? 'block' : 'none';
             }
             const pill = document.getElementById('unreadCountPill');
             if (pill) pill.innerText = `${unreadCount} Surat Terkini`;
@@ -2474,7 +2588,8 @@
 
         // ================= VIEW SWITCHER =================
         function switchMainView(view) {
-            ['dashboard', 'triage', 'tasks', 'planning', 'sheets', 'port-verify'].forEach(v => {
+            const viewsList = ['dashboard', 'triage', 'tasks', 'planning', 'sheets', 'port-verify'];
+            viewsList.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 if (el) el.classList.add('hidden');
             });
@@ -2491,6 +2606,43 @@
             };
             const h = document.getElementById('mainViewHeaderTitle');
             if (h && headerTitles[view]) h.innerText = headerTitles[view];
+
+            // Update Mobile Bottom Nav States
+            viewsList.forEach(v => {
+                const mobBtn = document.getElementById(`mobileNav-${v}`);
+                if (mobBtn) {
+                    if (v === view) {
+                        mobBtn.className = "flex flex-col items-center justify-center py-1 px-2 rounded-xl text-indigo-600 font-black transition";
+                    } else {
+                        mobBtn.className = "flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 font-semibold hover:text-slate-700 transition";
+                    }
+                }
+            });
+
+            // Update Desktop Left Dock States
+            const dockMap = {
+                'dashboard': 'dock-btn-dashboard',
+                'triage': 'dock-btn-triage',
+                'tasks': 'dock-btn-tasks',
+                'planning': 'dock-btn-planning',
+                'sheets': 'dock-btn-sheets',
+                'port-verify': 'dock-btn-port'
+            };
+            Object.entries(dockMap).forEach(([v, btnId]) => {
+                const dBtn = document.getElementById(btnId);
+                if (dBtn) {
+                    if (v === view) {
+                        dBtn.className = "text-indigo-600 bg-indigo-50/80 transition p-2.5 rounded-2xl group shadow-xs";
+                    } else {
+                        dBtn.className = "hover:text-indigo-600 transition p-2 rounded-xl hover:bg-slate-50 relative group text-slate-400";
+                    }
+                }
+            });
+
+            // Smooth scroll to top of view
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const mainContainer = document.querySelector('main');
+            if (mainContainer) mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
 
             lucide.createIcons();
         }
