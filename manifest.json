@@ -1,0 +1,55 @@
+{
+  "name": "SmartDash FAMA - Penjejakan Arahan Ketua Pengarah",
+  "short_name": "SmartDash FAMA",
+  "description": "Sistem Penjejakan Arahan Rasmi Ketua Pengarah FAMA (YBhg. Encik Faisal Iswardi Bin Ismail) kepada TKP (3 Sektor), PK Bahagian HQ, dan 14 Pengarah FAMA Negeri.",
+  "start_url": "/",
+  "id": "/smartdash-fama",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0f172a",
+  "theme_color": "#4f46e5",
+  "lang": "ms-MY",
+  "categories": ["productivity", "business", "government"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Papan Pemuka KP",
+      "short_name": "Dashboard",
+      "description": "Lihat statistik dan status arahan terkini",
+      "url": "/",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Surat Rasmi & IMAP",
+      "short_name": "e-Surat",
+      "description": "Peti surat rasmi mail.fama.gov.my Port 993",
+      "url": "/#emails",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

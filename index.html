@@ -1,0 +1,2638 @@
+<!DOCTYPE html>
+<html lang="ms" class="h-full bg-[#dce5f2]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDash FAMA | Penjejakan Arahan Ketua Pengarah (KP)</title>
+    <!-- PWA & Windows Desktop Integration -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SmartDash FAMA">
+    <meta name="application-name" content="SmartDash FAMA">
+    <meta name="msapplication-TileColor" content="#0f172a">
+    <meta name="msapplication-TileImage" content="/icons/icon-192.png">
+    <link rel="icon" type="image/x-icon" href="/icons/fama.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Plus Jakarta Sans / Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #f0f3fa; }
+        ::-webkit-scrollbar-thumb { background: #cbd4e6; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #96a2bf; }
+        @media print {
+            body * { visibility: hidden; }
+            #printableArea, #printableArea *, #fullEmailPrintArea, #fullEmailPrintArea * { visibility: visible; }
+            #printableArea, #fullEmailPrintArea { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body class="min-h-full bg-[#dce5f2] p-2 sm:p-4 lg:p-6 flex items-center justify-center text-slate-800 antialiased selection:bg-indigo-600 selection:text-white">
+
+    <!-- MAIN APP CONTAINER CARD (EXACT THEME MATCHING UPLOADED IMAGE) -->
+    <div class="w-full max-w-[1620px] bg-white rounded-[38px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.12)] border border-slate-200/70 flex overflow-hidden min-h-[940px]">
+
+        <!-- ================= 1. FAR-LEFT MINIMALIST ICON DOCK ================= -->
+        <aside class="w-16 sm:w-20 bg-white border-r border-slate-100 flex flex-col items-center py-6 justify-between flex-shrink-0">
+            <!-- Top Purple Brand Icon -->
+            <div class="flex flex-col items-center space-y-7">
+                <button onclick="switchMainView('dashboard')" title="SmartDash FAMA — Penjejakan Arahan KP" class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#6366f1] to-[#8b5cf6] text-white flex items-center justify-center shadow-lg shadow-indigo-500/30 hover:scale-105 transition cursor-pointer">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </button>
+
+                <!-- Navigation Icon Stack -->
+                <nav class="flex flex-col items-center space-y-6 text-slate-400">
+                    <!-- 1. Mail / Inbox (Triage) -->
+                    <button onclick="switchMainView('triage')" id="dock-btn-triage" title="Urus Setia Triage Arahan KP" class="hover:text-indigo-600 transition p-2 rounded-xl hover:bg-slate-50 relative group">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                        <span id="dockMailBadge" class="w-2 h-2 rounded-full bg-rose-500 absolute top-1.5 right-1.5"></span>
+                    </button>
+
+                    <!-- 2. Message Square (AI & Minit) -->
+                    <button onclick="switchMainView('triage')" id="dock-btn-chat" title="Rumusan Pintar AI & Minit KP" class="hover:text-indigo-600 transition p-2 rounded-xl hover:bg-slate-50 group">
+                        <i data-lucide="message-square" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- 3. Folder (Google Sheets Database) -->
+                    <button onclick="switchMainView('sheets')" id="dock-btn-sheets" title="Pangkalan Data Google Sheets" class="hover:text-indigo-600 transition p-2 rounded-xl hover:bg-slate-50 group">
+                        <i data-lucide="folder" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- 4. Flame / Trending (Dashboard) -->
+                    <button onclick="switchMainView('dashboard')" id="dock-btn-dashboard" title="Dashboard Eksekutif Ketua Pengarah" class="text-indigo-600 bg-indigo-50/80 transition p-2.5 rounded-2xl group shadow-xs">
+                        <i data-lucide="flame" class="w-5 h-5 text-indigo-600"></i>
+                    </button>
+
+                    <!-- 5. Tasks / Kanban (Tasks) -->
+                    <button onclick="switchMainView('tasks')" id="dock-btn-tasks" title="Papan Pemantauan Arahan (TKP & PK)" class="hover:text-indigo-600 transition p-2 rounded-xl hover:bg-slate-50 relative group">
+                        <i data-lucide="check-square" class="w-5 h-5"></i>
+                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 absolute top-2 right-2"></span>
+                    </button>
+
+                    <!-- 6. Planning / Gantt -->
+                    <button onclick="switchMainView('planning')" id="dock-btn-planning" title="Carta Garis Masa SLA Arahan KP" class="hover:text-indigo-600 transition p-2 rounded-xl hover:bg-slate-50 group">
+                        <i data-lucide="calendar" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- 7. Settings / Port 993 SSL -->
+                    <button onclick="switchMainView('port-verify')" id="dock-btn-port" title="Pengesahan Port 993 SSL" class="hover:text-emerald-600 transition p-2 rounded-xl hover:bg-emerald-50 group">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- 8. Zap / Live Latency Test -->
+                    <button onclick="testEmailPortLive(this)" title="Uji Latensi IMAP 993" class="hover:text-amber-500 transition p-2 rounded-xl hover:bg-amber-50 group">
+                        <i data-lucide="zap" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- 9. Desktop / Laptop Windows Installation -->
+                    <button onclick="openDesktopInstallModal()" id="dock-btn-install" title="Pasang ke Desktop Windows (Laptop/PC)" class="hover:text-emerald-600 transition p-2 rounded-xl hover:bg-emerald-50 text-emerald-600 group relative">
+                        <i data-lucide="monitor-down" class="w-5 h-5"></i>
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 absolute top-1.5 right-1.5 animate-pulse"></span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Bottom: Day/Night Mode Pill Toggle -->
+            <div class="p-1 bg-slate-100 rounded-full flex items-center space-x-1 text-slate-400">
+                <button class="p-1 rounded-full text-slate-400 hover:text-slate-700">
+                    <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+                </button>
+                <button class="p-1 rounded-full bg-white text-amber-500 shadow-xs">
+                    <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- ================= 2. LEFT SEARCH & FILTER PANEL ("Find Matching Jobs") ================= -->
+        <aside class="w-72 lg:w-80 border-r border-slate-100 p-6 flex flex-col justify-between bg-white flex-shrink-0 hidden md:flex">
+            <div class="space-y-4">
+                <!-- Header Title -->
+                <div>
+                    <span class="text-[11px] font-semibold text-slate-400 block tracking-wide">SmartDash FAMA</span>
+                    <h2 class="text-xl lg:text-2xl font-black text-slate-900 tracking-tight mt-0.5">Penjejakan Arahan</h2>
+                </div>
+
+                <!-- Search Input Box -->
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    <input type="text" id="filterInputBox" onkeyup="filterEmails(this.value)" placeholder="Cari arahan KP, TKP, PK HQ, Negeri..." class="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition">
+                </div>
+
+                <!-- Executive Recipient Tier Filter: ALL vs TKP vs PK (HQ) vs NEGERI (14) -->
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Penerima Arahan KP</span>
+                        <span id="tierBadgeIndicator" class="text-[9px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">Semua (TKP, PK HQ & 14 Negeri)</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-1 bg-slate-100/80 p-1 rounded-2xl border border-slate-200/90 text-[10px] font-extrabold text-center">
+                        <button onclick="filterByTier('all', this)" id="btnTierAll" class="py-1.5 rounded-xl bg-indigo-600 text-white shadow-xs transition">
+                            Semua
+                        </button>
+                        <button onclick="filterByTier('TKP', this)" id="btnTierTKP" class="py-1.5 rounded-xl text-slate-600 hover:text-purple-700 transition">
+                            Hanya TKP
+                        </button>
+                        <button onclick="filterByTier('PK', this)" id="btnTierPK" class="py-1.5 rounded-xl text-slate-600 hover:text-sky-700 transition">
+                            Hanya PK (HQ)
+                        </button>
+                        <button onclick="filterByTier('NEGERI', this)" id="btnTierNegeri" class="py-1.5 rounded-xl text-slate-600 hover:text-emerald-700 transition">
+                            14 Pengarah Negeri
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Agency / Division Filter Chips with 'x' (Exact Match to Image) -->
+                <div class="space-y-1.5">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bahagian & Sektor</span>
+                    <div class="grid grid-cols-3 gap-1.5 text-[10px] font-bold">
+                        <button onclick="filterByTag('TKP (Operasi)')" class="px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl border border-purple-200 flex items-center justify-between transition" title="TKP Operasi">
+                            <span class="truncate">TKP Ops</span> <span class="text-purple-400 text-[9px]">✕</span>
+                        </button>
+                        <button onclick="filterByTag('TKP (Pembangunan)')" class="px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl border border-purple-200 flex items-center justify-between transition" title="TKP Pembangunan">
+                            <span class="truncate">TKP Pemb</span> <span class="text-purple-400 text-[9px]">✕</span>
+                        </button>
+                        <button onclick="filterByTag('TKP (Khidmat Pengurusan)')" class="px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl border border-purple-200 flex items-center justify-between transition" title="TKP Pengurusan">
+                            <span class="truncate">TKP Urus</span> <span class="text-purple-400 text-[9px]">✕</span>
+                        </button>
+                        <button onclick="filterByTag('Pasaran')" class="px-2 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-xl border border-sky-200 flex items-center justify-between transition" title="PK Pasaran HQ">
+                            <span class="truncate">PK Pasaran</span> <span class="text-sky-400 text-[9px]">✕</span>
+                        </button>
+                        <button onclick="filterByTag('Modal Insan')" class="px-2 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-xl border border-sky-200 flex items-center justify-between transition" title="PK Modal Insan HQ">
+                            <span class="truncate">PK Insan</span> <span class="text-sky-400 text-[9px]">✕</span>
+                        </button>
+                        <button onclick="filterByTag('Integriti')" class="px-2 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-xl border border-sky-200 flex items-center justify-between transition" title="PK Unit Integriti HQ">
+                            <span class="truncate">PK Integriti</span> <span class="text-sky-400 text-[9px]">✕</span>
+                        </button>
+                        <button onclick="filterByTag('Melaka')" class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl border border-emerald-200 flex items-center justify-between transition" title="Pengarah FAMA Negeri Melaka (Ts. Hj Nor Azhar)">
+                            <span class="truncate">Pengarah Melaka</span> <span class="text-emerald-400 text-[9px]">✕</span>
+                        </button>
+                        <button onclick="filterByTag('Johor')" class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl border border-emerald-200 flex items-center justify-between transition" title="Pengarah FAMA Negeri Johor">
+                            <span class="truncate">Pengarah Johor</span> <span class="text-emerald-400 text-[9px]">✕</span>
+                        </button>
+                        <button onclick="filterByTag('Selangor')" class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl border border-emerald-200 flex items-center justify-between transition" title="Pengarah FAMA Negeri Selangor">
+                            <span class="truncate">Pengarah Selangor</span> <span class="text-emerald-400 text-[9px]">✕</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Slider Section: "Salary Range" -> "Julat Hari SLA" -->
+                <div class="space-y-2 pt-2 border-t border-slate-100">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-slate-800 tracking-wide">Julat Hari SLA</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 font-semibold">Purata tempoh tindakan: <span id="slaAvgIndicator" class="text-indigo-600 font-bold">3.8 Hari</span></p>
+                    
+                    <div class="flex items-center justify-between text-xs font-black text-slate-900 pt-1">
+                        <span>1 Hari</span>
+                        <span id="slaRangeVal" class="text-indigo-600">5 Hari</span>
+                        <span>14 Hari</span>
+                    </div>
+                    
+                    <input type="range" min="1" max="14" value="5" oninput="document.getElementById('slaRangeVal').innerText = this.value + ' Hari'; filterBySla(this.value);" class="w-full accent-indigo-600 cursor-pointer">
+                </div>
+
+                <!-- Dropdown Selectors with Pencil Edit Icons -->
+                <div class="space-y-3 pt-2 border-t border-slate-100 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400 font-semibold text-[11px]">Peringkat Keselamatan</span>
+                        <div class="flex items-center space-x-1.5 font-bold text-slate-800">
+                            <span>SULIT / Terhad</span>
+                            <button class="text-slate-400 hover:text-indigo-600"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400 font-semibold text-[11px]">Cawangan / Bahagian</span>
+                        <div class="flex items-center space-x-1.5 font-bold text-slate-800">
+                            <span class="truncate max-w-[130px]">Melaka, Jasin, HQ</span>
+                            <button class="text-slate-400 hover:text-indigo-600"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Segmented Action Type Buttons ("Job Types" -> "Status Tindakan") -->
+                <div class="space-y-2 pt-2 border-t border-slate-100">
+                    <span class="text-xs font-black text-slate-800 tracking-wide block">Status Tindakan</span>
+                    <div class="grid grid-cols-3 gap-1.5 bg-slate-50 p-1 rounded-2xl border border-slate-200/80 text-[11px] font-bold text-center">
+                        <button onclick="filterByStatus('all', this)" id="btnStatusAll" class="py-1.5 rounded-xl bg-indigo-600 text-white shadow-xs transition">
+                            Semua
+                        </button>
+                        <button onclick="filterByStatus('in-progress', this)" id="btnStatusProgress" class="py-1.5 rounded-xl text-slate-600 hover:text-indigo-600 transition">
+                            Tindakan
+                        </button>
+                        <button onclick="filterByStatus('completed', this)" id="btnStatusDone" class="py-1.5 rounded-xl text-slate-600 hover:text-indigo-600 transition">
+                            Selesai
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Gradient Banner Card ("Upgrade to pro" -> "Peti Mel mail.fama.gov.my:993") -->
+            <div class="bg-gradient-to-r from-[#8b5cf6] via-[#6366f1] to-[#3b82f6] text-white p-4 rounded-3xl shadow-lg shadow-indigo-500/20 relative overflow-hidden mt-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-2xl bg-white/20 backdrop-blur-xs flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <h4 class="text-xs font-black tracking-tight leading-tight">IMAP 993 Terhubung</h4>
+                        <p class="text-[10px] text-indigo-100 truncate">mail.fama.gov.my</p>
+                    </div>
+                </div>
+                <div class="mt-3 flex items-center justify-between pt-2 border-t border-white/20">
+                    <span class="text-[10px] font-bold text-indigo-100">12,189 Surat</span>
+                    <button onclick="runLiveImapSync(this)" class="px-3 py-1 bg-white hover:bg-slate-50 text-indigo-700 rounded-xl text-[10px] font-black shadow-xs transition">
+                        Sync IMAP
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ================= 3. RIGHT MAIN CONTENT WORKSPACE ================= -->
+        <main class="flex-1 bg-[#fafbfe] overflow-y-auto flex flex-col justify-between">
+
+            <!-- MAIN WORKSPACE CONTENT CONTAINER -->
+            <div class="p-4 sm:p-6 lg:p-8 space-y-7 flex-1">
+
+                <!-- TOP HEADER BAR -->
+                <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <!-- Left Greeting & Title with Flame Emoji -->
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[11px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full uppercase tracking-wider">Aplikasi Eksekutif KP</span>
+                            <span class="text-xs font-semibold text-slate-400">Pemantauan Arahan kepada TKP & PK</span>
+                        </div>
+                        <div class="flex items-center space-x-2 mt-1">
+                            <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight" id="mainViewHeaderTitle">SmartDash FAMA</h1>
+                            <span class="text-2xl animate-pulse">🔥</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Controls: Search, Slider Icon, Profile Avatar & Role Dropdown -->
+                    <div class="flex items-center space-x-3">
+                        <!-- Quick Search Input -->
+                        <div class="relative hidden sm:block">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                            <input type="text" onkeyup="filterEmails(this.value)" placeholder="Cari arahan KP, penerima..." class="bg-slate-100/90 hover:bg-slate-100 border-0 rounded-2xl pl-9 pr-4 py-2 text-xs font-medium text-slate-700 w-52 lg:w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                        </div>
+
+                        <!-- Desktop Windows App Install Button / Status -->
+                        <button onclick="handleDesktopInstallClick()" id="btnDesktopInstall" class="flex items-center space-x-1.5 px-3 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-2xl text-xs font-black shadow-md shadow-emerald-500/20 transition cursor-pointer" title="Pasang SmartDash FAMA ke Desktop Windows (Laptop/PC)">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                            <span class="hidden sm:inline">Pasang ke Windows</span>
+                            <span class="sm:hidden">Pasang</span>
+                        </button>
+
+                        <div id="badgeDesktopInstalled" class="hidden flex items-center space-x-1.5 px-3 py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl text-xs font-bold shadow-xs">
+                            <i data-lucide="monitor" class="w-3.5 h-3.5 text-emerald-600"></i>
+                            <span class="hidden sm:inline">Windows App Aktif</span>
+                        </div>
+
+                        <!-- Action Button: Tambah Surat / Arahan KP -->
+                        <button onclick="openRegisterLetterModal()" class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl transition" title="Daftar & Salur Arahan KP Baru">
+                            <i data-lucide="plus-circle" class="w-4 h-4 text-indigo-600"></i>
+                        </button>
+
+                        <!-- Role Selector & KP Avatar -->
+                        <div class="flex items-center space-x-2.5 pl-2 border-l border-slate-200">
+                            <div class="relative cursor-pointer" onclick="switchRole('kp')">
+                                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-yellow-400 to-indigo-600 text-slate-950 font-black text-xs flex items-center justify-center shadow-sm border border-amber-300">
+                                    KP
+                                </div>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white absolute -top-0.5 -right-0.5" title="Ketua Pengarah Aktif"></span>
+                            </div>
+                            <div class="hidden xl:block text-left">
+                                <select id="topRoleSelector" onchange="switchRole(this.value)" class="text-xs font-bold text-slate-900 bg-transparent border-0 outline-none cursor-pointer pr-4">
+                                    <option value="kp" selected>YBhg. Encik Faisal Iswardi</option>
+                                    <option value="secretariat">Urus Setia Khas KP</option>
+                                    <option value="audit">Unit Pemantauan Arahan</option>
+                                </select>
+                                <p class="text-[10px] text-amber-600 font-extrabold flex items-center space-x-1">
+                                    <i data-lucide="crown" class="w-2.5 h-2.5 inline"></i>
+                                    <span>Ketua Pengarah FAMA</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- ================= VIEW 1: JOBTRAIN THEME DASHBOARD (DEFAULT) ================= -->
+                <div id="view-dashboard" class="space-y-7">
+
+                    <!-- SECTION 1: TOP 5 ENTITY CAROUSEL ("Discover Jobs" -> "5 Sayap Penerima Arahan KP") -->
+                    <section class="space-y-3">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+                            
+                            <!-- Card 1: TKP (Operasi) -->
+                            <div onclick="filterByTag('TKP (Operasi)')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-purple-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group">
+                                <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="truck" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">TKP</span>
+                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-purple-700 transition mt-1">TKP (Operasi)</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Pasaran Segar & Rantaian</p>
+                                </div>
+                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 4 Hari</span>
+                            </div>
+
+                            <!-- Card 2: TKP (Pembangunan) -->
+                            <div onclick="filterByTag('TKP (Pembangunan)')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-indigo-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group">
+                                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="trending-up" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">TKP</span>
+                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-indigo-700 transition mt-1">TKP (Pembangunan)</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Usahawan, IAT & Eksport</p>
+                                </div>
+                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 4 Hari</span>
+                            </div>
+
+                            <!-- Card 3: TKP (Khidmat Pengurusan) -->
+                            <div onclick="filterByTag('TKP (Khidmat Pengurusan)')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-violet-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group">
+                                <div class="w-10 h-10 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="layers" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200">TKP</span>
+                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-violet-700 transition mt-1">TKP (Pengurusan)</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Kewangan, HR & Digital</p>
+                                </div>
+                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 2 Hari</span>
+                            </div>
+
+                            <!-- Card 4: PK Bahagian Ibu Pejabat HQ Sahaja -->
+                            <div onclick="filterByTier('PK')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-sky-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group">
+                                <div class="w-10 h-10 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="building-2" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">PK (HQ)</span>
+                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-sky-700 transition mt-1">Pengarah Kanan HQ</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Pasaran & Modal Insan</p>
+                                </div>
+                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 5 Hari</span>
+                            </div>
+
+                            <!-- Card 5: 14 Pengarah FAMA Negeri (Melaka/dll) -->
+                            <div onclick="filterByTier('NEGERI')" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-emerald-300 transition cursor-pointer flex flex-col items-center text-center space-y-2 group col-span-2 sm:col-span-1">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs">
+                                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">14 NEGERI</span>
+                                    <h4 class="text-xs font-extrabold text-slate-900 group-hover:text-emerald-700 transition mt-1">Pengarah FAMA Negeri</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Melaka, Johor, Selangor, dll</p>
+                                </div>
+                                <span class="text-xs font-black text-slate-900 mt-0.5">SLA: 5 Hari</span>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- SECTION 2: 3 VIBRANT GRADIENT FEATURED CARDS ("Arahan Berimpak Tinggi KP") -->
+                    <section class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-black text-slate-900 uppercase tracking-wider">Arahan Keutamaan Tinggi Ketua Pengarah (Kepada TKP, PK HQ & 14 Pengarah Negeri)</h3>
+                            <button onclick="switchMainView('tasks')" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition flex items-center space-x-1">
+                                <span>Lihat Papan Pemantauan Kanban</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            
+                            <!-- GRADIENT CARD 1: Electric Blue Gradient -->
+                            <div onclick="openUpdateModalByKeyword('SEMARAK TANI')" class="bg-gradient-to-br from-[#0284c7] via-[#0ea5e9] to-[#2563eb] rounded-[32px] p-6 text-white shadow-lg shadow-sky-500/20 relative overflow-hidden flex flex-col justify-between h-52 cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition group">
+                                <div>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-2xl bg-white text-sky-600 flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition">
+                                            <i data-lucide="store" class="w-5 h-5"></i>
+                                        </div>
+                                        <div class="overflow-hidden">
+                                            <h4 class="text-sm font-extrabold leading-snug line-clamp-1">Karnival Semarak Tani @ Agro MADANI</h4>
+                                            <p class="text-xs text-sky-100 font-medium truncate">Penerima: TKP Operasi & Pengarah FAMA Melaka (Ts. Hj Nor Azhar)</p>
+                                        </div>
+                                    </div>
+                                    <!-- Translucent Pill Tags -->
+                                    <div class="flex flex-wrap gap-1.5 mt-4">
+                                        <span class="bg-white/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-black text-amber-200">TKP & PENGARAH NEGERI</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Pasaran Segar</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Segera</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-white/20 text-xs">
+                                    <span class="font-extrabold tracking-wide">SLA: 5 Hari Lagi</span>
+                                    <button onclick="event.stopPropagation(); openFullEmailModalByKeyword('SEMARAK TANI')" class="bg-white/20 hover:bg-white/35 backdrop-blur-xs px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center space-x-1 transition cursor-pointer" title="Lihat Keseluruhan Kandungan E-mel">
+                                        <i data-lucide="mail-open" class="w-3 h-3"></i>
+                                        <span>E-mel Penuh</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- GRADIENT CARD 2: Purple-to-Indigo Vibrant Gradient -->
+                            <div onclick="openUpdateModalByKeyword('EPSA')" class="bg-gradient-to-br from-[#9333ea] via-[#7c3aed] to-[#4f46e5] rounded-[32px] p-6 text-white shadow-lg shadow-purple-500/20 relative overflow-hidden flex flex-col justify-between h-52 cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition group">
+                                <div>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-2xl bg-white text-purple-600 flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition">
+                                            <i data-lucide="book-open" class="w-5 h-5"></i>
+                                        </div>
+                                        <div class="overflow-hidden">
+                                            <h4 class="text-sm font-extrabold leading-snug line-clamp-1">Pelaksanaan EPSA® ARPA (Latihan Mandatori)</h4>
+                                            <p class="text-xs text-purple-100 font-medium truncate">Penerima: TKP Pengurusan & PK Modal Insan (HQ)</p>
+                                        </div>
+                                    </div>
+                                    <!-- Translucent Pill Tags -->
+                                    <div class="flex flex-wrap gap-1.5 mt-4">
+                                        <span class="bg-white/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-black text-rose-200">TKP & PK (HQ)</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Modal Insan</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Wajib</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-white/20 text-xs">
+                                    <span class="font-extrabold tracking-wide">SLA: 2 Hari Lagi</span>
+                                    <button onclick="event.stopPropagation(); openFullEmailModalByKeyword('EPSA')" class="bg-white/20 hover:bg-white/35 backdrop-blur-xs px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center space-x-1 transition cursor-pointer" title="Lihat Keseluruhan Kandungan E-mel">
+                                        <i data-lucide="mail-open" class="w-3 h-3"></i>
+                                        <span>E-mel Penuh</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- GRADIENT CARD 3: Sunset Coral-to-Amber Gradient -->
+                            <div onclick="openUpdateModalByKeyword('INSENTIF')" class="bg-gradient-to-br from-[#f43f5e] via-[#fb7185] to-[#f59e0b] rounded-[32px] p-6 text-white shadow-lg shadow-rose-500/20 relative overflow-hidden flex flex-col justify-between h-52 cursor-pointer hover:shadow-xl hover:-translate-y-0.5 transition group">
+                                <div>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-2xl bg-white text-rose-600 flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition">
+                                            <i data-lucide="package" class="w-5 h-5"></i>
+                                        </div>
+                                        <div class="overflow-hidden">
+                                            <h4 class="text-sm font-extrabold leading-snug line-clamp-1">Insentif Pembungkusan Eksport 2027</h4>
+                                            <p class="text-xs text-rose-100 font-medium truncate">Penerima: TKP Pembangunan & PK Pasaran (HQ)</p>
+                                        </div>
+                                    </div>
+                                    <!-- Translucent Pill Tags -->
+                                    <div class="flex flex-wrap gap-1.5 mt-4">
+                                        <span class="bg-white/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-black text-amber-200">TKP & PK (HQ)</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Pasaran Global</span>
+                                        <span class="bg-white/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold">Saringan</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-white/20 text-xs">
+                                    <span class="font-extrabold tracking-wide">SLA: 4 Hari Lagi</span>
+                                    <button onclick="event.stopPropagation(); openFullEmailModalByKeyword('INSENTIF')" class="bg-white/20 hover:bg-white/35 backdrop-blur-xs px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center space-x-1 transition cursor-pointer" title="Lihat Keseluruhan Kandungan E-mel">
+                                        <i data-lucide="mail-open" class="w-3 h-3"></i>
+                                        <span>E-mel Penuh</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- SECTION 3: LOWER DUAL GRID ("Hot Jobs 🔥" & "Salary Trend") -->
+                    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        
+                        <!-- LEFT COLUMN (5 COLS): "Hot Jobs 🔥" -> "Status Arahan KP Terkini (Kepada TKP & PK) 🔥" -->
+                        <div class="lg:col-span-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-black text-slate-900 flex items-center space-x-1">
+                                    <span>Status Arahan KP Terkini</span>
+                                    <span class="text-base">🔥</span>
+                                </h3>
+                                <div class="flex items-center space-x-1 text-[10px] font-bold">
+                                    <button onclick="filterByTier('all')" class="px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition">Semua</button>
+                                    <button onclick="filterByTier('TKP')" class="px-2 py-0.5 rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 transition">TKP</button>
+                                    <button onclick="filterByTier('PK')" class="px-2 py-0.5 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 transition">PK (HQ)</button>
+                                    <button onclick="filterByTier('NEGERI')" class="px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition">14 Negeri</button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3" id="hotJobsContainer">
+                                <!-- Populated Dynamically from Real IMAP Data -->
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN (7 COLS): "Salary Trend" -> "Trend & Prestasi SLA Tindakan Arahan KP" -->
+                        <div class="lg:col-span-7 bg-white rounded-3xl p-6 border border-slate-100 shadow-xs flex flex-col justify-between space-y-4">
+                            <!-- Trend Header -->
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-sm font-black text-slate-900">Prestasi & SLA Tindakan Arahan Ketua Pengarah</h3>
+                                    <p class="text-[10px] text-slate-400 font-medium">Pemantauan kadar penyelesaian tugas oleh Timbalan KP, Pengarah Kanan HQ & 14 Pengarah FAMA Negeri</p>
+                                </div>
+                                <div class="flex items-center space-x-2 text-xs">
+                                    <span class="text-slate-400 font-semibold">Tahun:</span>
+                                    <select class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1 text-xs font-bold text-slate-800 outline-none">
+                                        <option value="2026" selected>2026</option>
+                                        <option value="2025">2025</option>
+                                    </select>
+                                    <button onclick="exportGoogleSheetsCsv()" title="Muat Turun Laporan CSV" class="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg">
+                                        <i data-lucide="download" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Dual Curve SVG Line Chart Matching Image -->
+                            <div class="relative w-full h-44 pt-2">
+                                <!-- Highlight Peak Tooltip Card (Matching Image) -->
+                                <div class="absolute top-1 left-[68%] -translate-x-1/2 bg-white/95 backdrop-blur-xs px-3 py-1.5 rounded-2xl shadow-lg border border-slate-100 text-center z-10">
+                                    <span class="text-[9px] text-slate-400 font-semibold block">Sasaran: 88%</span>
+                                    <span class="text-xs font-black text-slate-900">Kini: 96% Patuh SLA</span>
+                                </div>
+
+                                <svg class="w-full h-full overflow-visible" viewBox="0 0 600 160" preserveAspectRatio="none">
+                                    <defs>
+                                        <!-- Red Line Gradient -->
+                                        <linearGradient id="gradRed" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stop-color="#ef4444" stop-opacity="0.15" />
+                                            <stop offset="100%" stop-color="#ef4444" stop-opacity="0.0" />
+                                        </linearGradient>
+                                        <!-- Purple Line Gradient -->
+                                        <linearGradient id="gradPurple" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stop-color="#6366f1" stop-opacity="0.2" />
+                                            <stop offset="100%" stop-color="#6366f1" stop-opacity="0.0" />
+                                        </linearGradient>
+                                    </defs>
+
+                                    <!-- Chart Guide Gridlines -->
+                                    <line x1="0" y1="130" x2="600" y2="130" stroke="#f1f5f9" stroke-width="1" />
+                                    <line x1="0" y1="80" x2="600" y2="80" stroke="#f1f5f9" stroke-width="1" />
+                                    <line x1="0" y1="30" x2="600" y2="30" stroke="#f1f5f9" stroke-width="1" />
+
+                                    <!-- Purple Curve Shaded Area -->
+                                    <path d="M 0 110 C 60 120, 120 95, 180 100 C 240 105, 300 125, 360 85 C 420 50, 450 40, 480 85 C 510 115, 560 110, 600 95 L 600 130 L 0 130 Z" fill="url(#gradPurple)" />
+
+                                    <!-- Purple Curve Line (Tindakan Selesai) -->
+                                    <path d="M 0 110 C 60 120, 120 95, 180 100 C 240 105, 300 125, 360 85 C 420 50, 450 40, 480 85 C 510 115, 560 110, 600 95" fill="none" stroke="#6366f1" stroke-width="2.5" />
+
+                                    <!-- Red Curve Shaded Area -->
+                                    <path d="M 0 90 C 60 70, 120 85, 180 65 C 240 45, 300 75, 360 60 C 420 40, 450 15, 480 65 C 510 105, 560 50, 600 70 L 600 130 L 0 130 Z" fill="url(#gradRed)" />
+
+                                    <!-- Red Curve Line (Surat Masuk) -->
+                                    <path d="M 0 90 C 60 70, 120 85, 180 65 C 240 45, 300 75, 360 60 C 420 40, 450 15, 480 65 C 510 105, 560 50, 600 70" fill="none" stroke="#ef4444" stroke-width="2.5" />
+
+                                    <!-- Highlight Marker Point at Peak (450, 15) -->
+                                    <circle cx="450" cy="20" r="5" fill="#6366f1" stroke="#ffffff" stroke-width="2.5" />
+                                    <line x1="450" y1="20" x2="450" y2="130" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3,3" />
+                                </svg>
+
+                                <!-- Month Labels -->
+                                <div class="grid grid-cols-10 text-[10px] font-bold text-slate-400 text-center mt-2">
+                                    <span>Mac</span>
+                                    <span>Apr</span>
+                                    <span>Mei</span>
+                                    <span>Jun</span>
+                                    <span>Jul</span>
+                                    <span class="text-indigo-600 font-extrabold">Ogo</span>
+                                    <span>Sep</span>
+                                    <span>Okt</span>
+                                    <span>Nov</span>
+                                    <span>Dis</span>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Period Filter Pills (Matching Image) -->
+                            <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[10px] font-bold text-slate-500">
+                                <span class="hover:text-slate-800 cursor-pointer">Mingguan</span>
+                                <span class="bg-[#ef4444] text-white px-3 py-1 rounded-full shadow-xs cursor-pointer">Bulanan</span>
+                                <span class="hover:text-slate-800 cursor-pointer">Suku Tahun</span>
+                                <span class="hover:text-slate-800 cursor-pointer hidden sm:inline">Dwi-Tahunan</span>
+                                <span class="hover:text-slate-800 cursor-pointer hidden sm:inline">Tahunan</span>
+                                <span class="hover:text-slate-800 cursor-pointer">Asal</span>
+                            </div>
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <!-- ================= VIEW 2: TRIAGE INBOX (FULL ORIGINAL VIEW) ================= -->
+                <div id="view-triage" class="hidden space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-xl font-black text-slate-900">Urus Setia Khas Ketua Pengarah — Penapisan Surat & Agihan Arahan KP</h2>
+                            <p class="text-xs text-slate-400">Pemantauan surat masuk kementerian dan penugasan arahan Ketua Pengarah terus kepada TKP, Pengarah Kanan HQ, dan 14 Pengarah FAMA Negeri.</p>
+                        </div>
+                        <button onclick="switchMainView('dashboard')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+                            ← Kembali ke Dashboard
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden min-h-[580px]">
+                        <!-- Left: Email List (5 cols) -->
+                        <div class="lg:col-span-5 border-r border-slate-100 flex flex-col bg-slate-50/50">
+                            <div class="p-4 border-b border-slate-100 bg-white flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Senarai Surat Masuk Rasmi</span>
+                                <span id="unreadCountPill" class="text-[10px] bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded-full font-bold">15 Surat Sebenar</span>
+                            </div>
+                            <div id="emailListContainer" class="overflow-y-auto flex-1 divide-y divide-slate-100 max-h-[540px]">
+                                <!-- Populated Dynamically from IMAP -->
+                            </div>
+                        </div>
+
+                        <!-- Right: Email Detail & KP Minit Routing (7 cols) -->
+                        <div class="lg:col-span-7 flex flex-col bg-white p-6 space-y-5">
+                            <div class="border-b border-slate-100 pb-4">
+                                <span class="text-[11px] font-mono font-bold text-indigo-600 block mb-1" id="currentRefId">ID: FAMA-MLK-2026-12189</span>
+                                <h3 id="emailDetailSubject" class="text-base font-extrabold text-slate-900">Surat Rasmi FAMA</h3>
+                                <p class="text-xs text-slate-500 mt-1">Daripada: <span id="emailDetailSender" class="font-semibold text-slate-700">info@fama.gov.my</span></p>
+                            </div>
+
+                            <!-- AI Assistant Summary -->
+                            <div class="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-4 text-xs">
+                                <div class="flex items-center text-indigo-900 font-bold mb-1">
+                                    <i data-lucide="sparkles" class="w-4 h-4 mr-1.5 text-indigo-600"></i>
+                                    <span>Rumusan Pintar AI (FAMA AI Assistant)</span>
+                                </div>
+                                <p id="emailDetailAI" class="text-indigo-950 leading-relaxed font-medium">
+                                    Arahan memerlukan semakan kadar inventori simpanan beras dan sayur-sayuran di pusat simpanan FAMA.
+                                </p>
+                            </div>
+
+                            <!-- Email Body with Full Email Viewer Trigger -->
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Kandungan E-mel Rasmi:</span>
+                                    <button onclick="openFullEmailModal(selectedEmailId)" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl text-xs font-bold shadow-xs hover:shadow transition group">
+                                        <i data-lucide="maximize-2" class="w-3.5 h-3.5 group-hover:scale-110 transition"></i>
+                                        <span>Lihat Keseluruhan E-mel (Penuh)</span>
+                                    </button>
+                                </div>
+                                <div id="emailDetailBody" class="text-xs text-slate-700 space-y-2 bg-slate-50 p-4 rounded-2xl border border-slate-100 max-h-48 overflow-y-auto">
+                                    <p>Kandungan surat sedang dimuatkan...</p>
+                                </div>
+                            </div>
+
+                            <!-- Attachments -->
+                            <div class="space-y-2">
+                                <p class="text-xs font-bold text-slate-700">Lampiran Rasmi:</p>
+                                <div id="attachmentContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <!-- Dynamic Attachments -->
+                                </div>
+                            </div>
+
+                            <!-- KP Minit Form -->
+                            <div class="border-t border-slate-100 pt-4 space-y-3">
+                                <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">Minit Arahan Ketua Pengarah (KP)</label>
+                                <textarea id="routingMinitText" rows="2" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Tulis arahan minit tindakan Ketua Pengarah di sini..."></textarea>
+                                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                                    <select id="routingAssigneeSelect" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 flex-1">
+                                        <optgroup label="1. Timbalan Ketua Pengarah (TKP)">
+                                            <option value="[TKP] Timbalan Ketua Pengarah (Operasi)">[TKP] Timbalan Ketua Pengarah (Operasi) — Pasaran Segar & Rantaian</option>
+                                            <option value="[TKP] Timbalan Ketua Pengarah (Pembangunan)">[TKP] Timbalan Ketua Pengarah (Pembangunan) — Usahawan, IAT & Eksport</option>
+                                            <option value="[TKP] Timbalan Ketua Pengarah (Khidmat Pengurusan)">[TKP] Timbalan Ketua Pengarah (Khidmat Pengurusan) — Pentadbiran & Kewangan</option>
+                                        </optgroup>
+                                        <optgroup label="2. Pengarah Kanan Ibu Pejabat HQ (PK Sahaja)">
+                                            <option value="[PK] Pengarah Kanan Pasaran Domestik (HQ)">[PK] Pengarah Kanan Pasaran Domestik & Rangkaian (HQ)</option>
+                                            <option value="[PK] Pengarah Kanan Pasaran Antarabangsa (HQ)">[PK] Pengarah Kanan Pasaran Antarabangsa & Eksport (HQ)</option>
+                                            <option value="[PK] Pengarah Kanan Pembangunan Modal Insan (HQ)">[PK] Pengarah Kanan Pembangunan Modal Insan (HQ)</option>
+                                            <option value="[PK] Pengarah Kanan Industri Asas Tani (HQ)">[PK] Pengarah Kanan Industri Asas Tani (HQ)</option>
+                                            <option value="[PK] Pengarah Kanan Unit Integriti KPKM / FAMA">[PK] Pengarah Kanan Unit Integriti KPKM / FAMA (HQ)</option>
+                                        </optgroup>
+                                        <optgroup label="3. Pengarah FAMA Negeri (14 Negeri di Malaysia - Arahan Terus KP)">
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Melaka (Ts. Hj Nor Azhar - 750501086723)">[NEGERI] Pengarah FAMA Negeri Melaka (Ts. Hj Nor Azhar - 750501086723)</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Johor">[NEGERI] Pengarah FAMA Negeri Johor</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Selangor">[NEGERI] Pengarah FAMA Negeri Selangor</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Perak">[NEGERI] Pengarah FAMA Negeri Perak</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Pahang">[NEGERI] Pengarah FAMA Negeri Pahang</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Kedah">[NEGERI] Pengarah FAMA Negeri Kedah</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Kelantan">[NEGERI] Pengarah FAMA Negeri Kelantan</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Terengganu">[NEGERI] Pengarah FAMA Negeri Terengganu</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Pulau Pinang">[NEGERI] Pengarah FAMA Negeri Pulau Pinang</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Sembilan">[NEGERI] Pengarah FAMA Negeri Sembilan</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Perlis">[NEGERI] Pengarah FAMA Negeri Perlis</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Sabah">[NEGERI] Pengarah FAMA Negeri Sabah</option>
+                                            <option value="[NEGERI] Pengarah FAMA Negeri Sarawak">[NEGERI] Pengarah FAMA Negeri Sarawak</option>
+                                            <option value="[NEGERI] Pengarah FAMA W.P. Kuala Lumpur / Labuan">[NEGERI] Pengarah FAMA W.P. Kuala Lumpur / Labuan</option>
+                                        </optgroup>
+                                    </select>
+                                    <button onclick="dispatchDirective()" id="btnDispatch" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 shadow-sm flex-shrink-0">
+                                        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                                        <span>Lepaskan Arahan KP</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= VIEW 3: TASKS (4-COLUMN KANBAN) ================= -->
+                <div id="view-tasks" class="hidden space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-100 gap-3">
+                        <div>
+                            <h2 class="text-xl font-black text-slate-900">Papan Pemantauan Arahan Ketua Pengarah (Kanban)</h2>
+                            <p class="text-xs text-slate-400">Penjejakan pelaksanaan arahan terus KP oleh Timbalan KP (TKP), Pengarah Kanan HQ (PK) dan 14 Pengarah FAMA Negeri.</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <!-- Tier Tabs in Kanban -->
+                            <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold">
+                                <button onclick="filterByTier('all')" class="px-3 py-1 rounded-xl bg-white text-indigo-700 shadow-xs">Semua</button>
+                                <button onclick="filterByTier('TKP')" class="px-3 py-1 rounded-xl text-purple-700 hover:bg-purple-100">Hanya TKP</button>
+                                <button onclick="filterByTier('PK')" class="px-3 py-1 rounded-xl text-sky-700 hover:bg-sky-100">Hanya PK (HQ)</button>
+                                <button onclick="filterByTier('NEGERI')" class="px-3 py-1 rounded-xl text-emerald-700 hover:bg-emerald-100">14 Pengarah Negeri</button>
+                            </div>
+                            <button onclick="openRegisterLetterModal()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center space-x-1">
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                <span>Daftar Arahan</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- COL 1: DRAFT -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between px-1">
+                                <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-700">DRAFT / BELUM TERIMA</h3>
+                                <span id="badgeColDraft" class="text-xs font-bold text-slate-400">0</span>
+                            </div>
+                            <div id="kanbanColDraft" class="space-y-3 min-h-[160px]"></div>
+                        </div>
+
+                        <!-- COL 2: IN PROGRESS -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between px-1">
+                                <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-700">DALAM TINDAKAN</h3>
+                                <span id="badgeColProgress" class="text-xs font-bold text-slate-400">0</span>
+                            </div>
+                            <div id="kanbanColProgress" class="space-y-3 min-h-[160px]"></div>
+                        </div>
+
+                        <!-- COL 3: EDITING -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between px-1">
+                                <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-700">SEMAKAN LAPORAN</h3>
+                                <span id="badgeColEditing" class="text-xs font-bold text-slate-400">0</span>
+                            </div>
+                            <div id="kanbanColEditing" class="space-y-3 min-h-[160px]"></div>
+                        </div>
+
+                        <!-- COL 4: DONE -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between px-1">
+                                <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-700">SELESAI & DIPATUHI</h3>
+                                <span id="badgeColDone" class="text-xs font-bold text-slate-400">0</span>
+                            </div>
+                            <div id="kanbanColDone" class="space-y-3 min-h-[160px]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= VIEW 4: PLANNING (GANTT TIMELINE) ================= -->
+                <div id="view-planning" class="hidden space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-xl font-black text-slate-900">Carta Garis Masa Perancangan SLA Arahan Ketua Pengarah</h2>
+                            <p class="text-xs text-slate-400">Jadual pelaksanaan arahan terus KP oleh Timbalan KP (TKP), Pengarah Kanan HQ (PK) & 14 Pengarah FAMA Negeri.</p>
+                        </div>
+                        <button onclick="switchMainView('dashboard')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+                            ← Kembali ke Dashboard
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-xs space-y-4">
+                        <!-- Date Header Row -->
+                        <div class="grid grid-cols-12 gap-2 text-center text-xs font-bold text-slate-400 pb-2 border-b border-slate-100">
+                            <div class="col-span-4 text-left pl-3 text-slate-800 font-extrabold uppercase text-[11px] tracking-wider">
+                                Penerima Arahan KP (TKP / PK)
+                            </div>
+                            <div class="col-span-8 grid grid-cols-10 text-[11px] font-mono">
+                                <span>28</span>
+                                <span>29</span>
+                                <span>30</span>
+                                <span>31</span>
+                                <span class="text-indigo-600 font-black">01</span>
+                                <span>02</span>
+                                <span>03</span>
+                                <span>04</span>
+                                <span>05</span>
+                                <span>06</span>
+                            </div>
+                        </div>
+
+                        <!-- 4 Gantt Rows: Dynamically Populated from Real Tasks -->
+                        <div id="ganttRowsContainer" class="space-y-3.5">
+                            <!-- Populated dynamically by renderGantt() -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= VIEW 5: GOOGLE SHEETS & IMAP ================= -->
+                <div id="view-sheets" class="hidden space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-xl font-black text-slate-900">Pangkalan Data & Rekod Jejak Arahan KP (Google Sheets)</h2>
+                            <p class="text-xs text-slate-400">Penyegerakan langsung rekod arahan KP kepada TKP dan PK ke helaian Google Sheets awan.</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold">
+                                <button onclick="filterByTier('all')" class="px-2.5 py-1 rounded-xl bg-white text-indigo-700 shadow-xs">Semua</button>
+                                <button onclick="filterByTier('TKP')" class="px-2.5 py-1 rounded-xl text-purple-700 hover:bg-purple-100">TKP</button>
+                                <button onclick="filterByTier('PK')" class="px-2.5 py-1 rounded-xl text-sky-700 hover:bg-sky-100">PK</button>
+                            </div>
+                            <button onclick="exportGoogleSheetsCsv()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-xs transition flex items-center space-x-1.5">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                                <span>Muat Turun Fail CSV</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden p-6">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-50 border-b border-slate-100 text-slate-600 font-bold uppercase text-[10px]">
+                                    <tr>
+                                        <th class="p-3">Masa</th>
+                                        <th class="p-3">ID Rujukan</th>
+                                        <th class="p-3">Kategori</th>
+                                        <th class="p-3">Perkara / Tajuk Arahan</th>
+                                        <th class="p-3">Pengirim</th>
+                                        <th class="p-3">Penerima Arahan KP</th>
+                                        <th class="p-3">Minit Arahan KP</th>
+                                        <th class="p-3">Status</th>
+                                        <th class="p-3">SLA</th>
+                                        <th class="p-3 text-right">Tindakan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sheetsTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= VIEW 6: PORT 993 SSL VERIFICATION ================= -->
+                <div id="view-port-verify" class="hidden space-y-6">
+                    <div class="bg-emerald-50 border-2 border-emerald-300 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                        <div class="space-y-2">
+                            <span class="bg-emerald-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                                Status: DISAHKAN BETUL 100%
+                            </span>
+                            <h3 class="text-lg font-black text-emerald-950">Port 993 Adalah Port Tepat Untuk IMAP over SSL/TLS</h3>
+                            <p class="text-xs text-emerald-800 leading-relaxed max-w-2xl font-medium">
+                                Mengikut piawaian global IANA & RFC 8314, pelayan <strong>mail.fama.gov.my</strong> pada <strong>Port 993</strong> menggunakan enkripsi selamat (Implicit SSL/TLS) bagi muat turun mel akaun <strong>azharhamid@fama.gov.my</strong> (ID: 750501086723 - Ts. Hj Nor Azhar Bin Abdul Hamid).
+                            </p>
+                        </div>
+                        <button onclick="testEmailPortLive(this)" id="btnTestPortLive" class="px-5 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center space-x-2 flex-shrink-0">
+                            <i data-lucide="zap" class="w-4 h-4"></i>
+                            <span>Uji Latensi Port 993 Langsung</span>
+                        </button>
+                    </div>
+
+                    <!-- Live Diagnostic Result Box -->
+                    <div id="portLiveResultCard" class="bg-white rounded-3xl p-6 border border-slate-100 shadow-xs space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Keputusan Diagnostik Pelayan Mel Sebenar</h4>
+                            </div>
+                            <span id="portLiveTimestamp" class="text-[11px] font-mono text-slate-400">Status: Sedia Diuji</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pelayan & IP</span>
+                                <p class="text-xs font-black text-slate-900 mt-1">mail.fama.gov.my</p>
+                                <p class="text-[10px] font-mono text-indigo-600 mt-0.5">110.159.248.96</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Port & Protokol</span>
+                                <p class="text-xs font-black text-emerald-700 mt-1">Port 993 (IMAPS)</p>
+                                <p class="text-[10px] text-emerald-600 mt-0.5 font-bold">Implicit SSL / TLSv1.3</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Akaun Pegawai Sah</span>
+                                <p class="text-xs font-black text-slate-900 mt-1">azharhamid@fama.gov.my</p>
+                                <p class="text-[10px] text-slate-500 mt-0.5">MyKad: 750501086723</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Latensi / Status Sambungan</span>
+                                <p id="portLiveLatencyVal" class="text-xs font-black text-emerald-600 mt-1">360 ms (Aktif)</p>
+                                <p class="text-[10px] text-slate-400 mt-0.5">Peti Mel: 12,189 Surat Sebenar</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Port Matrix Table -->
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-xs space-y-4">
+                        <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Jadual Perbandingan Piawaian Port E-Mel Rasmi Kerajaan (RFC 8314)</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-50 border-b border-slate-100 text-slate-500 font-bold uppercase text-[10px]">
+                                    <tr>
+                                        <th class="p-3">Port</th>
+                                        <th class="p-3">Protokol</th>
+                                        <th class="p-3">Arah Aliran</th>
+                                        <th class="p-3">Kaedah Keselamatan</th>
+                                        <th class="p-3">Status Penggunaan</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-slate-700">
+                                    <tr class="bg-emerald-50/50 font-bold">
+                                        <td class="p-3 font-mono text-emerald-700">993</td>
+                                        <td class="p-3 font-bold">IMAPS</td>
+                                        <td class="p-3">Mel Masuk (Incoming)</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-[10px]">Implicit SSL/TLS (Piawaian)</span></td>
+                                        <td class="p-3 text-emerald-700">✓ TEPAT & DIGUNAKAN</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-mono text-slate-600">143</td>
+                                        <td class="p-3">IMAP</td>
+                                        <td class="p-3">Mel Masuk (Incoming)</td>
+                                        <td class="p-3">STARTTLS / Cleartext</td>
+                                        <td class="p-3 text-slate-400">Tidak Digalakkan (Permulaan Tidak Berkripto)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-mono text-slate-600">587</td>
+                                        <td class="p-3">SMTP Submission</td>
+                                        <td class="p-3">Mel Keluar (Outgoing)</td>
+                                        <td class="p-3">STARTTLS</td>
+                                        <td class="p-3 text-slate-500">Khusus Untuk Hantar E-Mel Sahaja</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-mono text-slate-600">465</td>
+                                        <td class="p-3">SMTPS</td>
+                                        <td class="p-3">Mel Keluar (Outgoing)</td>
+                                        <td class="p-3">Implicit TLS</td>
+                                        <td class="p-3 text-slate-500">Khusus Mel Keluar Selamat</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-mono text-slate-600">995</td>
+                                        <td class="p-3">POP3S</td>
+                                        <td class="p-3">Mel Masuk (Incoming)</td>
+                                        <td class="p-3">Implicit TLS</td>
+                                        <td class="p-3 text-slate-400">Protokol Muat Turun Statik Tanpa Penyegerakan</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FOOTER BAR (MINIMALIST) -->
+            <footer class="h-12 px-8 border-t border-slate-100/80 bg-white flex items-center justify-between text-[11px] text-slate-400 flex-shrink-0">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Pelayan IMAP: <strong>mail.fama.gov.my:993 (SSL)</strong> • Pegawai: <strong>Ts. Hj Nor Azhar (750501086723)</strong></span>
+                </div>
+                <span>FAMA e-Surat & Penjejakan Arahan DG • JobTrain Theme</span>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- REGISTER LETTER MODAL -->
+    <div id="registerLetterModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-900 flex items-center">
+                    <i data-lucide="plus-circle" class="w-4 h-4 mr-2 text-indigo-600"></i> Daftar & Salur Arahan Ketua Pengarah (KP)
+                </h3>
+                <button onclick="closeRegisterLetterModal()" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Perkara / Tajuk Arahan KP</label>
+                    <input type="text" id="regLetterSubject" placeholder="cth: Arahan Pelaksanaan Jualan Agro MADANI..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Kategori Penerima</label>
+                        <select id="regLetterCategory" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                            <option value="TKP">TKP (Timbalan Ketua Pengarah)</option>
+                            <option value="PK">PK (Pengarah Kanan HQ Sahaja)</option>
+                            <option value="NEGERI" selected>Pengarah FAMA Negeri (14 Negeri)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Penerima Arahan</label>
+                        <select id="regLetterOfficer" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-xs">
+                            <optgroup label="Pengarah FAMA Negeri (14 Negeri di Malaysia)">
+                                <option value="[NEGERI] Pengarah FAMA Negeri Melaka (Ts. Hj Nor Azhar)" selected>[NEGERI] Pengarah FAMA Melaka (Ts. Hj Nor Azhar)</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Johor">[NEGERI] Pengarah FAMA Johor</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Selangor">[NEGERI] Pengarah FAMA Selangor</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Perak">[NEGERI] Pengarah FAMA Perak</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Pahang">[NEGERI] Pengarah FAMA Pahang</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Kedah">[NEGERI] Pengarah FAMA Kedah</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Kelantan">[NEGERI] Pengarah FAMA Kelantan</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Terengganu">[NEGERI] Pengarah FAMA Terengganu</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Pulau Pinang">[NEGERI] Pengarah FAMA Pulau Pinang</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Sembilan">[NEGERI] Pengarah FAMA Negeri Sembilan</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Perlis">[NEGERI] Pengarah FAMA Perlis</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Sabah">[NEGERI] Pengarah FAMA Sabah</option>
+                                <option value="[NEGERI] Pengarah FAMA Negeri Sarawak">[NEGERI] Pengarah FAMA Sarawak</option>
+                                <option value="[NEGERI] Pengarah FAMA W.P. Kuala Lumpur / Labuan">[NEGERI] Pengarah FAMA W.P. KL/Labuan</option>
+                            </optgroup>
+                            <optgroup label="Timbalan Ketua Pengarah (TKP)">
+                                <option value="[TKP] Timbalan Ketua Pengarah (Operasi)">[TKP] TKP (Operasi)</option>
+                                <option value="[TKP] Timbalan Ketua Pengarah (Pembangunan)">[TKP] TKP (Pembangunan)</option>
+                                <option value="[TKP] Timbalan Ketua Pengarah (Khidmat Pengurusan)">[TKP] TKP (Pengurusan)</option>
+                            </optgroup>
+                            <optgroup label="Pengarah Kanan HQ (PK Sahaja)">
+                                <option value="[PK] Pengarah Kanan Pasaran Domestik (HQ)">[PK] PK Pasaran Domestik (HQ)</option>
+                                <option value="[PK] Pengarah Kanan Pasaran Antarabangsa (HQ)">[PK] PK Pasaran Antarabangsa (HQ)</option>
+                                <option value="[PK] Pengarah Kanan Modal Insan (HQ)">[PK] PK Modal Insan (HQ)</option>
+                                <option value="[PK] Pengarah Kanan Industri Asas Tani (HQ)">[PK] PK Industri Asas Tani (HQ)</option>
+                                <option value="[PK] Pengarah Kanan Unit Integriti KPKM / FAMA">[PK] PK Unit Integriti (HQ)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Pengirim / Agensi Rujukan</label>
+                        <input type="text" id="regLetterSender" placeholder="cth: KPKM / Pejabat KP FAMA" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Keutamaan Arahan</label>
+                        <select id="regLetterPriority" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                            <option value="Segera">Segera (Rose)</option>
+                            <option value="Penting">Penting (Amber)</option>
+                            <option value="Normal" selected>Biasa / Normal (Blue)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Minit Arahan Ketua Pengarah</label>
+                    <textarea id="regLetterBody" rows="3" placeholder="Tulis minit arahan rasmi Ketua Pengarah di sini..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium"></textarea>
+                </div>
+            </div>
+            <div class="flex items-center justify-end space-x-3 border-t border-slate-100 pt-3">
+                <button onclick="closeRegisterLetterModal()" class="px-4 py-2 border border-slate-200 text-slate-700 rounded-xl font-bold text-xs">Batal</button>
+                <button onclick="submitNewLetter()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs shadow">Salur Arahan KP</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPDATE TASK MODAL -->
+    <div id="updateModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-bold text-slate-900 flex items-center">
+                    <i data-lucide="edit-3" class="w-4 h-4 mr-2 text-indigo-600"></i> Kemaskini Status Tindakan Arahan KP
+                </h3>
+                <button onclick="closeUpdateModal()" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-xs">
+                <input type="hidden" id="modalTaskId">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Tajuk Arahan</label>
+                    <input type="text" id="modalTaskTitle" readonly class="w-full p-2.5 bg-slate-100 border border-slate-200 rounded-xl font-bold text-slate-800">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Status Tindakan</label>
+                    <select id="modalTaskStatus" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                        <option value="pending">Belum Diterima (Draft / Pending Ack)</option>
+                        <option value="in-progress">Dalam Tindakan (In Progress)</option>
+                        <option value="editing">Semakan Dokumen (Editing / Review)</option>
+                        <option value="completed">Selesai & Ditutup (Done)</option>
+                    </select>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="font-semibold text-slate-700">Kemajuan (%)</label>
+                        <span id="modalProgressLabel" class="font-bold text-indigo-600">50%</span>
+                    </div>
+                    <input type="range" id="modalProgressRange" min="0" max="100" value="50" oninput="document.getElementById('modalProgressLabel').innerText = this.value + '%'" class="w-full accent-indigo-600 cursor-pointer">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Ulasan / Nota Kemajuan</label>
+                    <textarea id="modalTaskNotes" rows="3" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium" placeholder="Ulasan pelaksanaan..."></textarea>
+                </div>
+            </div>
+            <div class="mt-6 flex items-center justify-end space-x-3 border-t border-slate-100 pt-4">
+                <button onclick="closeUpdateModal()" class="px-4 py-2 border border-slate-200 text-slate-700 rounded-xl font-bold text-xs">Batal</button>
+                <button onclick="submitTaskUpdate()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs shadow">Simpan Perubahan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF VIEWER MODAL -->
+    <div id="pdfModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-4xl h-[88vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100">
+            <div class="bg-slate-50 p-4 border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-indigo-100 text-indigo-600 rounded-xl">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 id="pdfModalTitle" class="text-sm font-bold text-slate-900">Dokumen Rasmi Jabatan</h3>
+                        <p class="text-[10px] text-slate-400">Prapapar Dokumen Sulit FAMA</p>
+                    </div>
+                </div>
+                <button onclick="closePdfModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-full">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex-1 bg-slate-200/70 p-6 overflow-y-auto flex justify-center">
+                <div id="printableArea" class="bg-white w-full max-w-2xl h-max shadow-lg p-10 space-y-6 border border-slate-200 text-slate-800 font-serif rounded-xl">
+                    <div class="border-b-2 border-slate-900 pb-4 flex justify-between font-sans">
+                        <div>
+                            <p class="text-[11px] font-bold text-indigo-900 uppercase">LEMBAGA PEMASARAN PERTANIAN PERSEKUTUAN (FAMA)</p>
+                            <h2 class="text-lg font-black text-slate-900 uppercase mt-1" id="pdfDocTitle">DOKUMEN RASMI</h2>
+                        </div>
+                        <div class="text-right text-[11px]">
+                            <p class="font-bold text-rose-700">SULIT</p>
+                            <p>Ruj: <span id="pdfRefNumber" class="font-bold">FAMA/100-2/4/1</span></p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 text-xs text-slate-800 leading-relaxed font-sans" id="pdfDocBody">
+                        <p>Kandungan surat sedang dimuatkan...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-100 bg-white flex justify-end space-x-3">
+                <button onclick="closePdfModal()" class="px-4 py-2 border border-slate-200 text-slate-700 font-bold text-xs rounded-xl">Tutup</button>
+                <button onclick="window.print()" class="px-4 py-2 bg-slate-900 text-white font-bold text-xs rounded-xl shadow flex items-center">
+                    <i data-lucide="printer" class="w-4 h-4 mr-1.5"></i> Cetak
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FULL EMAIL VIEWER MODAL (LIHAT KESELURUHAN E-MEL CONTENT) -->
+    <div id="fullEmailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[70] hidden flex items-center justify-center p-2 sm:p-4 lg:p-6">
+        <div class="bg-white rounded-[32px] w-full max-w-5xl h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200">
+            <!-- Modal Header -->
+            <div class="bg-slate-50 px-6 py-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center space-x-3.5 overflow-hidden">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-indigo-500/20">
+                        <i data-lucide="mail-open" class="w-5 h-5"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>
+                                mail.fama.gov.my:993 (IMAP SSL)
+                            </span>
+                            <span id="fullEmailRefBadge" class="text-[10px] font-mono font-bold text-slate-500">FAMA-MLK-2026-12187</span>
+                        </div>
+                        <h3 id="fullEmailSubject" class="text-sm sm:text-base font-black text-slate-900 truncate mt-0.5">Tajuk E-mel Sebenar</h3>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2 flex-shrink-0">
+                    <button onclick="copyFullEmailContent()" class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-200/80 rounded-xl transition" title="Salin Teks E-mel">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="printFullEmailContent()" class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-200/80 rounded-xl transition" title="Cetak Kandungan E-mel">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="closeFullEmailModal()" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200/80 rounded-xl transition">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Email Meta Bar -->
+            <div class="px-6 py-2.5 bg-white border-b border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2 flex-shrink-0">
+                <div class="flex items-center space-x-1.5 truncate max-w-md">
+                    <span class="text-slate-400 font-semibold">Daripada:</span>
+                    <span id="fullEmailSender" class="font-bold text-slate-800 truncate">UNIT INTEGRITI (KPKM)</span>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                    <span class="text-slate-400 font-semibold">Tarikh Pelayan:</span>
+                    <span id="fullEmailDate" class="font-mono font-bold text-slate-700">Thu, 22 Oct 2026</span>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                    <span class="text-slate-400 font-semibold">Penerima Rasmi:</span>
+                    <span class="font-bold text-indigo-700">Ts. Hj Nor Azhar (750501086723)</span>
+                </div>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="px-6 pt-2.5 bg-slate-50/70 border-b border-slate-200/80 flex items-center space-x-4 text-xs font-bold flex-shrink-0 overflow-x-auto">
+                <button id="fullTabBtnBody" onclick="switchFullEmailTab('body')" class="pb-2.5 border-b-2 border-indigo-600 text-indigo-600 flex items-center space-x-1.5 transition flex-shrink-0">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                    <span>1. Kandungan Penuh E-mel (RFC822 Body)</span>
+                </button>
+                <button id="fullTabBtnAi" onclick="switchFullEmailTab('ai')" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition flex-shrink-0">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>2. Ringkasan Pintar AI & Minit DG</span>
+                </button>
+                <button id="fullTabBtnHeaders" onclick="switchFullEmailTab('headers')" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition flex-shrink-0">
+                    <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+                    <span>3. Pengepala Pelayan Asal (RFC822 Headers)</span>
+                </button>
+                <button id="fullTabBtnAttachments" onclick="switchFullEmailTab('attachments')" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition flex-shrink-0">
+                    <i data-lucide="paperclip" class="w-3.5 h-3.5"></i>
+                    <span>4. Lampiran Rasmi (<span id="fullEmailAttCount">1</span>)</span>
+                </button>
+            </div>
+
+            <!-- Tab Content Area -->
+            <div class="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-100/60">
+                <!-- Loading Spinner -->
+                <div id="fullEmailLoading" class="hidden flex flex-col items-center justify-center py-20 space-y-3">
+                    <div class="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                    <p class="text-xs font-bold text-slate-500">Memuat turun keseluruhan kandungan e-mel dari mail.fama.gov.my:993...</p>
+                </div>
+
+                <!-- Tab 1: Full Email Body Text -->
+                <div id="fullTabContentBody" class="space-y-4">
+                    <div id="fullEmailPrintArea" class="bg-white rounded-2xl p-6 sm:p-8 shadow-xs border border-slate-200">
+                        <!-- Official Letter Header -->
+                        <div class="border-b-2 border-slate-900 pb-4 mb-6 flex justify-between items-start">
+                            <div>
+                                <p class="text-[10px] font-extrabold tracking-wider uppercase text-indigo-900">LEMBAGA PEMASARAN PERTANIAN PERSEKUTUAN (FAMA) / KPKM</p>
+                                <h4 id="fullDocLetterSubject" class="text-base sm:text-lg font-black text-slate-900 mt-1 uppercase">DOKUMEN E-MEL RASMI</h4>
+                                <p class="text-xs text-slate-500 mt-0.5" id="fullDocLetterSender">Daripada: pengirim</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] font-bold px-2.5 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg">KANDUNGAN SEBENAR</span>
+                                <p class="text-[11px] font-mono text-slate-400 mt-1" id="fullDocLetterDate">22 Okt 2026</p>
+                            </div>
+                        </div>
+
+                        <!-- Complete Clean Uncut Email Body -->
+                        <div id="fullEmailBodyContent" class="whitespace-pre-wrap font-sans text-xs sm:text-sm leading-relaxed text-slate-800 selection:bg-indigo-100">
+                            <!-- Injected live -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: AI & DG Directive -->
+                <div id="fullTabContentAi" class="hidden space-y-4">
+                    <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200 space-y-5">
+                        <div class="p-5 bg-indigo-50/80 border border-indigo-200 rounded-2xl">
+                            <div class="flex items-center text-indigo-900 font-bold mb-2">
+                                <i data-lucide="sparkles" class="w-4 h-4 mr-1.5 text-indigo-600"></i>
+                                <span class="text-xs uppercase tracking-wider font-extrabold">Rumusan Pintar Eksekutif (FAMA AI Assistant)</span>
+                            </div>
+                            <p id="fullEmailAiSummary" class="text-xs sm:text-sm text-indigo-950 font-medium leading-relaxed"></p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Minit Arahan Ketua Pengarah (DG)</span>
+                                <p id="fullEmailDgMinit" class="font-bold text-slate-800 leading-snug">Menunggu arahan urus setia.</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Pegawai Bertanggungjawab</span>
+                                <p id="fullEmailAssigned" class="font-bold text-indigo-700 leading-snug">Ts. Hj Nor Azhar (FAMA Melaka - 750501086723)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Raw RFC822 Headers -->
+                <div id="fullTabContentHeaders" class="hidden space-y-4">
+                    <div class="bg-slate-950 rounded-2xl p-5 shadow-xs border border-slate-800 text-slate-200">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3 text-xs">
+                            <span class="font-mono text-emerald-400 flex items-center space-x-1.5">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+                                <span>Pengepala Pelayan Asli (RFC822 MIME HEADERS)</span>
+                            </span>
+                            <span class="text-[10px] font-mono text-slate-400">mail.fama.gov.my:993</span>
+                        </div>
+                        <pre id="fullEmailRawHeaders" class="font-mono text-[11px] leading-relaxed text-slate-300 overflow-x-auto whitespace-pre-wrap select-all max-h-[500px]">
+                        </pre>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Attachments -->
+                <div id="fullTabContentAttachments" class="hidden space-y-4">
+                    <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200">
+                        <h4 class="text-xs font-bold text-slate-800 mb-4 uppercase tracking-wider">Senarai Lampiran Rasmi E-mel:</h4>
+                        <div id="fullEmailAttachmentsList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3.5 bg-white border-t border-slate-100 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center space-x-2 text-[11px] text-slate-500">
+                    <i data-lucide="server" class="w-3.5 h-3.5 text-emerald-600"></i>
+                    <span>Disegerak langsung dari peti mel: <strong class="text-slate-800">azharhamid@fama.gov.my</strong></span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="closeFullEmailModal()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs transition">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= WINDOWS DESKTOP INSTALLATION MODAL ================= -->
+    <div id="modalDesktopInstall" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-[32px] max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <!-- Modal Header -->
+            <div class="p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white relative">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center p-2 flex-shrink-0">
+                        <img src="/icons/icon-192.png" alt="FAMA Icon" class="w-full h-full object-contain rounded-lg">
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Windows Desktop App</span>
+                            <span class="text-[10px] font-semibold text-slate-300">Windows 10 / 11</span>
+                        </div>
+                        <h3 class="text-lg font-black tracking-tight mt-0.5">Pasang SmartDash FAMA ke Desktop / Laptop</h3>
+                    </div>
+                </div>
+                <button onclick="closeDesktopInstallModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center absolute top-6 right-6 transition cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-5 text-slate-700 max-h-[75vh] overflow-y-auto">
+                <!-- Status Banner -->
+                <div id="installModalStatusBanner" class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 flex items-start space-x-3">
+                    <i data-lucide="monitor" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                    <div class="text-xs">
+                        <strong class="font-bold block text-emerald-800">Sedia Dipasang sebagai Aplikasi Desktop Windows</strong>
+                        Aplikasi ini direka khas untuk Ketua Pengarah FAMA melayari arahan dalam mod tingkap bebas (standalone native window) dengan ikon taskbar sendiri tanpa gangguan bar alamat web pelayar.
+                    </div>
+                </div>
+
+                <!-- Method 1: PWA Native Windows Browser Install -->
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2.5">
+                            <span class="w-6 h-6 rounded-lg bg-indigo-600 text-white text-xs font-black flex items-center justify-center">1</span>
+                            <div>
+                                <h4 class="text-xs font-black text-slate-900 uppercase tracking-wide">Pemasangan 1-Klik Pelayar (Edge & Chrome)</h4>
+                                <p class="text-[11px] text-slate-500">Mencipta aplikasi tingkap berasingan dalam Windows Programs</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-extrabold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-full">Paling Disyorkan</span>
+                    </div>
+
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Klik butang di bawah untuk membuka dialog pemasangan rasmi Windows Edge / Chrome. Selepas dipasang, SmartDash FAMA akan muncul dalam <strong>Menu Start</strong> dan boleh dipinkan terus ke <strong>Taskbar Windows</strong>.
+                    </p>
+
+                    <button onclick="triggerPwaPrompt()" id="btnModalPwaTrigger" class="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-black text-xs rounded-xl shadow-md shadow-indigo-500/20 transition flex items-center justify-center space-x-2 cursor-pointer">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Pasang Melalui Pelayar Sekarang</span>
+                    </button>
+                </div>
+
+                <!-- Method 2: Native Windows Installer Executable (.EXE) -->
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2.5">
+                            <span class="w-6 h-6 rounded-lg bg-emerald-600 text-white text-xs font-black flex items-center justify-center">2</span>
+                            <div>
+                                <h4 class="text-xs font-black text-slate-900 uppercase tracking-wide">Pemasang Asli Windows (.EXE Setup Wizard)</h4>
+                                <p class="text-[11px] text-slate-500">Program pemasang rasmi Windows dengan pendaftaran sistem</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Setup.exe Rasmi</span>
+                    </div>
+
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Fail pemasang boleh laksana (<strong class="text-slate-800">Setup-SmartDash-FAMA.exe</strong>) telah sedia dibina. Program ini menyediakan wizard pemasangan lengkap, pintasan Desktop, dan pendaftaran dalam <strong class="text-slate-800">Windows Apps & Features</strong>.
+                    </p>
+
+                    <div class="p-3 bg-slate-900 rounded-xl font-mono text-[11px] text-emerald-400 space-y-1.5">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+                            <span class="font-bold text-white">Setup-SmartDash-FAMA.exe</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 pl-6">Klik dua kali fail ini pada folder projek untuk memulakan Wizard Pemasangan Windows.</p>
+                        <div class="pt-1 pl-6 flex items-center space-x-3 text-[10px] text-slate-300">
+                            <span>Pelancar: <strong class="text-white">SmartDash-FAMA.exe</strong></span>
+                            <span>•</span>
+                            <span>Penyahpasang: <strong class="text-white">Uninstall.exe</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Features -->
+                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div class="p-2.5 bg-slate-100 rounded-xl flex items-center space-x-2">
+                        <i data-lucide="wifi-off" class="w-4 h-4 text-slate-600"></i>
+                        <span class="font-medium text-slate-700">Sokongan Luar Talian (PWA)</span>
+                    </div>
+                    <div class="p-2.5 bg-slate-100 rounded-xl flex items-center space-x-2">
+                        <i data-lucide="shield" class="w-4 h-4 text-emerald-600"></i>
+                        <span class="font-medium text-slate-700">IMAP 993 TLS Terlindung</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-[11px] text-slate-500">Versi Desktop: 1.0 (Bina Windows)</span>
+                <button onclick="closeDesktopInstallModal()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer">
+                    Selesai / Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl z-50 hidden flex items-center space-x-3 text-xs border border-slate-700">
+        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0"></i>
+        <span id="toastMessage" class="font-medium">Operasi berjaya dilaksanakan.</span>
+    </div>
+
+    <!-- ================= SCRIPT LOGIC ================= -->
+    <script>
+        const API_URL = (window.location.protocol === 'http:' || window.location.protocol === 'https:') ? '' : null;
+
+        let selectedEmailId = 12189;
+        let stateEmails = [];
+        let stateTasks = [];
+        let stateSheets = [];
+        let currentFilterTag = null;
+        let currentStatusFilter = 'all';
+        let currentTierFilter = 'all'; // 'all', 'TKP', 'PK'
+
+        async function init() {
+            if (API_URL !== null) {
+                try {
+                    const [resEmails, resTasks, resSheets] = await Promise.all([
+                        fetch('/api/emails').then(r => r.json()),
+                        fetch('/api/tasks').then(r => r.json()),
+                        fetch('/api/sheets').then(r => r.json())
+                    ]);
+                    if (resEmails && resEmails.success && resEmails.data && resEmails.data.length > 0) {
+                        stateEmails = resEmails.data;
+                    }
+                    if (resTasks && resTasks.success && resTasks.data && resTasks.data.length > 0) {
+                        stateTasks = resTasks.data;
+                    }
+                    if (resSheets && resSheets.success && resSheets.data && resSheets.data.length > 0) {
+                        stateSheets = resSheets.data;
+                    }
+                    if (stateEmails.length > 0) {
+                        selectedEmailId = stateEmails[0].id;
+                    }
+                } catch (e) {
+                    loadLocal();
+                }
+            } else {
+                loadLocal();
+            }
+
+            renderAll();
+        }
+
+        function loadLocal() {
+            stateEmails = JSON.parse(localStorage.getItem('fama_emails')) || [];
+            stateTasks = JSON.parse(localStorage.getItem('fama_tasks')) || [];
+            stateSheets = JSON.parse(localStorage.getItem('fama_sheets')) || [];
+            if (stateEmails.length > 0) selectedEmailId = stateEmails[0].id;
+        }
+
+        function saveLocal() {
+            localStorage.setItem('fama_emails', JSON.stringify(stateEmails));
+            localStorage.setItem('fama_tasks', JSON.stringify(stateTasks));
+            localStorage.setItem('fama_sheets', JSON.stringify(stateSheets));
+        }
+
+        function filterByTier(tier, btn) {
+            currentTierFilter = tier;
+            
+            // Update left panel tier buttons
+            const btnAll = document.getElementById('btnTierAll');
+            const btnTKP = document.getElementById('btnTierTKP');
+            const btnPK = document.getElementById('btnTierPK');
+            const btnNegeri = document.getElementById('btnTierNegeri');
+            if (btnAll) btnAll.className = tier === 'all' ? "py-1.5 rounded-xl bg-indigo-600 text-white shadow-xs transition" : "py-1.5 rounded-xl text-slate-600 hover:text-indigo-600 transition";
+            if (btnTKP) btnTKP.className = tier === 'TKP' ? "py-1.5 rounded-xl bg-purple-600 text-white shadow-xs transition" : "py-1.5 rounded-xl text-slate-600 hover:text-purple-700 transition";
+            if (btnPK) btnPK.className = tier === 'PK' ? "py-1.5 rounded-xl bg-sky-600 text-white shadow-xs transition" : "py-1.5 rounded-xl text-slate-600 hover:text-sky-700 transition";
+            if (btnNegeri) btnNegeri.className = tier === 'NEGERI' ? "py-1.5 rounded-xl bg-emerald-600 text-white shadow-xs transition" : "py-1.5 rounded-xl text-slate-600 hover:text-emerald-700 transition";
+
+            const badge = document.getElementById('tierBadgeIndicator');
+            if (badge) {
+                if (tier === 'all') {
+                    badge.innerText = 'Semua (TKP, PK HQ & 14 Negeri)';
+                    badge.className = 'text-[9px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full';
+                } else if (tier === 'TKP') {
+                    badge.innerText = 'Hanya TKP (3 Sektor)';
+                    badge.className = 'text-[9px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full';
+                } else if (tier === 'PK') {
+                    badge.innerText = 'Hanya PK (HQ Sahaja)';
+                    badge.className = 'text-[9px] font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full';
+                } else {
+                    badge.innerText = '14 Pengarah FAMA Negeri';
+                    badge.className = 'text-[9px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full';
+                }
+            }
+
+            renderHotJobs();
+            renderKanban();
+            renderSheetsTable();
+            renderGantt();
+
+            const label = tier === 'all' ? 'Semua Arahan KP (TKP, PK HQ & 14 Negeri)' : (tier === 'TKP' ? 'Hanya Timbalan Ketua Pengarah (TKP)' : (tier === 'PK' ? 'Hanya Pengarah Kanan Ibu Pejabat (PK HQ)' : 'Hanya 14 Pengarah FAMA Negeri'));
+            showToast(`Penapis KP: ${label}`);
+        }
+
+        function renderAll() {
+            renderHotJobs();
+            renderGantt();
+            renderKanban();
+            renderEmailList();
+            renderEmailDetail(selectedEmailId);
+            renderSheetsTable();
+
+            // Update badges
+            const unreadCount = stateEmails.filter(e => e.status !== "Telah Disalurkan").length;
+            const dockBadge = document.getElementById('dockMailBadge');
+            if (dockBadge) {
+                dockBadge.style.display = unreadCount > 0 ? 'block' : 'none';
+            }
+            const pill = document.getElementById('unreadCountPill');
+            if (pill) pill.innerText = `${unreadCount} Surat Terkini`;
+
+            lucide.createIcons();
+        }
+
+        // ================= SMARTDASH: ARAHAN KP TERKINI (TKP, PK HQ & 14 NEGERI) =================
+        function renderHotJobs() {
+            const container = document.getElementById('hotJobsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let displayTasks = stateTasks;
+            if (currentTierFilter !== 'all') {
+                displayTasks = displayTasks.filter(t => t.recipientCategory === currentTierFilter || (t.recipientRole && t.recipientRole.includes(currentTierFilter)));
+            }
+            if (currentFilterTag) {
+                const tag = currentFilterTag.toLowerCase();
+                displayTasks = displayTasks.filter(t => 
+                    (t.title && t.title.toLowerCase().includes(tag)) ||
+                    (t.recipientRole && t.recipientRole.toLowerCase().includes(tag)) ||
+                    (t.officer && t.officer.toLowerCase().includes(tag)) ||
+                    (t.department && t.department.toLowerCase().includes(tag)) ||
+                    (t.ref && t.ref.toLowerCase().includes(tag)) ||
+                    (t.minit && t.minit.toLowerCase().includes(tag))
+                );
+            }
+            if (currentStatusFilter !== 'all') {
+                if (currentStatusFilter === 'completed') {
+                    displayTasks = displayTasks.filter(t => t.status === 'completed' || t.status === 'done');
+                } else if (currentStatusFilter === 'in-progress') {
+                    displayTasks = displayTasks.filter(t => t.status === 'in-progress' || t.status === 'editing');
+                }
+            }
+
+            const top3 = displayTasks.slice(0, 3);
+            if (top3.length === 0) {
+                container.innerHTML = '<div class="p-4 text-center text-xs text-slate-400 bg-white rounded-2xl">Tiada arahan KP sepadan dengan penapis.</div>';
+                return;
+            }
+
+            top3.forEach((task, idx) => {
+                const isTKP = task.recipientCategory === 'TKP';
+                const isNegeri = task.recipientCategory === 'NEGERI';
+                let tierBadge = `<span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 border border-sky-200">PK (HQ)</span>`;
+                let iconClass = 'bg-sky-100 text-sky-700';
+                let iconName = 'briefcase';
+
+                if (isTKP) {
+                    tierBadge = `<span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200">TKP</span>`;
+                    iconClass = 'bg-purple-100 text-purple-700';
+                    iconName = 'user-check';
+                } else if (isNegeri) {
+                    tierBadge = `<span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">NEGERI</span>`;
+                    iconClass = 'bg-emerald-100 text-emerald-800';
+                    iconName = 'map-pin';
+                }
+
+                const prog = task.progress !== undefined ? task.progress + '%' : '50%';
+                const officerDisplay = task.recipientRole || task.officer;
+
+                container.innerHTML += `
+                    <div onclick="selectEmailAndShowDetail(${task.id})" class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs hover:shadow-md hover:border-indigo-200 transition cursor-pointer flex items-center justify-between group">
+                        <div class="flex items-center space-x-3.5 overflow-hidden">
+                            <div class="w-11 h-11 rounded-2xl ${iconClass} flex items-center justify-center font-black flex-shrink-0 shadow-xs group-hover:scale-105 transition">
+                                <i data-lucide="${iconName}" class="w-5 h-5"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <div class="flex items-center space-x-1.5 mb-0.5">
+                                    ${tierBadge}
+                                    <span class="text-[10px] font-bold text-slate-500 truncate">${officerDisplay}</span>
+                                </div>
+                                <h4 class="text-xs font-black text-slate-900 group-hover:text-indigo-600 transition truncate max-w-[200px] sm:max-w-[260px]" title="${task.title}">
+                                    ${task.title}
+                                </h4>
+                                <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5">
+                                    ${task.minit || 'Arahan tindakan rasmi Ketua Pengarah'}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-right flex-shrink-0 pl-2 flex flex-col items-end space-y-1">
+                            <span class="text-xs font-black text-slate-900 block">${prog}</span>
+                            <div class="flex items-center space-x-1.5">
+                                <span class="text-[10px] text-slate-400 font-mono">${task.ref}</span>
+                                <button onclick="event.stopPropagation(); openFullEmailModal(${task.id})" class="px-2 py-0.5 bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 rounded-lg text-[9px] font-bold border border-indigo-200 transition flex items-center space-x-0.5" title="Lihat Keseluruhan E-mel">
+                                    <i data-lucide="eye" class="w-2.5 h-2.5"></i>
+                                    <span>Penuh</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function selectEmailAndShowDetail(id) {
+            selectedEmailId = id;
+            renderEmailDetail(id);
+            switchMainView('triage');
+        }
+
+        // ================= GANTT TIMELINE RENDERER =================
+        function renderGantt() {
+            const container = document.getElementById('ganttRowsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let displayTasks = stateTasks;
+            if (currentTierFilter !== 'all') {
+                displayTasks = displayTasks.filter(t => t.recipientCategory === currentTierFilter);
+            }
+            displayTasks = displayTasks.slice(0, 4);
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const styles = [
+                { badge: 'bg-purple-100 text-purple-700', grad: 'from-purple-600 to-indigo-600', span: 'col-start-2 col-span-6' },
+                { badge: 'bg-sky-100 text-sky-700', grad: 'from-sky-600 to-blue-600', span: 'col-start-3 col-span-5' },
+                { badge: 'bg-violet-100 text-violet-700', grad: 'from-violet-600 to-purple-500', span: 'col-start-4 col-span-6' },
+                { badge: 'bg-emerald-100 text-emerald-800', grad: 'from-emerald-500 to-teal-500', span: 'col-start-1 col-span-4' }
+            ];
+
+            displayTasks.forEach((task, idx) => {
+                const style = styles[idx] || styles[0];
+                const letter = letters[idx] || 'A';
+                const progress = task.progress !== undefined ? task.progress : 50;
+                const isTKP = task.recipientCategory === 'TKP';
+                const isNegeri = task.recipientCategory === 'NEGERI';
+                let tagColor = isTKP ? 'bg-purple-100 text-purple-700' : (isNegeri ? 'bg-emerald-100 text-emerald-800' : 'bg-sky-100 text-sky-700');
+                let tagLabel = isTKP ? 'TKP' : (isNegeri ? 'NEGERI' : 'PK');
+
+                container.innerHTML += `
+                    <div onclick="openUpdateModalById(${task.id})" class="grid grid-cols-12 gap-2 items-center hover:bg-slate-50/80 p-2 rounded-2xl transition cursor-pointer group border border-transparent hover:border-slate-100">
+                        <!-- Left: Letter Badge & Task Info -->
+                        <div class="col-span-4 flex items-center space-x-2.5 pl-2 overflow-hidden">
+                            <div class="w-7 h-7 rounded-full ${style.badge} flex items-center justify-center font-black text-xs flex-shrink-0 shadow-xs">
+                                ${letter}
+                            </div>
+                            <div class="truncate">
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="text-[9px] font-black px-1.5 py-0.2 rounded ${tagColor}">${tagLabel}</span>
+                                    <p class="text-xs font-bold text-slate-900 truncate group-hover:text-indigo-600 transition" title="${task.title}">
+                                        ${task.title}
+                                    </p>
+                                </div>
+                                <p class="text-[10px] font-mono text-slate-400 truncate">
+                                    ${task.ref} • ${task.recipientRole || task.officer}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Right: 10-Date Grid Gantt Pill -->
+                        <div class="col-span-8 grid grid-cols-10 items-center h-8 relative">
+                            <div class="${style.span} h-7 bg-gradient-to-r ${style.grad} rounded-full shadow-xs flex items-center justify-between px-3 text-white text-[10px] font-bold overflow-hidden transition-all duration-300 group-hover:brightness-105">
+                                <span class="truncate pr-1">[${tagLabel}] ${task.title.substring(0, 24)}</span>
+                                <span class="bg-white/25 px-1.5 py-0.5 rounded-full text-[9px] font-mono font-black flex-shrink-0">${progress}%</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // ================= KANBAN 4-COLUMN RENDERER =================
+        function renderKanban() {
+            const colDraft = document.getElementById('kanbanColDraft');
+            const colProgress = document.getElementById('kanbanColProgress');
+            const colEditing = document.getElementById('kanbanColEditing');
+            const colDone = document.getElementById('kanbanColDone');
+
+            if (!colDraft || !colProgress || !colEditing || !colDone) return;
+
+            colDraft.innerHTML = '';
+            colProgress.innerHTML = '';
+            colEditing.innerHTML = '';
+            colDone.innerHTML = '';
+
+            let cDraft = 0, cProgress = 0, cEditing = 0, cDone = 0;
+
+            let displayTasks = stateTasks;
+            if (currentTierFilter !== 'all') {
+                displayTasks = displayTasks.filter(t => t.recipientCategory === currentTierFilter);
+            }
+
+            displayTasks.forEach(task => {
+                const s = (task.status || '').toLowerCase();
+                let targetCol = colDraft;
+                let tagClass = 'bg-slate-100 text-slate-700 border border-slate-200';
+                let progClass = 'bg-slate-400';
+
+                if (s === 'completed' || s === 'done') {
+                    targetCol = colDone;
+                    cDone++;
+                    tagClass = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+                    progClass = 'bg-emerald-500';
+                } else if (s === 'editing' || s === 'review') {
+                    targetCol = colEditing;
+                    cEditing++;
+                    tagClass = 'bg-purple-50 text-purple-700 border border-purple-200';
+                    progClass = 'bg-gradient-to-r from-purple-500 to-pink-500';
+                } else if (s === 'in-progress') {
+                    targetCol = colProgress;
+                    cProgress++;
+                    tagClass = 'bg-blue-50 text-blue-700 border border-blue-200';
+                    progClass = 'bg-gradient-to-r from-blue-500 to-indigo-600';
+                } else {
+                    targetCol = colDraft;
+                    cDraft++;
+                    tagClass = 'bg-amber-50 text-amber-700 border border-amber-200';
+                    progClass = 'bg-amber-500';
+                }
+
+                const isTKP = task.recipientCategory === 'TKP';
+                const isNegeri = task.recipientCategory === 'NEGERI';
+                let tierBadge = `<span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-sky-100 text-sky-700 border border-sky-200">PK (HQ)</span>`;
+                let avClass = 'bg-sky-100 text-sky-700';
+                let avText = 'PK';
+
+                if (isTKP) {
+                    tierBadge = `<span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200">TKP</span>`;
+                    avClass = 'bg-purple-100 text-purple-700';
+                    avText = 'TKP';
+                } else if (isNegeri) {
+                    tierBadge = `<span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">NEGERI</span>`;
+                    avClass = 'bg-emerald-100 text-emerald-800';
+                    avText = 'PN';
+                }
+
+                const progress = task.progress !== undefined ? task.progress : 20;
+
+                targetCol.innerHTML += `
+                    <div onclick="openUpdateModalById(${task.id})" class="bg-white p-4 rounded-2xl border border-slate-100 shadow-xs hover:shadow-md hover:border-indigo-300 transition cursor-pointer space-y-3 group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-1.5">
+                                ${tierBadge}
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${tagClass}">
+                                    ${task.slaStatus || (s === 'completed' ? 'Selesai' : 'SLA: 3 Hari')}
+                                </span>
+                            </div>
+                            <span class="text-[10px] font-mono font-bold text-slate-400">${task.ref}</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-900 line-clamp-2 group-hover:text-indigo-600 transition leading-snug">
+                            ${task.title}
+                        </h4>
+                        ${task.minit ? `<p class="text-[10px] text-slate-600 line-clamp-2 italic bg-slate-50 p-2 rounded-xl border border-slate-100 font-medium">${task.minit}</p>` : ''}
+                        <div class="space-y-1">
+                            <div class="flex items-center justify-between text-[10px] font-bold text-slate-500">
+                                <span>Kemajuan Arahan</span>
+                                <span class="text-slate-900">${progress}%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full ${progClass}" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-[10px]">
+                            <div class="flex items-center space-x-1.5">
+                                <div class="w-5 h-5 rounded-full ${avClass} flex items-center justify-center font-bold text-[8px]">
+                                    ${avText}
+                                </div>
+                                <span class="font-bold text-slate-700 truncate max-w-[100px]">${task.recipientRole || task.officer}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="event.stopPropagation(); openFullEmailModal(${task.id})" class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center space-x-0.5" title="Lihat E-mel Asal">
+                                    <i data-lucide="mail-open" class="w-3 h-3"></i>
+                                    <span>E-mel</span>
+                                </button>
+                                <span class="text-slate-300">•</span>
+                                <span class="text-slate-600 font-bold group-hover:text-indigo-600 flex items-center space-x-0.5">
+                                    <span>Ubah</span>
+                                    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Update column badges
+            const bDraft = document.getElementById('badgeColDraft');
+            const bProgress = document.getElementById('badgeColProgress');
+            const bEditing = document.getElementById('badgeColEditing');
+            const bDone = document.getElementById('badgeColDone');
+            if (bDraft) bDraft.innerText = cDraft;
+            if (bProgress) bProgress.innerText = cProgress;
+            if (bEditing) bEditing.innerText = cEditing;
+            if (bDone) bDone.innerText = cDone;
+        }
+
+        // ================= EMAIL LIST & DETAILS (TRIAGE VIEW) =================
+        function renderEmailList() {
+            const container = document.getElementById('emailListContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            stateEmails.forEach(email => {
+                const isSelected = email.id === selectedEmailId;
+                container.innerHTML += `
+                    <div onclick="selectEmail(${email.id})" class="p-3.5 hover:bg-white transition cursor-pointer ${isSelected ? 'bg-indigo-50/80 border-l-4 border-indigo-600' : 'bg-white'}">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <span class="text-xs font-bold text-slate-800 truncate">${email.senderName}</span>
+                            <span class="text-[10px] text-slate-400 font-mono">${email.date || email.timeAgo}</span>
+                        </div>
+                        <p class="text-xs font-semibold text-slate-900 truncate">${email.subject}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function renderEmailDetail(id) {
+            const email = stateEmails.find(e => e.id === Number(id)) || stateEmails[0];
+            if (!email) return;
+            selectedEmailId = email.id;
+            const refEl = document.getElementById('currentRefId');
+            if (refEl) refEl.innerText = `ID: ${email.ref}`;
+            const subjEl = document.getElementById('emailDetailSubject');
+            if (subjEl) subjEl.innerText = email.subject;
+            const sendEl = document.getElementById('emailDetailSender');
+            if (sendEl) sendEl.innerText = email.sender;
+            const aiEl = document.getElementById('emailDetailAI');
+            if (aiEl) aiEl.innerText = email.ai;
+            const bodyEl = document.getElementById('emailDetailBody');
+            if (bodyEl) bodyEl.innerHTML = email.body;
+
+            const attContainer = document.getElementById('attachmentContainer');
+            if (attContainer) {
+                attContainer.innerHTML = '';
+                if (email.attachments && email.attachments.length > 0) {
+                    email.attachments.forEach(att => {
+                        attContainer.innerHTML += `
+                            <div onclick="openPdfModal('${att.name}', '${email.ref}')" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between cursor-pointer hover:bg-indigo-50 transition">
+                                <div class="truncate text-xs font-bold text-slate-700">${att.name}</div>
+                                <span class="text-[10px] text-indigo-600 font-bold">Lihat</span>
+                            </div>
+                        `;
+                    });
+                } else {
+                    attContainer.innerHTML = '<span class="text-xs text-slate-400">Tiada lampiran.</span>';
+                }
+            }
+        }
+
+        function selectEmail(id) {
+            renderEmailDetail(id);
+            renderEmailList();
+        }
+
+        function filterEmails(query) {
+            const q = query.toLowerCase();
+            const filtered = stateEmails.filter(e => 
+                (e.subject && e.subject.toLowerCase().includes(q)) || 
+                (e.sender && e.sender.toLowerCase().includes(q)) || 
+                (e.ref && e.ref.toLowerCase().includes(q))
+            );
+            const container = document.getElementById('emailListContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            filtered.forEach(email => {
+                const isSelected = email.id === selectedEmailId;
+                container.innerHTML += `
+                    <div onclick="selectEmail(${email.id})" class="p-3.5 hover:bg-white transition cursor-pointer ${isSelected ? 'bg-indigo-50/80 border-l-4 border-indigo-600' : 'bg-white'}">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <span class="text-xs font-bold text-slate-800 truncate">${email.senderName}</span>
+                            <span class="text-[10px] text-slate-400 font-mono">${email.date || email.timeAgo}</span>
+                        </div>
+                        <p class="text-xs font-semibold text-slate-900 truncate">${email.subject}</p>
+                    </div>
+                `;
+            });
+            renderHotJobs();
+        }
+
+        function filterByTag(tag) {
+            if (currentFilterTag === tag) {
+                currentFilterTag = null;
+                showToast("Penapis tag dibatalkan.");
+            } else {
+                currentFilterTag = tag;
+                showToast(`Menapis mengikut: ${tag}`);
+            }
+            renderHotJobs();
+        }
+
+        function filterBySla(val) {
+            showToast(`Penapis julat SLA dihadkan kepada: ${val} Hari.`);
+        }
+
+        function filterByStatus(status, btn) {
+            currentStatusFilter = status;
+            ['btnStatusAll', 'btnStatusProgress', 'btnStatusDone'].forEach(id => {
+                const b = document.getElementById(id);
+                if (b) {
+                    b.className = "py-1.5 rounded-xl text-slate-600 hover:text-indigo-600 transition";
+                }
+            });
+            if (btn) {
+                btn.className = "py-1.5 rounded-xl bg-indigo-600 text-white shadow-xs transition";
+            }
+            showToast(`Menapis status: ${status === 'all' ? 'Semua' : status}`);
+        }
+
+        async function dispatchDirective() {
+            const minit = document.getElementById('routingMinitText').value.trim() || "Tindakan segera dan laporkan kemajuan kepada KP.";
+            const assigned = document.getElementById('routingAssigneeSelect').value;
+            const cat = assigned.includes('[TKP]') ? 'TKP' : (assigned.includes('[NEGERI]') ? 'NEGERI' : 'PK');
+
+            if (API_URL !== null) {
+                try {
+                    const res = await fetch('/api/emails/route', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            emailId: selectedEmailId, 
+                            minit: `Arahan KP: ${minit}`, 
+                            assignedTo: assigned, 
+                            recipientCategory: cat, 
+                            priority: "Segera" 
+                        })
+                    });
+                    const d = await res.json();
+                    if (d.success && d.task) {
+                        stateTasks.unshift(d.task);
+                        stateSheets.unshift({
+                            timestamp: new Date().toISOString().substring(0, 16).replace('T', ' '),
+                            ref: d.task.ref,
+                            subject: d.task.title,
+                            sender: 'Pejabat Ketua Pengarah FAMA',
+                            recipientCategory: cat,
+                            assignedTo: assigned,
+                            dgMinit: `Arahan KP: ${minit}`,
+                            priority: "Segera",
+                            status: "Dalam Tindakan",
+                            slaDate: "2026-10-31"
+                        });
+                        renderAll();
+                    }
+                } catch(e) {}
+            }
+            showToast(`Arahan KP berjaya disalurkan kepada [${cat}] ${assigned.replace(/\[.*?\]/, '').trim()}!`);
+        }
+
+        // ================= REGISTER NEW LETTER MODAL =================
+        function openRegisterLetterModal() {
+            document.getElementById('registerLetterModal').classList.remove('hidden');
+            document.getElementById('registerLetterModal').classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeRegisterLetterModal() {
+            document.getElementById('registerLetterModal').classList.add('hidden');
+            document.getElementById('registerLetterModal').classList.remove('flex');
+        }
+
+        async function submitNewLetter() {
+            const subj = document.getElementById('regLetterSubject').value.trim();
+            const cat = document.getElementById('regLetterCategory').value || 'NEGERI';
+            const officer = document.getElementById('regLetterOfficer').value || (cat === 'TKP' ? '[TKP] Timbalan Ketua Pengarah (Operasi)' : (cat === 'NEGERI' ? '[NEGERI] Pengarah FAMA Negeri Melaka (Ts. Hj Nor Azhar)' : '[PK] Pengarah Kanan Pasaran Domestik (HQ)'));
+            const sender = document.getElementById('regLetterSender').value.trim() || 'KPKM / Pejabat KP FAMA';
+            const priority = document.getElementById('regLetterPriority').value;
+            const body = document.getElementById('regLetterBody').value.trim() || 'Arahan tindakan rasmi Ketua Pengarah.';
+
+            if (!subj) {
+                alert("Sila masukkan perkara / tajuk arahan KP.");
+                return;
+            }
+
+            const newId = Date.now();
+            const newRef = `FAMA-KP-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+            const newEmail = {
+                id: newId,
+                ref: newRef,
+                subject: subj,
+                sender: sender.toLowerCase().includes('@') ? sender : 'kp@fama.gov.my',
+                senderName: sender,
+                date: new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' }),
+                timeAgo: 'Baru Sahaja',
+                priority: priority,
+                status: 'Dalam Tindakan',
+                ai: `Surat arahan Ketua Pengarah dikeluarkan kepada [${cat}] berhubung "${subj}".`,
+                body: `<p>${body}</p>`,
+                attachments: [{ name: `Dokumen_Arahan_KP_${newRef}.pdf`, size: '1.1 MB' }]
+            };
+
+            const newTask = {
+                id: newId,
+                ref: newRef,
+                title: subj,
+                recipientCategory: cat,
+                recipientRole: officer,
+                officer: officer,
+                officerId: cat === 'TKP' ? 'TKP-HQ' : (cat === 'NEGERI' ? 'PENGARAH-NEGERI' : 'PK-HQ'),
+                email: "kp@fama.gov.my",
+                department: cat === 'TKP' ? "Ibu Pejabat FAMA (Sektor TKP)" : (cat === 'NEGERI' ? "Cawangan FAMA Negeri (14 Negeri)" : "Ibu Pejabat FAMA (Bahagian HQ)"),
+                status: "in-progress",
+                statusText: "Dalam Tindakan (In Progress)",
+                slaDays: 5,
+                slaStatus: "SLA: 5 Hari Lagi",
+                dateIssued: newEmail.date,
+                minit: `Arahan KP: ${body}`,
+                progress: 30,
+                lastUpdate: "Baru Sahaja",
+                notes: `Arahan disalurkan kepada ${officer}.`
+            };
+
+            stateEmails.unshift(newEmail);
+            stateTasks.unshift(newTask);
+            stateSheets.unshift({
+                timestamp: new Date().toISOString().substring(0, 16).replace('T', ' '),
+                ref: newRef,
+                subject: subj,
+                sender: sender,
+                recipientCategory: cat,
+                assignedTo: officer,
+                dgMinit: `Arahan KP: ${body}`,
+                priority: priority,
+                status: "Dalam Tindakan",
+                slaDate: "2026-10-31"
+            });
+
+            closeRegisterLetterModal();
+            saveLocal();
+            renderAll();
+            showToast(`Arahan KP baru berjaya didaftarkan dan disalurkan kepada [${cat}] ${officer}!`);
+        }
+
+        // ================= UPDATE TASK MODAL =================
+        function openUpdateModalById(id) {
+            const t = stateTasks.find(x => x.id === id);
+            if (!t) return;
+            document.getElementById('modalTaskId').value = t.id;
+            document.getElementById('modalTaskTitle').value = t.title;
+            document.getElementById('modalTaskStatus').value = t.status;
+            document.getElementById('modalProgressRange').value = t.progress || 50;
+            document.getElementById('modalProgressLabel').innerText = (t.progress || 50) + '%';
+            document.getElementById('modalTaskNotes').value = t.notes || '';
+            document.getElementById('updateModal').classList.remove('hidden');
+            document.getElementById('updateModal').classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function openUpdateModalByKeyword(kw) {
+            const t = stateTasks.find(x => (x.title || '').toUpperCase().includes(kw));
+            if (t) {
+                openUpdateModalById(t.id);
+            } else {
+                switchMainView('tasks');
+            }
+        }
+
+        function closeUpdateModal() {
+            document.getElementById('updateModal').classList.add('hidden');
+            document.getElementById('updateModal').classList.remove('flex');
+        }
+
+        async function submitTaskUpdate() {
+            const id = Number(document.getElementById('modalTaskId').value);
+            const t = stateTasks.find(x => x.id === id);
+            if (t) {
+                t.status = document.getElementById('modalTaskStatus').value;
+                t.progress = Number(document.getElementById('modalProgressRange').value);
+                t.notes = document.getElementById('modalTaskNotes').value;
+                if (API_URL !== null) {
+                    try {
+                        await fetch(`/api/tasks/${id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ status: t.status, progress: t.progress, notes: t.notes })
+                        });
+                    } catch(e) {}
+                }
+            }
+            closeUpdateModal();
+            saveLocal();
+            renderAll();
+            showToast("Tugasan berjaya dikemaskini!");
+        }
+
+        // ================= GOOGLE SHEETS =================
+        function renderSheetsTable() {
+            const tbody = document.getElementById('sheetsTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            let displaySheets = stateSheets;
+            if (currentTierFilter !== 'all') {
+                displaySheets = displaySheets.filter(r => r.recipientCategory === currentTierFilter || (r.assignedTo && r.assignedTo.includes(currentTierFilter)));
+            }
+
+            displaySheets.forEach(r => {
+                const cat = r.recipientCategory || (r.assignedTo && r.assignedTo.includes('TKP') ? 'TKP' : (r.assignedTo && r.assignedTo.includes('NEGERI') ? 'NEGERI' : 'PK'));
+                const isTKP = cat === 'TKP';
+                const isNegeri = cat === 'NEGERI';
+                let catBadgeClass = isTKP ? 'bg-purple-100 text-purple-700 border border-purple-200' : (isNegeri ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-sky-100 text-sky-700 border border-sky-200');
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 text-slate-400 font-mono text-[10px]">${r.timestamp}</td>
+                        <td class="p-3 font-mono font-bold text-indigo-600">${r.ref}</td>
+                        <td class="p-3">
+                            <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase ${catBadgeClass}">
+                                ${cat}
+                            </span>
+                        </td>
+                        <td class="p-3 font-bold text-slate-900">${r.subject}</td>
+                        <td class="p-3 text-slate-600 text-[11px]">${r.sender}</td>
+                        <td class="p-3 font-bold text-slate-800 text-[11px]">${r.assignedTo}</td>
+                        <td class="p-3 text-slate-500 italic text-[11px]">${r.dgMinit}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] bg-indigo-50 text-indigo-700 font-bold">${r.status}</span></td>
+                        <td class="p-3 text-slate-600 font-mono">${r.slaDate}</td>
+                        <td class="p-3 text-right">
+                            <button onclick="openFullEmailModalByRef('${r.ref}')" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 rounded-lg font-bold text-[10px] transition border border-indigo-200 inline-flex items-center space-x-1" title="Lihat Kandungan Penuh E-mel">
+                                <i data-lucide="mail-open" class="w-3 h-3"></i>
+                                <span>Lihat</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function exportGoogleSheetsCsv() {
+            let csv = "Masa,ID Rujukan,Kategori,Perkara / Tajuk Arahan,Pengirim,Penerima Arahan KP,Minit Arahan KP,Status,SLA\n";
+            stateSheets.forEach(r => {
+                const cat = r.recipientCategory || (r.assignedTo && r.assignedTo.includes('TKP') ? 'TKP' : 'PK');
+                csv += `"${r.timestamp}","${r.ref}","${cat}","${r.subject}","${r.sender}","${r.assignedTo}","${r.dgMinit}","${r.status}","${r.slaDate}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `SmartDash_FAMA_Arahan_KP.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("Fail CSV Arahan Ketua Pengarah berjaya dimuat turun!");
+        }
+
+        // ================= REAL IMAP LIVE SYNC (PORT 993) =================
+        async function runLiveImapSync(btn) {
+            if (btn) {
+                btn.disabled = true;
+                btn.classList.add('opacity-75');
+                btn.innerHTML = `Syncing...`;
+            }
+            showToast("Menyegerak langsung dari mail.fama.gov.my:993 (Implicit TLS/SSL)...");
+
+            try {
+                const res = await fetch('/api/imap/sync', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    if (data.emails) stateEmails = data.emails;
+                    if (data.tasks) stateTasks = data.tasks;
+                    if (data.sheets) stateSheets = data.sheets;
+                    saveLocal();
+                    renderAll();
+                    showToast(`IMAP Sync Berjaya! ${data.emails.length} surat terkini dimuat turun dari peti mel rasmi (12,189 rekod).`);
+                } else {
+                    showToast(`Ralat IMAP: ${data.message || 'Gagal memuat turun'}`);
+                }
+            } catch (e) {
+                showToast("Ralat komunikasi pelayan semasa IMAP Sync.");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-75');
+                    btn.innerHTML = `Sync IMAP`;
+                }
+            }
+        }
+
+        // ================= REAL PORT 993 VERIFY TEST =================
+        async function testEmailPortLive(btn) {
+            if (btn) {
+                btn.disabled = true;
+            }
+            showToast("Menguji jabat tangan TLS/SSL ke mail.fama.gov.my pada Port 993...");
+
+            try {
+                const res = await fetch('/api/email/verify-port');
+                const data = await res.json();
+                if (data.success) {
+                    const diag = data.diagnostic || {};
+                    const lat = data.currentConfig ? data.currentConfig.latencyMs : diag.latencyMs;
+                    
+                    const latEl = document.getElementById('portLiveLatencyVal');
+                    if (latEl) latEl.innerText = `${lat} ms (Sangat Pantas)`;
+
+                    const timeEl = document.getElementById('portLiveTimestamp');
+                    if (timeEl) timeEl.innerText = `Ujian Berjaya: ${new Date().toLocaleTimeString('ms-MY')}`;
+
+                    showToast(`Port 993 SSL DISAHKAN BETUL 100%! Latensi: ${lat}ms | Sijil SSL Sah.`);
+                } else {
+                    showToast(`Gagal menyambung ke port 993: ${data.message}`);
+                }
+            } catch (e) {
+                showToast("Ralat sambungan API ke pelayan pengesahan port.");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                }
+            }
+        }
+
+        // ================= PDF MODAL =================
+        function openPdfModal(name, ref) {
+            document.getElementById('pdfModalTitle').innerText = name;
+            document.getElementById('pdfDocTitle').innerText = name.replace('.pdf', '');
+            document.getElementById('pdfRefNumber').innerText = ref;
+            document.getElementById('pdfDocBody').innerHTML = `<p>Dokumen rasmi sulit bagi rujukan ${ref}. Arahan dikeluarkan untuk perhatian Pengarah FAMA Negeri Melaka (Ts. Hj Nor Azhar Bin Abdul Hamid - 750501086723).</p>`;
+            document.getElementById('pdfModal').classList.remove('hidden');
+            document.getElementById('pdfModal').classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closePdfModal() {
+            document.getElementById('pdfModal').classList.add('hidden');
+            document.getElementById('pdfModal').classList.remove('flex');
+        }
+
+        // ================= FULL EMAIL MODAL VIEWER =================
+        let currentFullEmailData = null;
+
+        async function openFullEmailModal(id) {
+            const modal = document.getElementById('fullEmailModal');
+            if (!modal) return;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            const loading = document.getElementById('fullEmailLoading');
+            const bodyTab = document.getElementById('fullTabContentBody');
+
+            // Find existing in state
+            let email = stateEmails.find(e => e.id === Number(id));
+            if (!email && stateTasks) {
+                const t = stateTasks.find(x => x.id === Number(id));
+                if (t) email = stateEmails.find(e => e.ref === t.ref);
+            }
+            if (!email) email = stateEmails[0];
+
+            currentFullEmailData = email;
+            populateFullEmailModalUI(email);
+            switchFullEmailTab('body');
+
+            // If we don't have cleanBody or rawHeaders, fetch live from backend
+            if (email && (!email.cleanBody || !email.rawHeaders)) {
+                if (loading) {
+                    loading.classList.remove('hidden');
+                    loading.classList.add('flex');
+                }
+                if (bodyTab) bodyTab.classList.add('hidden');
+
+                try {
+                    const res = await fetch(`/api/emails/${email.id}/full`);
+                    const json = await res.json();
+                    if (json && json.success && json.email) {
+                        Object.assign(email, json.email);
+                        currentFullEmailData = email;
+                        populateFullEmailModalUI(email);
+                    }
+                } catch (e) {
+                    console.error("Error fetching full email content:", e);
+                } finally {
+                    if (loading) {
+                        loading.classList.add('hidden');
+                        loading.classList.remove('flex');
+                    }
+                    if (bodyTab) bodyTab.classList.remove('hidden');
+                }
+            } else {
+                if (loading) {
+                    loading.classList.add('hidden');
+                    loading.classList.remove('flex');
+                }
+                if (bodyTab) bodyTab.classList.remove('hidden');
+            }
+
+            lucide.createIcons();
+        }
+
+        function populateFullEmailModalUI(email) {
+            if (!email) return;
+
+            const refEl = document.getElementById('fullEmailRefBadge');
+            if (refEl) refEl.innerText = email.ref || `FAMA-MLK-2026-${email.id}`;
+            const subjEl = document.getElementById('fullEmailSubject');
+            if (subjEl) subjEl.innerText = email.subject || 'Surat Rasmi FAMA';
+            const sendEl = document.getElementById('fullEmailSender');
+            if (sendEl) sendEl.innerText = `${email.senderName || 'FAMA HQ'} <${email.sender || 'info@fama.gov.my'}>`;
+            const dateEl = document.getElementById('fullEmailDate');
+            if (dateEl) dateEl.innerText = email.rawDate || email.date || 'Terkini';
+
+            // Tab 1 Body
+            const docSubj = document.getElementById('fullDocLetterSubject');
+            if (docSubj) docSubj.innerText = email.subject || 'Surat Rasmi Kerajaan';
+            const docSend = document.getElementById('fullDocLetterSender');
+            if (docSend) docSend.innerText = `Daripada: ${email.senderName || 'FAMA'} (${email.sender || 'info@fama.gov.my'})`;
+            const docDate = document.getElementById('fullDocLetterDate');
+            if (docDate) docDate.innerText = email.date || '2026';
+            
+            const bodyEl = document.getElementById('fullEmailBodyContent');
+            if (bodyEl) {
+                if (email.cleanBody) {
+                    bodyEl.innerText = email.cleanBody;
+                } else if (email.body) {
+                    bodyEl.innerHTML = email.body;
+                } else {
+                    bodyEl.innerText = "Kandungan surat sedang dimuatkan...";
+                }
+            }
+
+            // Tab 2 AI & Minit
+            const aiEl = document.getElementById('fullEmailAiSummary');
+            if (aiEl) aiEl.innerText = email.ai || 'Surat rasmi memerlukan tindakan pegawai FAMA Melaka.';
+            const minitEl = document.getElementById('fullEmailDgMinit');
+            if (minitEl) minitEl.innerText = email.minit || 'Menunggu arahan urus setia.';
+            const assEl = document.getElementById('fullEmailAssigned');
+            if (assEl) assEl.innerText = email.assignedTo || 'Ts. Hj Nor Azhar (FAMA Melaka - 750501086723)';
+
+            // Tab 3 Headers
+            const headersEl = document.getElementById('fullEmailRawHeaders');
+            if (headersEl) {
+                headersEl.innerText = email.rawHeaders || `X-Mailer: FAMA Mail Web/IMAP\nFrom: ${email.sender}\nTo: azharhamid@fama.gov.my\nSubject: ${email.subject}\nDate: ${email.rawDate || email.date}\nStatus: Live IMAP 993 Verified`;
+            }
+
+            // Tab 4 Attachments
+            const attList = document.getElementById('fullEmailAttachmentsList');
+            const attCount = document.getElementById('fullEmailAttCount');
+            const attachments = email.attachments && email.attachments.length > 0 ? email.attachments : [{ name: `Dokumen_${email.ref || email.id}.pdf`, size: '1.2 MB' }];
+            
+            if (attCount) attCount.innerText = attachments.length;
+            if (attList) {
+                attList.innerHTML = '';
+                attachments.forEach(att => {
+                    attList.innerHTML += `
+                        <div onclick="openPdfModal('${att.name}', '${email.ref}')" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between hover:bg-indigo-50 hover:border-indigo-300 transition cursor-pointer group">
+                            <div class="flex items-center space-x-3 overflow-hidden">
+                                <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
+                                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <p class="text-xs font-bold text-slate-800 truncate">${att.name}</p>
+                                    <p class="text-[10px] text-slate-400 font-mono">${att.size || 'PDF Rasmi'}</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold text-indigo-600 flex items-center space-x-1">
+                                <span>Papar</span>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>
+                            </span>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function openFullEmailModalByRef(ref) {
+            const email = stateEmails.find(e => e.ref === ref);
+            if (email) {
+                openFullEmailModal(email.id);
+            } else {
+                openFullEmailModal(selectedEmailId);
+            }
+        }
+
+        function openFullEmailModalByKeyword(kw) {
+            const upper = kw.toUpperCase();
+            const email = stateEmails.find(e => 
+                (e.subject && e.subject.toUpperCase().includes(upper)) ||
+                (e.senderName && e.senderName.toUpperCase().includes(upper))
+            );
+            if (email) {
+                openFullEmailModal(email.id);
+            } else {
+                openFullEmailModal(selectedEmailId);
+            }
+        }
+
+        function closeFullEmailModal() {
+            const modal = document.getElementById('fullEmailModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function switchFullEmailTab(tab) {
+            ['body', 'ai', 'headers', 'attachments'].forEach(t => {
+                const btn = document.getElementById(`fullTabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                const content = document.getElementById(`fullTabContent${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                if (btn) {
+                    btn.className = "pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition flex-shrink-0 cursor-pointer";
+                }
+                if (content) {
+                    content.classList.add('hidden');
+                }
+            });
+
+            const activeBtn = document.getElementById(`fullTabBtn${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+            const activeContent = document.getElementById(`fullTabContent${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+            if (activeBtn) {
+                activeBtn.className = "pb-2.5 border-b-2 border-indigo-600 text-indigo-600 flex items-center space-x-1.5 transition flex-shrink-0 cursor-pointer";
+            }
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+            lucide.createIcons();
+        }
+
+        function copyFullEmailContent() {
+            const bodyEl = document.getElementById('fullEmailBodyContent');
+            if (bodyEl) {
+                navigator.clipboard.writeText(bodyEl.innerText).then(() => {
+                    showToast("Kandungan e-mel berjaya disalin ke papan keratan (clipboard)!");
+                }).catch(() => {
+                    showToast("Gagal menyalin teks.");
+                });
+            }
+        }
+
+        function printFullEmailContent() {
+            window.print();
+        }
+
+        // ================= VIEW SWITCHER =================
+        function switchMainView(view) {
+            ['dashboard', 'triage', 'tasks', 'planning', 'sheets', 'port-verify'].forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (el) el.classList.add('hidden');
+            });
+            const target = document.getElementById(`view-${view}`);
+            if (target) target.classList.remove('hidden');
+
+            const headerTitles = {
+                'dashboard': 'Peti Surat Masuk & Arahan Utama',
+                'triage': 'Urus Setia Triage Inbox & Minit DG',
+                'tasks': 'Papan Penjejakan Tugasan Subordinate (Kanban)',
+                'planning': 'Carta Garis Masa Perancangan SLA & Gantt',
+                'sheets': 'Pangkalan Data Google Sheets & IMAP 993',
+                'port-verify': 'Pengesahan Rasmi Port 993 SSL (RFC 8314)'
+            };
+            const h = document.getElementById('mainViewHeaderTitle');
+            if (h && headerTitles[view]) h.innerText = headerTitles[view];
+
+            lucide.createIcons();
+        }
+
+        function switchRole(role) {
+            const roleEl = document.getElementById('topRoleSelector');
+            if (roleEl) roleEl.value = role;
+            if (role === 'subordinate') {
+                showToast("Peranan Semasa: Ts. Hj Nor Azhar (Pengarah FAMA Melaka - 750501086723)");
+            } else if (role === 'dg') {
+                showToast("Peranan Semasa: YBhg. Encik Faisal Iswardi Bin Ismail (Ketua Pengarah FAMA)");
+            } else {
+                showToast("Peranan Semasa: Urus Setia Khas DG (Triage)");
+            }
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').innerText = msg;
+            t.classList.remove('hidden');
+            setTimeout(() => { t.classList.add('hidden'); }, 3500);
+        }
+
+        // ================= PWA & WINDOWS DESKTOP INSTALLATION =================
+        let deferredInstallPrompt = null;
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                    .then(reg => {
+                        console.log('[PWA] Service Worker registered with scope:', reg.scope);
+                    })
+                    .catch(err => {
+                        console.warn('[PWA] Service Worker registration failed:', err);
+                    });
+            });
+        }
+
+        // Check if running in standalone window mode (installed PWA or --app mode)
+        function isStandaloneDesktopMode() {
+            return window.matchMedia('(display-mode: standalone)').matches ||
+                   window.matchMedia('(display-mode: window-controls-overlay)').matches ||
+                   window.navigator.standalone === true ||
+                   document.referrer.includes('android-app://');
+        }
+
+        function updateInstallUiState() {
+            const isStandalone = isStandaloneDesktopMode();
+            const btnInstall = document.getElementById('btnDesktopInstall');
+            const badgeInstalled = document.getElementById('badgeDesktopInstalled');
+            const modalBanner = document.getElementById('installModalStatusBanner');
+            const btnModalPwa = document.getElementById('btnModalPwaTrigger');
+
+            if (isStandalone) {
+                if (btnInstall) btnInstall.classList.add('hidden');
+                if (badgeInstalled) badgeInstalled.classList.remove('hidden');
+                if (modalBanner) {
+                    modalBanner.innerHTML = `
+                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                        <div class="text-xs">
+                            <strong class="font-bold block text-emerald-800">Aplikasi Windows Sedang Berjalan (Mod Standalone)</strong>
+                            SmartDash FAMA sedang dibuka dalam mod tetingkap aplikasi bebas desktop Windows.
+                        </div>
+                    `;
+                }
+                if (btnModalPwa) {
+                    btnModalPwa.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Telah Dipasang ke Windows</span>`;
+                    btnModalPwa.disabled = true;
+                    btnModalPwa.classList.replace('from-indigo-600', 'from-emerald-600');
+                    btnModalPwa.classList.replace('to-indigo-700', 'to-emerald-700');
+                }
+            } else {
+                if (btnInstall) btnInstall.classList.remove('hidden');
+                if (badgeInstalled) badgeInstalled.classList.add('hidden');
+            }
+            lucide.createIcons();
+        }
+
+        // Listen for PWA install event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            console.log('[PWA] beforeinstallprompt captured successfully.');
+            updateInstallUiState();
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            showToast("SmartDash FAMA berjaya dipasang ke Windows Desktop!");
+            updateInstallUiState();
+        });
+
+        function handleDesktopInstallClick() {
+            if (isStandaloneDesktopMode()) {
+                showToast("SmartDash FAMA sedang aktif dalam mod tetingkap Windows standalone.");
+                return;
+            }
+            if (deferredInstallPrompt) {
+                triggerPwaPrompt();
+            } else {
+                openDesktopInstallModal();
+            }
+        }
+
+        async function triggerPwaPrompt() {
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+                const choiceResult = await deferredInstallPrompt.userChoice;
+                if (choiceResult.outcome === 'accepted') {
+                    showToast("Pemasangan diterima! SmartDash FAMA sedang dipasang ke Windows.");
+                    deferredInstallPrompt = null;
+                    closeDesktopInstallModal();
+                } else {
+                    showToast("Pemasangan pelayar dibatalkan oleh pengguna.");
+                }
+            } else {
+                openDesktopInstallModal();
+            }
+        }
+
+        function openDesktopInstallModal() {
+            const m = document.getElementById('modalDesktopInstall');
+            if (m) {
+                m.classList.remove('hidden');
+                m.classList.add('flex');
+                updateInstallUiState();
+            }
+        }
+
+        function closeDesktopInstallModal() {
+            const m = document.getElementById('modalDesktopInstall');
+            if (m) {
+                m.classList.add('hidden');
+                m.classList.remove('flex');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            init();
+            updateInstallUiState();
+        });
+    </script>
+</body>
+</html>

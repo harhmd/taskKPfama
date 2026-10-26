@@ -1,0 +1,23 @@
+{
+  "name": "taskkpfama",
+  "version": "1.0.0",
+  "description": "FAMA DG Correspondence & Task Tracking Platform - Sistem Pengurusan e-Surat & Penjejakan Arahan DG (taskKPfama)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "fama",
+    "correspondence-tracking",
+    "triage",
+    "kanban",
+    "imap-sync",
+    "google-sheets"
+  ],
+  "author": "FAMA & Secretariat Unit",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.23.1"
+  }
+}
